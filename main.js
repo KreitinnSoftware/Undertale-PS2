@@ -642,14 +642,28 @@ class player_obj
 	}
 }
 
-let ruins_rooms = [{x: 0, y: -20, w: 1360, h: 490, camera_y_max: 20, camera_y_min: -20, camera_x_max: 0, camera_x_min: -700, entrance_x: 290, entrance_y: 210, image_a: new Image("images/rooms/ruins/0.png"), chunks: 1},
-					{x: 0, y: -375, w: 638, h: 676, camera_y_max: 260, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/1.png"), chunks: 1},
-					{x: 40, y: -440, w: 560, h: 890, camera_y_max: 480, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/2.png"), chunks: 1},
-					{x: 40, y: 0, w: 560, h: 448, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 355, image_a: new Image("images/rooms/ruins/3.png"), chunks: 1},
-					{x: 60, y: 20, w: 1418, h: 428, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -840, entrance_x: 245, entrance_y: 360, image_a: new Image("images/rooms/ruins/4.png"), chunks: 1},
-					{x: 40, y: 0, w: 572, h: 426, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 80, entrance_y: 260, image_a: new Image("images/rooms/ruins/5.png"), chunks: 1},
-					{x: 60, y: 20, w: 1134, h: 426, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -1715, entrance_x: 300, entrance_y: 345, image_a: new Image("images/rooms/ruins/6a.png"), w2: 1168, image_b: new Image("images/rooms/ruins/6b.png"), chunks: 2},
-					{x: 0, y: 20, w: 1360, h: 331, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -2100, entrance_x: 300, entrance_y: 345, image_a: new Image("images/rooms/ruins/7a.png"), w2: 1382, image_b: new Image("images/rooms/ruins/7b.png"), chunks: 2},
+function roomDraw(x, y, w, h, image_a, w2, image_b, chunks)
+{
+	image_a.width = w;
+	image_a.height = h;
+	image_a.draw(x + camera.x, y + camera.y);
+
+	if (chunks == 2)
+	{
+		image_b.width = w2;
+		image_b.height = h;
+		image_b.draw(x + w + camera.x, y + camera.y);
+	}
+}
+
+let ruins_rooms = [{x: 0, y: -20, w: 1360, h: 490, camera_y_max: 20, camera_y_min: -20, camera_x_max: 0, camera_x_min: -700, entrance_x: 290, entrance_y: 210, image_a: new Image("images/rooms/ruins/0.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks)}},
+					{x: 0, y: -375, w: 638, h: 676, camera_y_max: 260, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/1.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
+					{x: 40, y: -440, w: 560, h: 890, camera_y_max: 480, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/2.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
+					{x: 40, y: 0, w: 560, h: 448, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 355, image_a: new Image("images/rooms/ruins/3.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
+					{x: 60, y: 20, w: 1418, h: 428, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -840, entrance_x: 245, entrance_y: 360, image_a: new Image("images/rooms/ruins/4.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
+					{x: 40, y: 0, w: 572, h: 426, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 80, entrance_y: 260, image_a: new Image("images/rooms/ruins/5.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
+					{x: 60, y: 20, w: 1134, h: 426, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -1715, entrance_x: 300, entrance_y: 345, image_a: new Image("images/rooms/ruins/6a.png"), w2: 1168, image_b: new Image("images/rooms/ruins/6b.png"), chunks: 2, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, this.w2, this.image_b, this.chunks) }},
+					{x: 0, y: 20, w: 1360, h: 331, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -2100, entrance_x: 300, entrance_y: 345, image_a: new Image("images/rooms/ruins/7a.png"), w2: 1382, image_b: new Image("images/rooms/ruins/7b.png"), chunks: 2, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, this.w2, this.image_b, this.chunks) }},
 					];
 
 let collision = [[ // Sala 0
@@ -843,20 +857,7 @@ let camera = new camera_obj;
 
 let step_delay = Timer.new();
 
-let room = 7;
-
-function roomRenderer()
-{
-	ruins_rooms[room].image_a.width = ruins_rooms[room].w;
-	ruins_rooms[room].image_a.height = ruins_rooms[room].h;
-	ruins_rooms[room].image_a.draw(ruins_rooms[room].x + camera.x, ruins_rooms[room].y + camera.y);
-	if (ruins_rooms[room].chunks == 2)
-	{
-		ruins_rooms[room].image_b.width = ruins_rooms[room].w2;
-		ruins_rooms[room].image_b.height = ruins_rooms[room].h;
-		ruins_rooms[room].image_b.draw(ruins_rooms[room].x + ruins_rooms[room].w + camera.x, ruins_rooms[room].y + camera.y);
-	}
-}
+let room = 0;
 
 function nextRoom()
 {
@@ -880,7 +881,7 @@ while (gamestate == GAME_INGAME)
 
 	Screen.clear(black);
 
-	roomRenderer();
+	ruins_rooms[room].draw();
 
 	for (let i = 0; i < collision[room].length; i++)
 	{
