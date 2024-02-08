@@ -12,6 +12,11 @@ const yellow = Color.new(255, 255, 0);
 const white_t = Color.new(255, 255, 255, 50);
 const red_t = Color.new(255, 0, 0, 50);
 
+const GAME_INTRO = 0;
+const GAME_PRE_MENU = 1;
+const GAME_MENU = 2;
+const GAME_INGAME = 3;
+
 const dtm_mono = new Font("fonts/dtm-mono.otf");
 
 let ram;
@@ -135,7 +140,7 @@ let speech_delay = Timer.new();
 
 let timer = Timer.new();
 
-let gamestate = "intro";
+let gamestate = GAME_INTRO;
 
 let fadeout = 0;
 let fadein = 0;
@@ -148,7 +153,7 @@ let timer_value;
 
 Sound.play(mus_story);
 
-while(gamestate == "intro")
+while(gamestate == GAME_INTRO)
 {
 	pad.update();
 
@@ -184,7 +189,7 @@ while(gamestate == "intro")
 		if (timer_value > 1500)
 		{
 			resetText();
-			gamestate = "pre_menu";
+			gamestate = GAME_PRE_MENU;
 		}
 	}
 
@@ -230,8 +235,7 @@ while(gamestate == "intro")
 			if (fadeOut(intro_bg) == 1)
 			{
 				resetText();
-
-				gamestate = "pre_menu";
+				gamestate = GAME_PRE_MENU;
 			}
 		}
 	}
@@ -257,7 +261,7 @@ Sound.setVolume(100);
 
 Sound.play(intro_noise, 0);
 
-while (gamestate == "pre_menu")
+while (gamestate == GAME_PRE_MENU)
 {
 	pad.update();
 
@@ -274,7 +278,7 @@ while (gamestate == "pre_menu")
 
 	if (pad.justPressed(Pads.CROSS))
 	{
-		gamestate = "menu";
+		gamestate = GAME_MENU;
 	}
 
 	//dtm_mono.print(0, 80, "RAM:" + ram.used);
@@ -284,7 +288,7 @@ while (gamestate == "pre_menu")
 
 Sound.play(mus_menu0);
 
-while (gamestate == "menu")
+while (gamestate == GAME_MENU)
 {
 	pad.update();
 
@@ -295,7 +299,7 @@ while (gamestate == "menu")
 	if (pad.justPressed(Pads.CROSS))
 	{
 		Sound.pause(mus_menu0);
-		gamestate = "ingame";
+		gamestate = GAME_INGAME;
 	}
 
 	dtm_mono.print(160, 35, "--- Instruction ---");
@@ -866,7 +870,7 @@ function nextRoom()
 
 let step_delay_value;
 
-while (gamestate == "ingame")
+while (gamestate == GAME_INGAME)
 {
 	pad.update();
 
