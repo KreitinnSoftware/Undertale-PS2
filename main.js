@@ -925,8 +925,8 @@ while (gamestate == GAME_INGAME)
 	for (let i = 0; i < collision[room].length; i++)
 	{
 		Draw.rect(collision[room][i].x + camera.x, collision[room][i].y + camera.y, collision[room][i].w, collision[room][i].h, white_t);
-	}.
--
+	}
+	
 	for (let i = 0; i < diagonal_collision[room].length; i++)
 	{
 		Draw.rect(diagonal_collision[room][i].x + camera.x, diagonal_collision[room][i].y + camera.y, diagonal_collision[room][i].w, diagonal_collision[room][i].h, red_t);
