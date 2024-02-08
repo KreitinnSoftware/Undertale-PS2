@@ -446,8 +446,7 @@ class player_obj
 
 			if (this.x - camera.x < diagonal_wall.x + diagonal_wall.w &&
 				this.x - camera.x + this.w > diagonal_wall.x &&
-				this.y - camera.y + this
-				.h > diagonal_collision[room][i].y &&
+				this.y - camera.y + this.h > diagonal_collision[room][i].y &&
 				this.y - camera.y + 32 < diagonal_wall.y + diagonal_wall.h
 			) { 
 				if (diagonal_wall.type == 0 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != 1 && this.moving_diagonal != 4)
@@ -847,7 +846,7 @@ let camera = new camera_obj;
 
 let step_delay = Timer.new();
 
-let room = 0;
+let room = 7;
 
 let new_max_camera_y;
 let new_max_player_y;
@@ -901,11 +900,12 @@ function previousRoom()
 {
 	room --;
 
-	camera.x = ruins_rooms[room].camera_x_min;
-	camera.y = ruins_rooms[room].camera_y_min;
-
-	player.x = next_room_collisor[room].x + 2.5;
-	player.y = next_room_collisor[room].y + 15;
+	if (next_room_collisor[room].w > next_room_collisor[room].h)
+	{
+		setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y + next_room_collisor[room].h - 30);
+	} else {
+		setAbs(next_room_collisor[room].x - player.w, next_room_collisor[room].y);
+	}
 }
 
 let step_delay_value;
@@ -925,8 +925,8 @@ while (gamestate == GAME_INGAME)
 	for (let i = 0; i < collision[room].length; i++)
 	{
 		Draw.rect(collision[room][i].x + camera.x, collision[room][i].y + camera.y, collision[room][i].w, collision[room][i].h, white_t);
-	}
-
+	}.
+-
 	for (let i = 0; i < diagonal_collision[room].length; i++)
 	{
 		Draw.rect(diagonal_collision[room][i].x + camera.x, diagonal_collision[room][i].y + camera.y, diagonal_collision[room][i].w, diagonal_collision[room][i].h, red_t);
