@@ -780,14 +780,14 @@ let collision = [[ // Sala 0
 				{x: 2660, y: 260, w: 40, h: 78},
 				]];
 
-let next_room_collisor = [[{x: 1195, y: 242, w: 80, h: 40, color: red_t}],
-						[{x: 280, y: -100, w: 80, h: 40, color: red_t}],
-						[{x: 280, y: -287, w: 80, h: 40, color: red_t}],
-						[{x: 235, y: 128, w: 80, h: 20, color: red_t}],
-						[{x: 1420, y: 256, w: 40, h: 80, color: red_t}],
-						[{x: 310, y: 108, w: 84, h: 40, color: red_t}],
-						[{x: 2300, y: 180, w: 40, h: 80, color: red_t}],
-						[{x: 2680, y: 185, w: 40, h: 75, color: red_t}],
+let next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40, color: red_t},
+						{x: 280, y: -100, w: 80, h: 40, color: red_t},
+						{x: 280, y: -287, w: 80, h: 40, color: red_t},
+						{x: 235, y: 128, w: 80, h: 20, color: red_t},
+						{x: 1420, y: 256, w: 40, h: 80, color: red_t},
+						{x: 310, y: 108, w: 84, h: 40, color: red_t},
+						{x: 2300, y: 180, w: 40, h: 80, color: red_t},
+						{x: 2680, y: 185, w: 40, h: 75, color: red_t}
 						];
 
 // Type 0 == \ <
@@ -849,6 +849,44 @@ let step_delay = Timer.new();
 
 let room = 0;
 
+let new_max_camera_y;
+let new_max_player_y;
+
+function setAbs(x, y)
+{
+	if (x >= 300)
+	{
+		if ((x * -1 + 300) >= ruins_rooms[room].camera_x_min)
+		{
+			camera.x = (x * -1 + 300);
+			player.x = 300
+		} else {
+			camera.x = ruins_rooms[room].camera_x_min;
+			player.x = 300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 2.5)
+		}
+	} else {
+		camera.x = 0;
+
+		player.x = x;
+	}
+
+	if (y <= 200)
+	{
+		if (y - 200 <= ruins_rooms[room].camera_y_min)
+		{
+			camera.y = 200 - y;
+			player.y = 200;
+		} else {
+			camera.y = ruins_rooms[room].camera_y_min;
+			player.y = 200 - y + ruins_rooms[room].camera_y_max;
+		}
+	} else {
+		camera.y = 0;
+
+		player.y = y;
+	}
+}
+
 function nextRoom()
 {
 	room ++;
@@ -857,6 +895,17 @@ function nextRoom()
 
 	player.x = ruins_rooms[room].entrance_x
 	player.y = ruins_rooms[room].entrance_y
+}
+
+function previousRoom()
+{
+	room --;
+
+	camera.x = ruins_rooms[room].camera_x_min;
+	camera.y = ruins_rooms[room].camera_y_min;
+
+	player.x = next_room_collisor[room].x + 2.5;
+	player.y = next_room_collisor[room].y + 15;
 }
 
 let step_delay_value;
@@ -883,14 +932,19 @@ while (gamestate == GAME_INGAME)
 		Draw.rect(diagonal_collision[room][i].x + camera.x, diagonal_collision[room][i].y + camera.y, diagonal_collision[room][i].w, diagonal_collision[room][i].h, red_t);
 	}
 
-    Draw.rect(next_room_collisor[room][0].x + camera.x, next_room_collisor[room][0].y + camera.y, next_room_collisor[room][0].w, next_room_collisor[room][0].h, next_room_collisor[room][0].color);
+    Draw.rect(next_room_collisor[room].x + camera.x, next_room_collisor[room].y + camera.y, next_room_collisor[room].w, next_room_collisor[room].h, next_room_collisor[room].color);
 
-    if (player.x - camera.x < next_room_collisor[room][0].x + next_room_collisor[room][0].w &&
-		player.x - camera.x + player.w > next_room_collisor[room][0].x &&
-		player.y - camera.y + player.h > next_room_collisor[room][0].y &&
-		player.y - camera.y + 32 < next_room_collisor[room][0].y + next_room_collisor[room][0].h
+    if (player.x - camera.x < next_room_collisor[room].x + next_room_collisor[room].w &&
+		player.x - camera.x + player.w > next_room_collisor[room].x &&
+		player.y - camera.y + player.h > next_room_collisor[room].y &&
+		player.y - camera.y + 32 < next_room_collisor[room].y + next_room_collisor[room].h
 	) {
     	nextRoom();
+	}
+
+	if (pad.justPressed(Pads.CROSS))
+	{
+		previousRoom();
 	}
 
     player.walk();
