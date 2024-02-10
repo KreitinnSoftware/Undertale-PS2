@@ -5,20 +5,6 @@ Sound.setVolume(100, 0);
 
 const screen = Screen.getMode();
 
-const white = Color.new(255, 255, 255);
-const black = Color.new(0, 0, 0);
-const yellow = Color.new(255, 255, 0);
-
-const white_t = Color.new(255, 255, 255, 50);
-const red_t = Color.new(255, 0, 0, 50);
-
-const GAME_INTRO = 0;
-const GAME_PRE_MENU = 1;
-const GAME_MENU = 2;
-const GAME_INGAME = 3;
-
-const dtm_mono = new Font("fonts/dtm-mono.otf");
-
 let ram;
 
 let splash = new Image("images/splash.png");
@@ -29,114 +15,11 @@ let intro_noise = Sound.load("sfx/mus_intronoise.adp");
 
 import { dynamicDrawText, drawText, resetText } from "modules/text_utils.js";
 
-function fadeOut(obj)
-{
-	if (fadeout == 1)
-	{
-		if (obj.opacity > 0)
-		{
-			obj.opacity -= 4;
-		} else {
-			obj.opacity = 0
-		}
-	
-		if (obj.opacity == 0)
-		{
-			fadeout = 0;
+import { intro_scene } from "intro.js"
 
-			return 1;
-		}
-	}
-}
+import { mus_story, mus_menu0 } from "modules/music.js"
 
-function fadeIn(obj)
-{
-	if (fadein == 1)
-	{
-		if (obj.opacity < 128)
-		{
-			obj.opacity += 4;
-		} else {
-			obj.opacity = 128
-		}
-	
-		if (obj.opacity == 128)
-		{
-			fadein = 0;
-
-			return 1;
-		}
-	}
-}
-
-class intro_bg_obj
-{
-	w = 400
-	h = 198
-	x = 120
-	y = 60
-	last_img_h = 637.2
-	last_img_y = -380
-	opacity = 128
-
-	img_available = [
-					new Image("images/intro/1.png", RAM),
-					new Image("images/intro/2.png", RAM),
-					new Image("images/intro/3.png", RAM),
-					new Image("images/intro/4.png", RAM),
-					new Image("images/intro/black.png", RAM),
-					new Image("images/intro/5.png", RAM),
-					new Image("images/intro/6.png", RAM),
-					new Image("images/intro/7.png", RAM),
-					new Image("images/intro/8.png", RAM),
-					new Image("images/intro/9.png", RAM),
-					new Image("images/intro/10.png", RAM)
-					]
-
-	img_selected = 0
-
-	draw()
-	{
-		this.img_available[this.img_selected].color = Color.new(this.opacity, this.opacity, this.opacity);
-		this.img_available[this.img_selected].width = this.w;
-
-		if (this.img_selected == 10)
-		{
-			this.img_available[this.img_selected].height = 637.2;
-			this.img_available[this.img_selected].draw(this.x, this.last_img_y);
-
-		} else
-		{
-			this.img_available[this.img_selected].height = this.h;
-			this.img_available[this.img_selected].draw(this.x, this.y);
-		}
-
-		Draw.rect(0, 0, 640, 60, black)
-		Draw.rect(0, 258, 640, 448 - this.h, black)
-	}
-}
-
-function nextFrameOn(time)
-{
-	if (timer_value > time)
-	{
-		fadeout = 1;
-
-		if (fadeOut(intro_bg) == 1)
-		{
-			intro_bg.img_selected ++;
-			fadein = 1;
-			resetText();
-		}
-	}
-}
-
-let intro_bg = new intro_bg_obj;
-
-let mus_story = Sound.load("music/mus_story.wav");
-let mus_menu0 = Sound.load("music/mus_menu0.wav")
-let snd_txt2 = Sound.load("sfx/snd_txt2.adp");
-let speech_delay = Timer.new();
+import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, GAME_PAUSE_MUSIC } from "modules/global_constants.js"
 
 let timer = Timer.new();
 
@@ -151,100 +34,18 @@ let pad = Pads.get(0);
 
 let timer_value;
 
-Sound.play(mus_story);
+let playing = mus_story;
+
+Sound.play(playing);
 
 while(gamestate == GAME_INTRO)
 {
-	pad.update();
-
-	timer_value = Timer.getTime(timer);
-
-	ram = System.getMemoryStats();
-
-	Screen.clear(black);
-
-	if (pad.justPressed(Pads.CROSS) && skip == 0)
+	if (intro_scene(pad, ram, timer) == GAME_PRE_MENU)
 	{
-		fadeout = 1;
-		skip = 1;
-		resetText();
-
-		Timer.reset(timer);
-		timer_value = Timer.getTime(timer);
+		gamestate = GAME_PRE_MENU;
+	} else if (intro_scene(pad, ram, timer) == GAME_PAUSE_MUSIC) {
+		Sound.pause(playing)
 	}
-
-	intro_bg.draw();
-
-	if (skip == 1)
-	{
-		fadeOut(intro_bg);
-
-		Sound.setVolume(intro_bg.opacity / 128 * 100);
-
-		if (fadeOut(intro_bg) == 1)
-		{
-			Sound.pause(mus_story);
-		}
-
-		if (timer_value > 1500)
-		{
-			resetText();
-			gamestate = GAME_PRE_MENU;
-		}
-	}
-
-	if (intro_bg.img_selected == 0 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "Long ago, two races\nruled over Earth:\nHUMANS and MONSTERS.")
-		nextFrameOn(5750)
-	} else if (intro_bg.img_selected == 1 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "One day, war broke\nout between the races.")
-		nextFrameOn(10000)
-	} else if (intro_bg.img_selected == 2 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "After a long battle,\nthe humans were\nvictorious.")
-		nextFrameOn(15000)
-	} else if (intro_bg.img_selected == 3 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "They sealed the monsters\nunderground with a magic\nspell.")
-		nextFrameOn(25000)
-	} else if (intro_bg.img_selected == 4 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "Many years later.")
-		nextFrameOn(30000)
-	} else if (intro_bg.img_selected == 5 && skip == 0) {
-		dynamicDrawText(225, 300, 50, speech_delay, snd_txt2, dtm_mono, "MT. EBOTT\n   201X")
-		nextFrameOn(35000)
-	} else if (intro_bg.img_selected == 6 && skip == 0) {
-		dynamicDrawText(120, 300, 50, speech_delay, snd_txt2, dtm_mono, "Legends say that those\nwho climb the montain\nnever return.")
-		nextFrameOn(42000)
-	} else if (intro_bg.img_selected == 7 && skip == 0) {
-		nextFrameOn(46000)
-	} else if (intro_bg.img_selected == 8 && skip == 0) {
-		nextFrameOn(50000)
-	} else if (intro_bg.img_selected == 9 && skip == 0) {
-		nextFrameOn(54000)
-	} else if (intro_bg.img_selected == 10 && skip == 0) {
-		if (timer_value > 60000)
-		{
-			if (intro_bg.last_img_y <= 36)
-			{
-				intro_bg.last_img_y += 0.6;
-			}
-		} else if (timer_value > 74750)
-		{
-			fadeout = 1;
-			Sound.pause(mus_story);
-
-			if (fadeOut(intro_bg) == 1)
-			{
-				resetText();
-				gamestate = GAME_PRE_MENU;
-			}
-		}
-	}
-
-	fadeIn(intro_bg);
-
-	dtm_mono.print(0, 0, ram.used);
-
-	Screen.flip();
 }
 
 let cross = new Image("images/cross.png");
@@ -261,19 +62,25 @@ Sound.setVolume(100);
 
 Sound.play(intro_noise, 0);
 
+// The rest will be modularized later
+
+import * as fonts from "modules/fonts.js"
+
+import * as color_utils from "modules/color_utils.js";
+
 while (gamestate == GAME_PRE_MENU)
 {
 	pad.update();
 
 	timer_value = Timer.getTime(timer);
 
-	Screen.clear(black);
+	Screen.clear();
 
 	splash.draw(0, 0);
 
 	if (timer_value > 1400)
 	{
-		dtm_mono.print(250, 350, "[PRESS X]")
+		fonts.dtm_mono.print(250, 350, "[PRESS X]")
 	}
 
 	if (pad.justPressed(Pads.CROSS))
@@ -281,7 +88,7 @@ while (gamestate == GAME_PRE_MENU)
 		gamestate = GAME_MENU;
 	}
 
-	//dtm_mono.print(0, 80, "RAM:" + ram.used);
+	//fonts.dtm_mono.print(0, 80, "RAM:" + ram.used);
 
 	Screen.flip();
 }
@@ -294,7 +101,7 @@ while (gamestate == GAME_MENU)
 
 	timer_value = Timer.getTime(timer);
 
-	Screen.clear(black);
+	Screen.clear();
 
 	if (pad.justPressed(Pads.CROSS))
 	{
@@ -302,17 +109,17 @@ while (gamestate == GAME_MENU)
 		gamestate = GAME_INGAME;
 	}
 
-	dtm_mono.print(160, 35, "--- Instruction ---");
+	fonts.dtm_mono.print(160, 35, "--- Instruction ---");
 
 	cross.draw(160, 84);
 
-	dtm_mono.print(195, 80, "- Confirm");
+	fonts.dtm_mono.print(195, 80, "- Confirm");
 
 	square.draw(160, 120);
 
-	dtm_mono.print(195, 120, "- Cancel");
+	fonts.dtm_mono.print(195, 120, "- Cancel");
 
-	//dtm_mono.print(0, 100, "RAM:" + ram.used);
+	//text_utils.dtm_mono.print(0, 100, "RAM:" + ram.used);
 
 	Screen.flip();
 }
@@ -381,7 +188,7 @@ class player_obj
 
 		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x, this.y);
 
-		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, white_t);
+		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, color_utils.white_t);
 	}
 
 	collision()
@@ -779,14 +586,14 @@ let collision = [[ // Sala 0
 				{x: 2660, y: 260, w: 40, h: 78},
 				]];
 
-let next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40, color: red_t},
-						{x: 280, y: -100, w: 80, h: 40, color: red_t},
-						{x: 280, y: -287, w: 80, h: 40, color: red_t},
-						{x: 235, y: 128, w: 80, h: 20, color: red_t},
-						{x: 1420, y: 256, w: 40, h: 80, color: red_t},
-						{x: 310, y: 108, w: 84, h: 40, color: red_t},
-						{x: 2300, y: 180, w: 40, h: 80, color: red_t},
-						{x: 2680, y: 185, w: 40, h: 75, color: red_t}
+let next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
+						{x: 280, y: -100, w: 80, h: 40},
+						{x: 280, y: -287, w: 80, h: 40},
+						{x: 235, y: 128, w: 80, h: 20},
+						{x: 1420, y: 256, w: 40, h: 80},
+						{x: 310, y: 108, w: 84, h: 40},
+						{x: 2300, y: 180, w: 40, h: 80},
+						{x: 2680, y: 185, w: 40, h: 75}
 						];
 
 // Type 0 == \ <
@@ -918,13 +725,13 @@ while (gamestate == GAME_INGAME)
 
 	ram = System.getMemoryStats();
 
-	Screen.clear(black);
+	Screen.clear();
 
 	ruins_rooms[room].draw();
 
 	for (let i = 0; i < collision[room].length; i++)
 	{
-		Draw.rect(collision[room][i].x + camera.x, collision[room][i].y + camera.y, collision[room][i].w, collision[room][i].h, white_t);
+		Draw.rect(collision[room][i].x + camera.x, collision[room][i].y + camera.y, collision[room][i].w, collision[room][i].h, color_utils.white_t);
 	}
 	
 	for (let i = 0; i < diagonal_collision[room].length; i++)
@@ -932,7 +739,7 @@ while (gamestate == GAME_INGAME)
 		Draw.rect(diagonal_collision[room][i].x + camera.x, diagonal_collision[room][i].y + camera.y, diagonal_collision[room][i].w, diagonal_collision[room][i].h, red_t);
 	}
 
-    Draw.rect(next_room_collisor[room].x + camera.x, next_room_collisor[room].y + camera.y, next_room_collisor[room].w, next_room_collisor[room].h, next_room_collisor[room].color);
+    Draw.rect(next_room_collisor[room].x + camera.x, next_room_collisor[room].y + camera.y, next_room_collisor[room].w, next_room_collisor[room].h, color_utils.red_t);
 
     if (player.x - camera.x < next_room_collisor[room].x + next_room_collisor[room].w &&
 		player.x - camera.x + player.w > next_room_collisor[room].x &&
@@ -951,12 +758,12 @@ while (gamestate == GAME_INGAME)
 
     player.draw();
 
-	dtm_mono.print(0, 0, "Player Abs X:" + (player.x - camera.x));
-	dtm_mono.print(0, 20, "Player Abs Y:" + (player.y - camera.y));
-	dtm_mono.print(0, 40, "Player Real X:" + player.x);
-	dtm_mono.print(0, 60, "Player Real Y:" + player.y);
-	dtm_mono.print(0, 80, "Camera X:" + camera.x);
-	dtm_mono.print(0, 100, "Camera Y:" + camera.y);
+	fonts.dtm_mono.print(0, 0, "Player Abs X:" + (player.x - camera.x));
+	fonts.dtm_mono.print(0, 20, "Player Abs Y:" + (player.y - camera.y));
+	fonts.dtm_mono.print(0, 40, "Player Real X:" + player.x);
+	fonts.dtm_mono.print(0, 60, "Player Real Y:" + player.y);
+	fonts.dtm_mono.print(0, 80, "Camera X:" + camera.x);
+	fonts.dtm_mono.print(0, 100, "Camera Y:" + camera.y);
 
 	Screen.flip();
 }

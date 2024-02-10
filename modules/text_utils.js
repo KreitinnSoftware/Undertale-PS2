@@ -8,6 +8,8 @@ let text_processed = "";
 
 let speech_timer_value = 0;
 
+let speech_timer = Timer.new();
+
 export function resetText()
 {
 	pos = 0;
@@ -24,7 +26,7 @@ export function drawText(posx, posy, font, text)
 	}
 }
 
-export function dynamicDrawText(posx, posy, delay, speech_timer, speech, font, text)
+export function dynamicDrawText(posx, posy, delay, speech, font, text)
 {
 	if (pos != text.length)
 	{

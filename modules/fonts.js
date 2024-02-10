@@ -1,0 +1,1 @@
+export const dtm_mono = new Font("fonts/dtm-mono.otf");
