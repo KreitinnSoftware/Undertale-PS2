@@ -8,6 +8,8 @@ import * as sfx from "modules/sfx.js"
 
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 
+let ram = 0;
+
 class intro_bg_obj
 {
 	w = 400
@@ -81,7 +83,7 @@ let fadeout = 0;
 
 let fadein = 0;
 
-export function intro_scene(pad, ram, timer, playing)
+export function intro_scene(pad, timer, playing)
 {
 	pad.update();
 
@@ -183,4 +185,18 @@ export function intro_scene(pad, ram, timer, playing)
 	fonts.dtm_mono.print(0, 0, timer_value);
 
 	Screen.flip();
+}
+
+export function intro_gc()
+{
+	intro_scene = null;
+	nextFrameOn = null;
+	intro_bg = null;
+	timer_value = null;
+	skip = null;
+	fadein = null;
+	fadeout = null;
+	ram = null;
+
+	std.gc();
 }
