@@ -6,7 +6,7 @@ import * as fonts from "modules/fonts.js"
 
 import * as sfx from "modules/sfx.js"
 
-import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, GAME_PAUSE_MUSIC } from "modules/global_constants.js"
+import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 
 class intro_bg_obj
 {
@@ -63,16 +63,17 @@ function nextFrameOn(time)
 	{
 		fadeout = 1;
 
-		if (color_utils.fadeOut(intro_bg, fadeout) == 1)
+		if (color_utils.fadeOut(intro_bg, fadeout))
 		{
 			intro_bg.img_selected ++;
 			fadein = 1;
-			resetText();
+			fadeout = 0;
+			text_utils.resetText();
 		}
 	}
 }
 
-let timer_value;
+let timer_value = 0;
 
 let skip = 0;
 
@@ -80,7 +81,7 @@ let fadeout = 0;
 
 let fadein = 0;
 
-export function intro_scene(pad, ram, timer)
+export function intro_scene(pad, ram, timer, playing)
 {
 	pad.update();
 
@@ -110,7 +111,7 @@ export function intro_scene(pad, ram, timer)
 
 		if (color_utils.fadeOut(intro_bg, fadeout) == 1)
 		{
-			//return GAME_PAUSE_MUSIC;
+			Sound.pause(playing);
 		}
 
 		if (timer_value > 1500)
@@ -155,23 +156,31 @@ export function intro_scene(pad, ram, timer)
 			{
 				intro_bg.last_img_y += 0.6;
 			}
-		} else if (timer_value > 74750)
+		} 
+
+		if (timer_value > 74750)
 		{
 			fadeout = 1;
-			Sound.pause(mus_story);
 
-			if (fadeOut(intro_bg, fadeout) == 1)
+			Sound.pause(playing);
+
+			if (color_utils.fadeOut(intro_bg, fadeout))
 			{
-				resetText();
+				fadeout = 0;
+
+				text_utils.resetText();
 
 				return GAME_PRE_MENU;
 			}
 		}
 	}
 
-	color_utils.fadeIn(intro_bg, fadein);
+	if (color_utils.fadeIn(intro_bg, fadein))
+	{
+		fadein = 0;
+	}
 
-	fonts.dtm_mono.print(0, 0, ram.used);
+	fonts.dtm_mono.print(0, 0, timer_value);
 
 	Screen.flip();
 }

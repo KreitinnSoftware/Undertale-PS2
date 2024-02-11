@@ -21,9 +21,7 @@ export function fadeOut(obj, fadeout)
 	
 		if (obj.opacity == 0)
 		{
-			fadeout = 0;
-
-			return 1;
+			return true;
 		}
 	}
 }
@@ -41,9 +39,7 @@ export function fadeIn(obj, fadein)
 	
 		if (obj.opacity == 128)
 		{
-			fadein = 0;
-
-			return 1;
+			return true;
 		}
 	}
 }
