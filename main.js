@@ -1,8 +1,5 @@
 //Undertale PS2
 
-Sound.setVolume(100);
-Sound.setVolume(100, 0);
-
 const screen = Screen.getMode();
 
 let ram;
