@@ -201,23 +201,33 @@ class player_obj
 		}	
 	}
 
+	pressing_up = false;
+	pressing_down = false;
+	pressing_left = false;
+	pressing_right = false;
+
 	walk(pad)
 	{
 		step_delay_value = Timer.getTime(step_delay);
 
+		this.pressing_down = (pad.pressed(Pads.DOWN) || pad.ly > 64)
+		this.pressing_up = (pad.pressed(Pads.UP) || pad.ly < -64)
+		this.pressing_left = (pad.pressed(Pads.LEFT) || pad.lx < -64)
+		this.pressing_right = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
+
 		this.moving_diagonal = 0;
 
-		if ((pad.pressed(Pads.DOWN) || pad.ly > 64) && (pad.pressed(Pads.RIGHT) || pad.lx > 64)) {
+		if (this.pressing_down && this.pressing_right) {
 			this.moving_diagonal = 1;
-		} else if ((pad.pressed(Pads.DOWN) || pad.ly > 64) && (pad.pressed(Pads.LEFT) || pad.lx < -64)) {
+		} else if (this.pressing_down && this.pressing_left) {
 			this.moving_diagonal = 2;
-		} else if ((pad.pressed(Pads.UP) || pad.ly < -64) && (pad.pressed(Pads.RIGHT) || pad.lx > 64)) {
+		} else if (this.pressing_up && this.pressing_right) {
 			this.moving_diagonal = 3;
-		} else if ((pad.pressed(Pads.UP) || pad.ly < -64) && (pad.pressed(Pads.LEFT) || pad.lx < -64)) {
+		} else if (this.pressing_up && this.pressing_left) {
 			this.moving_diagonal = 4;
 		}
 
-		if (pad.pressed(Pads.DOWN) || pad.ly > 64)
+		if (this.pressing_down)
 		{
 			if (this.moving_diagonal == 0) 
 			{
@@ -252,7 +262,7 @@ class player_obj
 			this.diagonal_collision(pad);
 		}
 
-		if (pad.pressed(Pads.UP) || pad.ly < -64)
+		if (this.pressing_up)
 		{
 			if (this.moving_diagonal == 0) 
 			{
@@ -287,28 +297,19 @@ class player_obj
 			this.diagonal_collision(pad);
 		}
 
-		if (pad.pressed(Pads.RIGHT) || pad.lx > 64)
+		if (this.pressing_right)
 		{
 			if (this.moving_diagonal == 0) 
 			{
 				this.animation_selected = 3;
 			}
 
-			if (camera.x >= ruins_rooms[room].camera_x_min && this.x == 300)
-			{
-				camera.x -= 2.5
-			} else {
-				this.x += 2.5
-			}
+			this.move_right();
 
 			if (this.collision())
 			{
-				if (camera.x >= ruins_rooms[room].camera_x_min && this.x == 300)
-				{
-					camera.x += 2.5
-				} else {
-					this.x -= 2.5
-				}
+				this.move_left();
+
 				this.sprite_selected = 0;
 			} else {
 				if (step_delay_value > 180)
@@ -321,7 +322,7 @@ class player_obj
 			this.diagonal_collision(pad);
 		} 
 
-		if (pad.pressed(Pads.LEFT) || pad.lx < -64)
+		if (this.pressing_left)
 		{
 			if (this.moving_diagonal == 0) 
 			{
@@ -346,11 +347,7 @@ class player_obj
 			this.diagonal_collision(pad);
 		}
 
-		if ((pad.pressed(Pads.UP) == false &&
-			pad.pressed(Pads.DOWN) == false &&
-			pad.pressed(Pads.LEFT) == false &&
-			pad.pressed(Pads.RIGHT) == false) &&
-			(pad.lx < 64 && pad.lx > -64 && pad.ly > -64 && pad.ly < 64))
+		if (! this.pressing_up && ! this.pressing_down && ! this.pressing_left && ! this.pressing_right)
 		{
     		this.sprite_selected = 0;
 		}
