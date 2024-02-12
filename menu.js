@@ -13,6 +13,10 @@ let square = new Image("images/square.png");
 square.width *= 2;
 square.height *= 2;
 
+let triangle = new Image("images/triangle.png");
+triangle.width *= 2;
+triangle.height *= 2;
+
 let timer_value = 0;
 
 export function pre_menu_scene(pad, timer)
@@ -38,6 +42,8 @@ export function pre_menu_scene(pad, timer)
 	Screen.flip();
 }
 
+fonts.dtm_mono_smaller.color = Color.new(75, 75, 75)
+
 export function menu_scene(pad, playing)
 {
 	pad.update();
@@ -53,13 +59,21 @@ export function menu_scene(pad, playing)
 
 	fonts.dtm_mono.print(160, 35, "--- Instruction ---");
 
-	cross.draw(160, 84);
+	cross.draw(160, 80);
 
-	fonts.dtm_mono.print(195, 80, "- Confirm");
+	fonts.dtm_mono.print(195, 80, " Confirm");
 
-	square.draw(160, 120);
+	square.draw(160, 115);
 
-	fonts.dtm_mono.print(195, 120, "- Cancel");
+	fonts.dtm_mono.print(195, 115, " Cancel");
+
+	triangle.draw(160, 150);
+
+	fonts.dtm_mono.print(195, 150, " Menu(In-game)");
+
+	fonts.dtm_mono.print(160, 210, "When HP is 0, you lose.");
+
+	fonts.dtm_mono_smaller.print(80, 420, "UNDERTALE V1.08 (C) TOBY FOX 2015-2017, PS2 REMAKE BY PABLO.");
 
 	Screen.flip();
 }
@@ -71,6 +85,7 @@ export function menu_gc()
 	splash = null;
 	cross = null;
 	square = null;
+	triangle = null;
 	timer_value = null;
 
 	std.gc();
