@@ -10,6 +10,8 @@ import * as fonts from "modules/fonts.js";
 
 import * as color_utils from "modules/color_utils.js";
 
+import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
+
 let timer_value = 0;
 
 let ram = 0;
@@ -53,8 +55,8 @@ export function ingame_scene(pad, timer)
 	fonts.dtm_mono.print(0, 60, "Player Real Y:" + player.y);
 	fonts.dtm_mono.print(0, 80, "Camera X:" + camera.x);
 	fonts.dtm_mono.print(0, 100, "Camera Y:" + camera.y);
-
-	fonts.dtm_mono.print(0, 120, "RAM:" + ram.used)
+	fonts.dtm_mono.print(0, 120, "Room Number:" + room);
+	fonts.dtm_mono.print(0, 140, "RAM:" + ram.used);
 
 	Screen.flip();
 }

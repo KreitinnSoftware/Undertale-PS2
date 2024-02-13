@@ -72,11 +72,11 @@ class player_obj
 			new Image("images/frisk/spr_f_maincharar_1.png", RAM),
 			]]
 
-	sprite_selected = 0;
+	sprite_selected = 0
 
-	animation_selected = 0;
+	animation_selected = 0
 
-	moving_diagonal = 0;
+	moving_diagonal = 0
 
 	draw()
 	{

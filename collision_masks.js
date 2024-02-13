@@ -1,3 +1,5 @@
+import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js";
+
 export let collision = [[ // Sala 0
 				{x: 0, y: 53, w: 40, h: 379},
 				{x: 0, y: 432, w: 440, h: 40},
@@ -170,3 +172,8 @@ export let diagonal_collision = [[{x: 40, y: 319, w: 40, h: 38, type: 0},
 							],[
 							],[
 							]]
+
+export let event_collisions =
+{
+	GAME_EVENT_FLOWEY_FIRST_DIALOGUE: {x: 200, y: 300, w: 240, h: 20}
+}

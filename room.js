@@ -2,11 +2,17 @@ import { camera } from "camera.js";
 
 import { player, setAbs } from "player.js";
 
-import { next_room_collisor, collision, diagonal_collision } from "collision_masks.js";
+import { next_room_collisor, collision, diagonal_collision, event_collisions } from "collision_masks.js";
 
 import * as color_utils from "modules/color_utils.js";
 
-export let room = 7;
+import * as characters from "characters/characters.js";
+
+let flowey_obj = new characters.flowey;
+
+let dummy_obj = new characters.dummy;
+
+export let room = 0;
 
 export function nextRoom()
 {
@@ -30,6 +36,22 @@ export function previousRoom()
 	}
 }
 
+function roomDrawStuff() {
+	if (room == 1)
+	{
+		flowey_obj.x = 295
+		flowey_obj.y = 200
+		flowey_obj.draw();
+
+		// Draw Flowey First Dialogue Hitbox
+		Draw.rect(event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.x + camera.x, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.y + camera.y, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.w, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.h, color_utils.red_t)
+	} else if (room == 5) {
+		dummy_obj.x = 435
+		dummy_obj.y = 164
+		dummy_obj.draw();
+	}
+}
+
 function roomDraw(x, y, w, h, image_a, w2, image_b, chunks)
 {
 	image_a.width = w;
@@ -42,6 +64,8 @@ function roomDraw(x, y, w, h, image_a, w2, image_b, chunks)
 		image_b.height = h;
 		image_b.draw(x + w + camera.x, y + camera.y);
 	}
+
+	roomDrawStuff();
 }
 
 export let ruins_rooms = [{x: 0, y: -20, w: 1360, h: 490, camera_y_max: 20, camera_y_min: -20, camera_x_max: 0, camera_x_min: -700, entrance_x: 290, entrance_y: 210, image_a: new Image("images/rooms/ruins/0.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks)}},
