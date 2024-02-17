@@ -2,8 +2,6 @@ import { camera } from "camera.js"
 
 export class flowey
 {
-	x = 0
-	y = 0
 	w = 50
 	h = 50
 
@@ -16,7 +14,7 @@ export class flowey
 
 	animation_selected = 0
 
-	draw()
+	draw(x, y)
 	{
 		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity);
 
@@ -28,7 +26,7 @@ export class flowey
 		this.sprites[this.animation_selected][this.sprite_selected].width = this.w
 		this.sprites[this.animation_selected][this.sprite_selected].height = this.h
 
-		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x + camera.x, this.y + camera.y)
+		this.sprites[this.animation_selected][this.sprite_selected].draw(x + camera.x, y + camera.y)
 	}
 }
 

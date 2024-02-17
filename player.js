@@ -100,17 +100,25 @@ class player_obj
 		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, color_utils.white_t);
 	}
 
+	test_collision(obj)
+	{
+		if (this.x - camera.x -2 < obj.x + obj.w &&
+			this.x - camera.x -2 + this.w > obj.x &&
+			this.y - camera.y + this.h > obj.y &&
+			this.y - camera.y + 32 < obj.y + obj.h
+		) { 
+			return true;
+		}	
+	}
+
 	collision()
 	{
 		for (let i = 0; i < collision[room].length; i++)
 		{
-			if (this.x - camera.x -2 < collision[room][i].x + collision[room][i].w &&
-				this.x - camera.x -2 + this.w > collision[room][i].x &&
-				this.y - camera.y + this.h > collision[room][i].y &&
-				this.y - camera.y + 32 < collision[room][i].y + collision[room][i].h
-			) { 
+			if (this.test_collision(collision[room][i]))
+			{
 				return true;
-			} 
+			}
 		}	
 	}
 

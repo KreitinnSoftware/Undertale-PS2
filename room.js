@@ -8,9 +8,15 @@ import * as color_utils from "modules/color_utils.js";
 
 import * as characters from "characters/characters.js";
 
+import * as objects from "objects/objects.js";
+
+import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js";
+
 let flowey_obj = new characters.flowey;
 
 let dummy_obj = new characters.dummy;
+
+let faceswitch_obj = new objects.faceswitch;
 
 export let room = 0;
 
@@ -39,16 +45,19 @@ export function previousRoom()
 function roomDrawStuff() {
 	if (room == 1)
 	{
-		flowey_obj.x = 295
-		flowey_obj.y = 200
-		flowey_obj.draw();
+		flowey_obj.draw(295, 200);
 
 		// Draw Flowey First Dialogue Hitbox
 		Draw.rect(event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.x + camera.x, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.y + camera.y, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.w, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.h, color_utils.red_t)
+
+		if (player.test_collision(event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE))
+		{
+			console.log(GAME_EVENT_FLOWEY_FIRST_DIALOGUE)
+		}
+	} else if (room == 3) {
+		faceswitch_obj.draw(410, 90);
 	} else if (room == 5) {
-		dummy_obj.x = 435
-		dummy_obj.y = 164
-		dummy_obj.draw();
+		dummy_obj.draw(435, 164);
 	}
 }
 
