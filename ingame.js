@@ -56,7 +56,7 @@ export function ingame_scene(pad, timer)
 	fonts.dtm_mono.print(0, 80, "Camera X:" + camera.x);
 	fonts.dtm_mono.print(0, 100, "Camera Y:" + camera.y);
 	fonts.dtm_mono.print(0, 120, "Room Number:" + room);
-	fonts.dtm_mono.print(0, 140, "RAM:" + ram.used);
+	fonts.dtm_mono.print(0, 140, "RAM:" + (ram.used / 1048576).toFixed(2) + "MB/32MB");
 
 	Screen.flip();
 }
