@@ -44,7 +44,7 @@ export function pre_menu_scene(pad, timer)
 
 fonts.dtm_mono_smaller.color = Color.new(75, 75, 75)
 
-export function menu_scene(pad, playing)
+export function menu_scene(pad)
 {
 	pad.update();
 
@@ -52,8 +52,6 @@ export function menu_scene(pad, playing)
 
 	if (pad.justPressed(Pads.CROSS))
 	{
-		Sound.pause(playing);
-
 		return GAME_INGAME;
 	}
 

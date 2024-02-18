@@ -12,6 +12,8 @@ import * as objects from "objects/objects.js";
 
 import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js";
 
+import * as music from "modules/music.js"
+
 let flowey_obj = new characters.flowey;
 
 let dummy_obj = new characters.dummy;
@@ -58,6 +60,16 @@ function roomDrawStuff() {
 		faceswitch_obj.draw(410, 90);
 	} else if (room == 5) {
 		dummy_obj.draw(435, 164);
+	}
+
+	if (room >= 2)
+	{
+		if (music.playing != music.mus_ruins)
+		{
+			music.play(music.mus_ruins, true)
+		}
+	} else {
+		music.pause(music.mus_ruins)
 	}
 }
 

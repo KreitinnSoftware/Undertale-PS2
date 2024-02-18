@@ -6,6 +6,8 @@ import * as fonts from "modules/fonts.js"
 
 import * as sfx from "modules/sfx.js"
 
+import * as music from "modules/music.js"
+
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 
 let ram = 0;
@@ -83,7 +85,7 @@ let fadeout = 0;
 
 let fadein = 0;
 
-export function intro_scene(pad, timer, playing)
+export function intro_scene(pad, timer)
 {
 	pad.update();
 
@@ -113,7 +115,7 @@ export function intro_scene(pad, timer, playing)
 
 		if (color_utils.fadeOut(intro_bg, fadeout) == 1)
 		{
-			Sound.pause(playing);
+			music.pause(music.playing);
 		}
 
 		if (timer_value > 1500)

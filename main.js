@@ -6,7 +6,7 @@ import { dynamicDrawText, drawText, resetText } from "modules/text_utils.js";
 
 import { intro_scene, intro_gc } from "intro.js"
 
-import { mus_story, mus_menu0 } from "modules/music.js"
+import * as music from "modules/music.js"
 
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 
@@ -16,15 +16,11 @@ let gamestate = GAME_INTRO;
 
 let pad = Pads.get(0);
 
-let playing = mus_story;
-
-let paused = 0;
-
-Sound.play(playing);
+music.play(music.mus_story);
 
 while(gamestate == GAME_INTRO)
 {
-	if (intro_scene(pad, timer, playing) == GAME_PRE_MENU)
+	if (intro_scene(pad, timer) == GAME_PRE_MENU)
 	{
 		gamestate = GAME_PRE_MENU;
 	}
@@ -50,21 +46,19 @@ while (gamestate == GAME_PRE_MENU)
 	}
 }
 
-paused = playing;
+music.free(music.mus_story)
 
-playing = mus_menu0;
-
-Sound.play(playing);
-
-Sound.free(paused);
+music.play(music.mus_menu0, true)
 
 while (gamestate == GAME_MENU)
 {
-	if (menu_scene(pad, playing) == GAME_INGAME)
+	if (menu_scene(pad) == GAME_INGAME)
 	{
 		gamestate = GAME_INGAME
 	}
 }
+
+music.pause(music.mus_menu0)
 
 menu_gc();
 
