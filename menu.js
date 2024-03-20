@@ -38,7 +38,7 @@ export function pre_menu_scene(pad, timer)
 		fonts.dtm_mono.print(250, 350, getText(0, "menuText"));
 	}
 
-	if (pad.justPressed(Pads.CROSS))
+	if (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START))
 	{
 		return GAME_MENU;
 	}
@@ -55,7 +55,7 @@ export function menu_scene(pad)
 
 	Screen.clear();
 
-	if (pad.justPressed(Pads.CROSS))
+	if (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START))
 	{
 		return GAME_INGAME;
 	}

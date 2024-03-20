@@ -97,7 +97,7 @@ export function intro_scene(pad, timer)
 
 	Screen.clear();
 
-	if (pad.justPressed(Pads.CROSS) && skip == 0)
+	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0)
 	{
 		fadeout = 1;
 		skip = 1;
