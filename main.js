@@ -34,6 +34,8 @@ import { pre_menu_scene, menu_scene, menu_gc } from "menu.js"
 
 Timer.reset(timer);
 
+music.pause(music.mus_story);
+
 Sound.setVolume(100);
 
 Sound.play(intro_noise, 0);
@@ -46,7 +48,7 @@ while (gamestate == GAME_PRE_MENU)
 	}
 }
 
-music.free(music.mus_story)
+music.free(music.mus_story);
 
 music.play(music.mus_menu0, true)
 
@@ -59,6 +61,10 @@ while (gamestate == GAME_MENU)
 }
 
 music.pause(music.mus_menu0)
+
+//music.free(music.mus_menu0)
+
+music.load(music.mus_ruins)
 
 menu_gc();
 

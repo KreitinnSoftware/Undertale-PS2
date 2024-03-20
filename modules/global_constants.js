@@ -3,3 +3,6 @@ export const GAME_PRE_MENU = 1;
 export const GAME_MENU = 2;
 export const GAME_INGAME = 3;
 export const GAME_EVENT_FLOWEY_FIRST_DIALOGUE = 4;
+export const GAME_EVENT_TYPE_TALK = 5;
+export const EN_US = 6;
+export const PT_BR = 7;

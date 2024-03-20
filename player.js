@@ -4,11 +4,21 @@ import { collision, diagonal_collision } from "collision_masks.js";
 
 import { room, ruins_rooms } from "room.js"
 
+import { createBox } from "modules/box.js"
+
+import * as text_utils from "modules/text_utils.js"
+
+import * as fonts from "modules/fonts.js"
+
+import { GAME_EVENT_TYPE_TALK } from "modules/global_constants.js"
+
+import { event_type, event } from "event_handler.js"
+
 let step_delay = Timer.new();
 
 let step_delay_value;
 
-let diagonal_wall
+let diagonal_wall;
 
 export function setAbs(x, y)
 {
@@ -77,6 +87,14 @@ class player_obj
 	animation_selected = 0
 
 	moving_diagonal = 0
+
+	ingame_menu_open = 0
+
+	love = 1
+
+	hp = 20
+
+	max_hp = 20
 
 	draw()
 	{
@@ -216,148 +234,173 @@ class player_obj
 
 	walk(pad)
 	{
-		step_delay_value = Timer.getTime(step_delay);
-
-		this.pressing_down = (pad.pressed(Pads.DOWN) || pad.ly > 64)
-		this.pressing_up = (pad.pressed(Pads.UP) || pad.ly < -64)
-		this.pressing_left = (pad.pressed(Pads.LEFT) || pad.lx < -64)
-		this.pressing_right = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
-
-		this.moving_diagonal = 0;
-
-		if (this.pressing_down && this.pressing_right) {
-			this.moving_diagonal = 1;
-		} else if (this.pressing_down && this.pressing_left) {
-			this.moving_diagonal = 2;
-		} else if (this.pressing_up && this.pressing_right) {
-			this.moving_diagonal = 3;
-		} else if (this.pressing_up && this.pressing_left) {
-			this.moving_diagonal = 4;
-		}
-
-		if (this.pressing_down)
+		if (this.ingame_menu_open == 0 || event_type == GAME_EVENT_TYPE_TALK)
 		{
-			if (this.moving_diagonal == 0) 
-			{
-				this.animation_selected = 0;
+			step_delay_value = Timer.getTime(step_delay);
+
+			this.pressing_down = (pad.pressed(Pads.DOWN) || pad.ly > 64)
+			this.pressing_up = (pad.pressed(Pads.UP) || pad.ly < -64)
+			this.pressing_left = (pad.pressed(Pads.LEFT) || pad.lx < -64)
+			this.pressing_right = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
+
+			this.moving_diagonal = 0;
+
+			if (this.pressing_down && this.pressing_right) {
+				this.moving_diagonal = 1;
+			} else if (this.pressing_down && this.pressing_left) {
+				this.moving_diagonal = 2;
+			} else if (this.pressing_up && this.pressing_right) {
+				this.moving_diagonal = 3;
+			} else if (this.pressing_up && this.pressing_left) {
+				this.moving_diagonal = 4;
 			}
-			
-			this.move_down();
 
-			if (this.collision())
+			if (this.pressing_down)
 			{
-				this.move_up();
-
-				if (this.moving_diagonal == 1)
+				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 3;
-				} else if (this.moving_diagonal == 2) {
-					this.animation_selected = 2;
-				} else {
-					this.sprite_selected = 0;
+					this.animation_selected = 0;
 				}
-			} else {
-				if (step_delay_value > 180)
-				{
-					if (! (this.moving_diagonal == 1 || this.moving_diagonal == 2))
-					{
-						this.sprite_selected ++;
-					}
-					Timer.reset(step_delay);
-				}
-			}
-
-			this.diagonal_collision(pad);
-		}
-
-		if (this.pressing_up)
-		{
-			if (this.moving_diagonal == 0) 
-			{
-				this.animation_selected = 1;
-			}
-
-			this.move_up();
-
-			if (this.collision())
-			{
+				
 				this.move_down();
 
-				if (this.moving_diagonal == 3)
+				if (this.collision())
+				{
+					this.move_up();
+
+					if (this.moving_diagonal == 1)
+					{
+						this.animation_selected = 3;
+					} else if (this.moving_diagonal == 2) {
+						this.animation_selected = 2;
+					} else {
+						this.sprite_selected = 0;
+					}
+				} else {
+					if (step_delay_value > 180)
+					{
+						if (! (this.moving_diagonal == 1 || this.moving_diagonal == 2))
+						{
+							this.sprite_selected ++;
+						}
+						Timer.reset(step_delay);
+					}
+				}
+
+				this.diagonal_collision(pad);
+			}
+
+			if (this.pressing_up)
+			{
+				if (this.moving_diagonal == 0) 
+				{
+					this.animation_selected = 1;
+				}
+
+				this.move_up();
+
+				if (this.collision())
+				{
+					this.move_down();
+
+					if (this.moving_diagonal == 3)
+					{
+						this.animation_selected = 3;
+					} else if (this.moving_diagonal == 4) {
+						this.animation_selected = 2;
+					} else {
+						this.sprite_selected = 0;
+					}
+				} else {
+					if (step_delay_value > 180)
+					{
+						if (! (this.moving_diagonal == 3 || this.moving_diagonal == 4))
+						{
+							this.sprite_selected ++;
+						}
+						Timer.reset(step_delay);
+					}
+				}
+
+				this.diagonal_collision(pad);
+			}
+
+			if (this.pressing_right)
+			{
+				if (this.moving_diagonal == 0) 
 				{
 					this.animation_selected = 3;
-				} else if (this.moving_diagonal == 4) {
-					this.animation_selected = 2;
-				} else {
-					this.sprite_selected = 0;
 				}
-			} else {
-				if (step_delay_value > 180)
-				{
-					if (! (this.moving_diagonal == 3 || this.moving_diagonal == 4))
-					{
-						this.sprite_selected ++;
-					}
-					Timer.reset(step_delay);
-				}
-			}
 
-			this.diagonal_collision(pad);
-		}
-
-		if (this.pressing_right)
-		{
-			if (this.moving_diagonal == 0) 
-			{
-				this.animation_selected = 3;
-			}
-
-			this.move_right();
-
-			if (this.collision())
-			{
-				this.move_left();
-
-				this.sprite_selected = 0;
-			} else {
-				if (step_delay_value > 180)
-				{
-					this.sprite_selected ++;
-					Timer.reset(step_delay);
-				}
-			}
-
-			this.diagonal_collision(pad);
-		} 
-
-		if (this.pressing_left)
-		{
-			if (this.moving_diagonal == 0) 
-			{
-				this.animation_selected = 2;
-			}
-
-			this.move_left();
-
-			if (this.collision())
-			{
 				this.move_right();
 
-				this.sprite_selected = 0;
-			} else {
-				if (step_delay_value > 180)
+				if (this.collision())
 				{
-					this.sprite_selected ++;
-					Timer.reset(step_delay);
+					this.move_left();
+
+					this.sprite_selected = 0;
+				} else {
+					if (step_delay_value > 180)
+					{
+						this.sprite_selected ++;
+						Timer.reset(step_delay);
+					}
 				}
+
+				this.diagonal_collision(pad);
+			} 
+
+			if (this.pressing_left)
+			{
+				if (this.moving_diagonal == 0) 
+				{
+					this.animation_selected = 2;
+				}
+
+				this.move_left();
+
+				if (this.collision())
+				{
+					this.move_right();
+
+					this.sprite_selected = 0;
+				} else {
+					if (step_delay_value > 180)
+					{
+						this.sprite_selected ++;
+						Timer.reset(step_delay);
+					}
+				}
+
+				this.diagonal_collision(pad);
 			}
 
-			this.diagonal_collision(pad);
+			if (! this.pressing_up && ! this.pressing_down && ! this.pressing_left && ! this.pressing_right)
+			{
+	    		this.sprite_selected = 0;
+			}
+		} else {
+			this.sprite_selected = 0;
 		}
+	}
 
-		if (! this.pressing_up && ! this.pressing_down && ! this.pressing_left && ! this.pressing_right)
+	ingame_menu(pad)
+	{
+		if (pad.justPressed(Pads.CIRCLE))
 		{
-    		this.sprite_selected = 0;
+			if (this.ingame_menu_open == 0)
+			{
+				this.ingame_menu_open = 1
+			} else {
+				this.ingame_menu_open = 0
+			}
+		}
+		if (this.ingame_menu_open == 1)
+		{
+			createBox(20, 50, 120, 100, 5)
+			text_utils.drawText(30, 50, fonts.exp, "Frisk", 0)
+			text_utils.drawText(30, 80, fonts.exp, "Lv    " + this.love + "\nHP     " + this.hp + "/" + this.max_hp + "\nG       0", 20)
+			createBox(20, 160, 120, 130, 5)
 		}
 	}
 }

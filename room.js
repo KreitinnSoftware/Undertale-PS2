@@ -51,11 +51,6 @@ function roomDrawStuff() {
 
 		// Draw Flowey First Dialogue Hitbox
 		Draw.rect(event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.x + camera.x, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.y + camera.y, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.w, event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.h, color_utils.red_t)
-
-		if (player.test_collision(event_collisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE))
-		{
-			console.log(GAME_EVENT_FLOWEY_FIRST_DIALOGUE)
-		}
 	} else if (room == 3) {
 		faceswitch_obj.draw(410, 90);
 	} else if (room == 5) {
@@ -69,7 +64,15 @@ function roomDrawStuff() {
 			music.play(music.mus_ruins, true)
 		}
 	} else {
-		music.pause(music.mus_ruins)
+		if (music.playing)
+		{
+			music.pause(music.mus_ruins)
+		}	
+
+		if (music.paused == music.mus_ruins)
+		{
+			Sound.restart()
+		}
 	}
 }
 

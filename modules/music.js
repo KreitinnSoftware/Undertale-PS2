@@ -1,15 +1,23 @@
-const music = [
-					Sound.load("music/mus_story.wav"),
-					Sound.load("music/mus_menu0.wav"),
-					Sound.load("music/mus_ruins.wav")
-					]
+let music_path = [
+			"music/mus_story.wav",
+			"music/mus_menu0.wav",
+			"music/mus_ruins.wav"
+			]
 
 export const mus_story = 0
 export const mus_menu0 = 1
 export const mus_ruins = 2
 
+let music_list = []
+
 export let playing = false;
 export let paused = false;
+
+export function load(id)
+{
+	console.log("Music: Load Track: " + music_path[id])
+	music_list[id] = Sound.load(music_path[id])
+}
 
 export function play(id, loop)
 {
@@ -17,6 +25,12 @@ export function play(id, loop)
 	{
 		pause(id)
 	}
+
+	if (! music_list[id])
+	{
+		load(id)
+	}
+
 	if (loop)
 	{
 		Sound.repeat(true)
@@ -29,14 +43,15 @@ export function play(id, loop)
 	playing = id;
 
 	console.log("Music: Start Playing: " + playing)
-	Sound.play(music[playing])
+
+	Sound.play(music_list[playing])
 }
 
 export function pause(id)
 {
 	if (playing == id)
 	{
-		Sound.pause(music[playing])
+		Sound.pause(music_list[playing])
 		paused = id
 		playing = false
 		console.log("Music: Pause Track: " + playing)
@@ -51,15 +66,15 @@ export function free(id)
 {
 	if (playing == id)
 	{
-		Sound.pause(music[playing])
-		Sound.free(music[playing])
+		Sound.pause(music_list[playing])
+		Sound.free(music_list[playing])
 
 		console.log("Music: Free Track: " + id)
 
 		playing = false
 		paused = false
 	} else if (paused == id) {
-		Sound.free(music[paused])
+		Sound.free(music_list[paused])
 
 		console.log("Music: Free Track: " + id)
 

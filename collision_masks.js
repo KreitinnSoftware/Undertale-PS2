@@ -1,4 +1,4 @@
-export let collision = [[ // Sala 0
+export const collision = [[ // Sala 0
 				{x: 0, y: 53, w: 40, h: 379},
 				{x: 0, y: 432, w: 440, h: 40},
 				{x: 40, y: 53, w: 480, h: 40},
@@ -112,7 +112,7 @@ export let collision = [[ // Sala 0
 				{x: 2660, y: 260, w: 40, h: 78},
 				]];
 
-export let next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
+export const next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
 						{x: 280, y: -100, w: 80, h: 40},
 						{x: 280, y: -287, w: 80, h: 40},
 						{x: 235, y: 128, w: 80, h: 20},
@@ -127,7 +127,7 @@ export let next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
 // Type 2 == / <
 // Type 3 == > /
 
-export let diagonal_collision = [[{x: 40, y: 319, w: 40, h: 38, type: 0},
+export const diagonal_collision = [[{x: 40, y: 319, w: 40, h: 38, type: 0},
 							{x: 80, y: 357, w: 40, h: 38, type: 0},
 							{x: 120, y: 395, w: 40, h: 37, type: 0},
 							{x: 440, y: 395, w: 40, h: 40, type: 3},
@@ -171,7 +171,7 @@ export let diagonal_collision = [[{x: 40, y: 319, w: 40, h: 38, type: 0},
 							],[
 							]]
 
-export let event_collisions =
+export const event_collisions =
 {
-	GAME_EVENT_FLOWEY_FIRST_DIALOGUE: {x: 200, y: 300, w: 240, h: 20}
+	GAME_EVENT_FLOWEY_FIRST_DIALOGUE: {x: 200, y: 300, w: 240, h: 20, room: 1}
 }

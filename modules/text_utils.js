@@ -16,13 +16,13 @@ export function resetText()
 	text_processed_dialog = "";
 }
 
-export function drawText(posx, posy, font, text)
+export function drawText(posx, posy, font, text, spacing)
 {
 	text_processed = text.split("\n");
 
 	for (let i = 0; i < text_processed.length; i++)
 	{
-		font.print(posx, posy + 35 * i, text_processed[i]);
+		font.print(posx, posy + spacing * i, text_processed[i]);
 	}
 }
 
@@ -49,5 +49,5 @@ export function dynamicDrawText(posx, posy, delay, speech, font, text)
 		}
 	}
 
-	drawText(posx, posy, font, text_processed_dialog);
+	drawText(posx, posy, font, text_processed_dialog, 35);
 }

@@ -8,7 +8,9 @@ import * as sfx from "modules/sfx.js"
 
 import * as music from "modules/music.js"
 
-import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
+import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, EN_US, PT_BR } from "modules/global_constants.js"
+
+import { getText } from "lang/lang.js"
 
 let ram = 0;
 
@@ -127,25 +129,25 @@ export function intro_scene(pad, timer)
 	}
 
 	if (intro_bg.img_selected == 0 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "Long ago, two races\nruled over Earth:\nHUMANS and MONSTERS.")
-		nextFrameOn(5750)
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(0, "introText"))
+		nextFrameOn(6500)
 	} else if (intro_bg.img_selected == 1 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "One day, war broke\nout between the races.")
-		nextFrameOn(10000)
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(1, "introText"))
+		nextFrameOn(12000)
 	} else if (intro_bg.img_selected == 2 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "After a long battle,\nthe humans were\nvictorious.")
-		nextFrameOn(15000)
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(2, "introText"))
+		nextFrameOn(18000)
 	} else if (intro_bg.img_selected == 3 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "They sealed the monsters\nunderground with a magic\nspell.")
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(3, "introText"))
 		nextFrameOn(25000)
 	} else if (intro_bg.img_selected == 4 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "Many years later.")
-		nextFrameOn(30000)
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(4, "introText"))
+		nextFrameOn(29000)
 	} else if (intro_bg.img_selected == 5 && skip == 0) {
-		text_utils.dynamicDrawText(225, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "MT. EBOTT\n   201X")
+		text_utils.dynamicDrawText(225, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(5, "introText"))
 		nextFrameOn(35000)
 	} else if (intro_bg.img_selected == 6 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, "Legends say that those\nwho climb the montain\nnever return.")
+		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(6, "introText"))
 		nextFrameOn(42000)
 	} else if (intro_bg.img_selected == 7 && skip == 0) {
 		nextFrameOn(46000)
@@ -166,7 +168,7 @@ export function intro_scene(pad, timer)
 		{
 			fadeout = 1;
 
-			Sound.pause(playing);
+			music.pause(music.playing);
 
 			if (color_utils.fadeOut(intro_bg, fadeout))
 			{
