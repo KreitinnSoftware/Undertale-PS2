@@ -112,14 +112,26 @@ export const collision = [[ // Sala 0
 				{x: 2660, y: 260, w: 40, h: 78},
 				]];
 
-export const next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
-						{x: 280, y: -100, w: 80, h: 40},
-						{x: 280, y: -287, w: 80, h: 40},
-						{x: 235, y: 128, w: 80, h: 20},
-						{x: 1420, y: 256, w: 40, h: 80},
-						{x: 310, y: 108, w: 84, h: 40},
-						{x: 2300, y: 180, w: 40, h: 80},
-						{x: 2680, y: 185, w: 40, h: 75}
+export const next_room_collisor = [
+						{x: 1195, y: 242, w: 80, h: 40, exit_side: "up"},
+						{x: 280, y: -100, w: 80, h: 40, exit_side: "up"},
+						{x: 280, y: -287, w: 80, h: 40, exit_side: "up"},
+						{x: 235, y: 128, w: 80, h: 20, exit_side: "up"},
+						{x: 1420, y: 256, w: 40, h: 80, exit_side: "right"},
+						{x: 310, y: 108, w: 84, h: 40, exit_side: "up"},
+						{x: 2300, y: 180, w: 40, h: 80, exit_side: "right"},
+						{x: 2680, y: 185, w: 40, h: 75, exit_side: "right"}
+						];
+
+export const prev_room_collisor = [
+						{x: 0, y: 0, w: 0, h: 0},
+						{x: 240, y: 430, w: 150, h: 15},
+						{x: 280, y: 430, w: 80, h: 40},
+						{x: 280, y: 410, w: 80, h: 20},
+						{x: 240, y: 430, w: 80, h: 20},
+						{x: 40, y: 260, w: 28, h: 75},
+						{x: 275, y: 400, w: 80, h: 80},
+						{x: 20, y: 185, w: 40, h: 75}
 						];
 
 // Type 0 == \ <
@@ -127,7 +139,8 @@ export const next_room_collisor = [{x: 1195, y: 242, w: 80, h: 40},
 // Type 2 == / <
 // Type 3 == > /
 
-export const diagonal_collision = [[{x: 40, y: 319, w: 40, h: 38, type: 0},
+export const diagonal_collision = [[
+							{x: 40, y: 319, w: 40, h: 38, type: 0},
 							{x: 80, y: 357, w: 40, h: 38, type: 0},
 							{x: 120, y: 395, w: 40, h: 37, type: 0},
 							{x: 440, y: 395, w: 40, h: 40, type: 3},

@@ -1,8 +1,8 @@
 import { camera } from "camera.js";
 
-import { collision, diagonal_collision } from "collision_masks.js";
+import { collision, diagonal_collision, next_room_collisor, prev_room_collisor } from "collision_masks.js";
 
-import { room, ruins_rooms } from "room.js"
+import { room, ruins_rooms, nextRoom, prevRoom } from "room.js"
 
 import { createBox } from "modules/box.js"
 
@@ -20,38 +20,43 @@ let step_delay_value;
 
 let diagonal_wall;
 
+function posRound(num)
+{
+	return Math.round(num / 2.5) * 2.5
+}
+
 export function setAbs(x, y)
 {
-	if (x >= 300)
+	if (posRound(x) >= 300)
 	{
-		if ((x * -1 + 300) >= ruins_rooms[room].camera_x_min)
+		if ((posRound(x) * -1 + 300) >= ruins_rooms[room].camera_x_min)
 		{
-			camera.x = (x * -1 + 300);
+			camera.x = posRound(x * -1 + 300);
 			player.x = 300
 		} else {
 			camera.x = ruins_rooms[room].camera_x_min;
-			player.x = 300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 2.5)
+			player.x = posRound(300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 2.5))
 		}
 	} else {
 		camera.x = 0;
 
-		player.x = x;
+		player.x = posRound(x);
 	}
 
-	if (y <= 200)
+	if (posRound(y) <= 200)
 	{
-		if (y - 200 <= ruins_rooms[room].camera_y_min)
-		{
-			camera.y = 200 - y;
+		//if (y - 200 >= ruins_rooms[room].camera_y_min)
+		//{
+			camera.y = posRound(200 - y);
 			player.y = 200;
-		} else {
-			camera.y = ruins_rooms[room].camera_y_min;
-			player.y = 200 - y + ruins_rooms[room].camera_y_max;
-		}
+		//} else if () {
+		//	camera.y = ruins_rooms[room].camera_y_min;
+		//	player.y = posRound(200 - y + ruins_rooms[room].camera_y_max);
+		//}
 	} else {
 		camera.y = 0;
 
-		player.y = y;
+		player.y = posRound(y);
 	}
 }
 
@@ -234,6 +239,16 @@ class player_obj
 
 	walk(pad)
 	{
+		if (this.test_collision(next_room_collisor[room]))
+		{
+			nextRoom();
+		}
+
+		if (this.test_collision(prev_room_collisor[room]))
+		{
+			prevRoom();
+		}
+
 		if (this.ingame_menu_open == 0 || event_type == GAME_EVENT_TYPE_TALK)
 		{
 			step_delay_value = Timer.getTime(step_delay);
