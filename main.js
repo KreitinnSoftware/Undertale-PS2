@@ -10,11 +10,15 @@ import * as music from "modules/music.js"
 
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 
+import { saveMan } from "modules/savefile.js"
+
 let timer = Timer.new();
 
 let gamestate = GAME_INTRO;
 
 let pad = Pads.get(0);
+
+saveMan.loadFile();
 
 music.play(music.mus_story);
 

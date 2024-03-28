@@ -129,25 +129,25 @@ export function intro_scene(pad, timer)
 	}
 
 	if (intro_bg.img_selected == 0 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(0, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(0, "introText"))
 		nextFrameOn(6500)
 	} else if (intro_bg.img_selected == 1 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(1, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(1, "introText"))
 		nextFrameOn(12000)
 	} else if (intro_bg.img_selected == 2 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(2, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(2, "introText"))
 		nextFrameOn(18000)
 	} else if (intro_bg.img_selected == 3 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(3, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(3, "introText"))
 		nextFrameOn(25000)
 	} else if (intro_bg.img_selected == 4 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(4, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(4, "introText"))
 		nextFrameOn(29000)
 	} else if (intro_bg.img_selected == 5 && skip == 0) {
-		text_utils.dynamicDrawText(225, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(5, "introText"))
+		text_utils.dynamicDrawText(225, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(5, "introText"))
 		nextFrameOn(35000)
 	} else if (intro_bg.img_selected == 6 && skip == 0) {
-		text_utils.dynamicDrawText(120, 300, 50, sfx.snd_txt2, fonts.dtm_mono, getText(6, "introText"))
+		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(6, "introText"))
 		nextFrameOn(42000)
 	} else if (intro_bg.img_selected == 7 && skip == 0) {
 		nextFrameOn(46000)

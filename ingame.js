@@ -36,7 +36,7 @@ export function ingame_scene(pad, timer)
 
     player.ingame_menu(pad);
 
-    //event_handler.checkEventCollisions();
+    checkEventCollisions();
 
 	fonts.dtm_mono.print(0, 0, "Player Abs X:" + (player.x - camera.x));
 	fonts.dtm_mono.print(0, 20, "Player Abs Y:" + (player.y - camera.y));
