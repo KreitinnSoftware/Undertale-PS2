@@ -24,27 +24,33 @@ export let room = 0;
 
 export function nextRoom()
 {
-	room ++;
+	if (room < ruins_rooms.length - 1)
+	{
+		room ++;
 
-	camera.reset();
+		camera.reset();
 
-	player.x = ruins_rooms[room].entrance_x
-	player.y = ruins_rooms[room].entrance_y
+		player.x = ruins_rooms[room].entrance_x
+		player.y = ruins_rooms[room].entrance_y
+	}
 }
 
 export function prevRoom()
 {
-	room --;
-
-	if (next_room_collisor[room].exit_side == "up")
+	if (room > 0)
 	{
-		setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y + next_room_collisor[room].h - 30);
-	} else if (next_room_collisor[room].exit_side == "down") {
-		setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y - player.h);
-	} else if (next_room_collisor[room].exit_side == "right") {
-		setAbs(next_room_collisor[room].x - player.w, next_room_collisor[room].y);
-	} else if (next_room_collisor[room].exit_side == "left") {
-		setAbs(next_room_collisor[room].x + next_room_collisor[room].w + 2.5, next_room_collisor[room].y);
+		room --;
+
+		if (next_room_collisor[room].exit_side == "up")
+		{
+			setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y + next_room_collisor[room].h - 30);
+		} else if (next_room_collisor[room].exit_side == "down") {
+			setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y - player.h);
+		} else if (next_room_collisor[room].exit_side == "right") {
+			setAbs(next_room_collisor[room].x - player.w, next_room_collisor[room].y);
+		} else if (next_room_collisor[room].exit_side == "left") {
+			setAbs(next_room_collisor[room].x + next_room_collisor[room].w + 2.5, next_room_collisor[room].y);
+		}
 	}
 }
 
