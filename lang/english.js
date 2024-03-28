@@ -14,5 +14,7 @@ export const menuText = [
 					" Confirm",
 					" Cancel",
 					" Menu(In-game)",
-					"When HP is 0, you lose."
+					"When HP is 0, you lose.",
+					"Begin Game",
+					"Settings"
 					]

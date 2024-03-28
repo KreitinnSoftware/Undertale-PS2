@@ -14,5 +14,7 @@ export const menuText = [
 					" Confirmar",
 					" Cancelar",
 					" Menu(Em-jogo)",
-					"Quando HP chegar a 0, \nvocê perde."
+					"Quando HP chegar a 0, \nvocê perde.",
+					"Iniciar Jogo",
+					"Configurações"
 					]

@@ -6,6 +6,8 @@ import * as fonts from "modules/fonts.js";
 
 import * as text_utils from "modules/text_utils.js"
 
+import { createInteractiveDialog } from "modules/interactive_dialog.js"
+
 let splash = new Image("images/splash.png");
 splash.height = 448;
 
@@ -55,10 +57,11 @@ export function menu_scene(pad)
 
 	Screen.clear();
 
-	if (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START))
+	if (createInteractiveDialog(pad, 160, 290, getText(6, "menuText") + "\n" + getText(7, "menuText")) == 0)
 	{
 		return GAME_INGAME;
 	}
+
 
 	text_utils.drawText(160, 35, fonts.dtm_mono, getText(1, "menuText"), 35);
 
@@ -74,7 +77,7 @@ export function menu_scene(pad)
 
 	text_utils.drawText(195, 150, fonts.dtm_mono, getText(4, "menuText"), 35);
 
-	text_utils.drawText(160, 210, fonts.dtm_mono, getText(5, "menuText"), 35);
+	text_utils.drawText(160, 200, fonts.dtm_mono, getText(5, "menuText"), 35);
 
 	text_utils.drawText(0, 420, fonts.dtm_mono_smaller, "UNDERTALE V1.08 (C) TOBY FOX 2015-2017, PS2 REMAKE BY PABLO, ATHENAENV BY DANIEL.", 35);
 

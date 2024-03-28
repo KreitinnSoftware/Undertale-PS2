@@ -1,3 +1,5 @@
+import * as color_utils from "modules/color_utils.js";
+
 let rand = 0;
 
 let pos = 0;
@@ -16,9 +18,16 @@ export function resetText()
 	text_processed_dialog = "";
 }
 
-export function drawText(posx, posy, font, text, spacing)
+export function drawText(posx, posy, font, text, spacing, color)
 {
 	text_processed = text.split("\n");
+
+	if (color == null)
+	{
+		font.color = color_utils.white
+	} else {
+		font.color = color;
+	}
 
 	for (let i = 0; i < text_processed.length; i++)
 	{
@@ -49,5 +58,5 @@ export function dynamicDrawText(posx, posy, delay, speech, font, text)
 		}
 	}
 
-	drawText(posx, posy, font, text_processed_dialog, 35);
+	drawText(posx, posy, font, text_processed_dialog, 35, color_utils.white);
 }
