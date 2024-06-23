@@ -54,6 +54,11 @@ export function setAbs(x, y)
 	}
 }
 
+const PLAYER_DOWN = 0
+const PLAYER_UP = 1
+const PLAYER_LEFT = 2
+const PLAYER_RIGHT = 3
+
 class player_obj
 {
 	x = 300
@@ -193,35 +198,35 @@ class player_obj
 				this.y - camera.y + this.h > diagonal_collision[room][i].y &&
 				this.y - camera.y + 32 < diagonal_wall.y + diagonal_wall.h
 			) { 
-				if (diagonal_wall.type == DOWN_LEFT && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == DOWN_LEFT && this.pressing_left && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_up()
 				}
-				if (diagonal_wall.type == DOWN_LEFT && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == DOWN_LEFT && this.pressing_down && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_right()
 				}
-				if (diagonal_wall.type == UP_RIGHT && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == UP_RIGHT && this.pressing_right && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_down()
 				}
-				if (diagonal_wall.type == UP_RIGHT && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == UP_RIGHT && this.pressing_up && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_left()
 				}
-				if (diagonal_wall.type == UP_LEFT && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == UP_LEFT && this.pressing_left && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_down()
 				}
-				if (diagonal_wall.type == UP_LEFT && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == UP_LEFT && this.pressing_up && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_right()
 				}
-				if (diagonal_wall.type == DOWN_RIGHT && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == DOWN_RIGHT && this.pressing_down && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_left()
 				}
-				if (diagonal_wall.type == DOWN_RIGHT && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == DOWN_RIGHT && this.pressing_right && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_up()
 				}
@@ -267,46 +272,11 @@ class player_obj
 				this.moving_diagonal = UP_LEFT
 			}
 
-			if (this.pressing_down)
-			{
-				if (this.moving_diagonal == 0) 
-				{
-					this.animation_selected = 0
-				}
-				
-				this.move_down()
-
-				if (this.collision())
-				{
-					this.move_up()
-
-					if (this.moving_diagonal == 1)
-					{
-						this.animation_selected = 3
-					} else if (this.moving_diagonal == 2) {
-						this.animation_selected = 2
-					} else {
-						this.sprite_selected = 0
-					}
-				} else {
-					if (step_delay_value > 180)
-					{
-						if (! (this.moving_diagonal == 1 || this.moving_diagonal == 2))
-						{
-							this.sprite_selected ++
-						}
-						Timer.reset(step_delay)
-					}
-				}
-
-				this.diagonal_collision(pad)
-			}
-
 			if (this.pressing_up)
 			{
 				if (this.moving_diagonal == 0)
 				{
-					this.animation_selected = 1
+					this.animation_selected = PLAYER_UP
 				}
 
 				this.move_up()
@@ -315,18 +285,50 @@ class player_obj
 				{
 					this.move_down()
 
-					if (this.moving_diagonal == 3)
+					if (this.moving_diagonal == UP_RIGHT)
 					{
-						this.animation_selected = 3
-					} else if (this.moving_diagonal == 4) {
-						this.animation_selected = 2
+						this.animation_selected = PLAYER_RIGHT
+					} else if (this.moving_diagonal == UP_LEFT) {
+						this.animation_selected = PLAYER_LEFT
 					} else {
 						this.sprite_selected = 0
 					}
 				} else {
 					if (step_delay_value > 180)
 					{
-						if (! (this.moving_diagonal == 3 || this.moving_diagonal == 4))
+						if (! (this.moving_diagonal == UP_RIGHT || this.moving_diagonal == UP_LEFT))
+						{
+							this.sprite_selected ++
+						}
+						Timer.reset(step_delay)
+					}
+				}
+
+				this.diagonal_collision(pad)
+			} else if (this.pressing_down) {
+				if (this.moving_diagonal == 0)
+				{
+					this.animation_selected = PLAYER_DOWN
+				}
+
+				this.move_down()
+
+				if (this.collision())
+				{
+					this.move_up()
+
+					if (this.moving_diagonal == DOWN_RIGHT)
+					{
+						this.animation_selected = PLAYER_RIGHT
+					} else if (this.moving_diagonal == DOWN_LEFT) {
+						this.animation_selected = PLAYER_LEFT
+					} else {
+						this.sprite_selected = 0
+					}
+				} else {
+					if (step_delay_value > 180)
+					{
+						if (! (this.moving_diagonal == DOWN_RIGHT || this.moving_diagonal == DOWN_LEFT))
 						{
 							this.sprite_selected ++
 						}
@@ -337,18 +339,17 @@ class player_obj
 				this.diagonal_collision(pad)
 			}
 
-			if (this.pressing_right)
-			{
+			if (this.pressing_left) {
 				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 3
+					this.animation_selected = PLAYER_LEFT
 				}
 
-				this.move_right()
+				this.move_left()
 
 				if (this.collision())
 				{
-					this.move_left()
+					this.move_right()
 
 					this.sprite_selected = 0
 				} else {
@@ -360,20 +361,17 @@ class player_obj
 				}
 
 				this.diagonal_collision(pad)
-			} 
-
-			if (this.pressing_left)
-			{
+			} else if (this.pressing_right) {
 				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 2
+					this.animation_selected = PLAYER_RIGHT
 				}
 
-				this.move_left()
+				this.move_right()
 
 				if (this.collision())
 				{
-					this.move_right()
+					this.move_left()
 
 					this.sprite_selected = 0
 				} else {
