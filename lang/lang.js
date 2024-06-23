@@ -15,8 +15,8 @@ let br_functions = {
 
 export function getText(num, pattern) {
 	if (gameSettings.language == EN_US) {
-		return en_functions[pattern][num];
+		return en_functions[pattern][num]
 	} else if (gameSettings.language == PT_BR) {
-		return br_functions[pattern][num];
+		return br_functions[pattern][num]
 	}
 }

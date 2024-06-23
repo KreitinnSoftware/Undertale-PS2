@@ -110,7 +110,7 @@ export const collision = [[ // Sala 0
 				{x: 2345, y: 148, w: 72, h: 38},
 				{x: 2660, y: 148, w: 40, h: 38},
 				{x: 2660, y: 260, w: 40, h: 78},
-				]];
+				]]
 
 export const next_room_collisor = [
 						{x: 1195, y: 242, w: 80, h: 40, exit_side: "up"},
@@ -121,7 +121,7 @@ export const next_room_collisor = [
 						{x: 310, y: 108, w: 84, h: 40, exit_side: "up"},
 						{x: 2300, y: 180, w: 40, h: 80, exit_side: "right"},
 						{x: 2680, y: 185, w: 40, h: 75, exit_side: "right"}
-						];
+						]
 
 export const prev_room_collisor = [
 						{x: 0, y: 0, w: 0, h: 0},
@@ -132,7 +132,7 @@ export const prev_room_collisor = [
 						{x: 40, y: 260, w: 28, h: 75},
 						{x: 275, y: 400, w: 80, h: 80},
 						{x: 20, y: 185, w: 40, h: 75}
-						];
+						]
 
 // Type 0 == \ <
 // Type 1 == > \

@@ -16,7 +16,7 @@ export class faceswitch
 
 	draw(x, y)
 	{
-		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity);
+		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
 
 		if (this.animation_selected == 0 && this.sprite_selected > 1)
 		{

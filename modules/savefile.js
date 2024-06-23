@@ -1,8 +1,8 @@
-let file;
+let file
 
-let tmp;
+let tmp
 
-let lines;
+let lines
 
 class saveManager
 {
@@ -16,56 +16,56 @@ class saveManager
 
 	setVar(variableName, value)
 	{
-		this[variableName] = value;
+		this[variableName] = value
 	}
 
 	createDirectory()
 	{
 		os.mkdir("mc0:/UNDERTALE", 777)
 
-		System.copyFile("saveSys/icon.icn", "mc0:/UNDERTALE/icon.icn");
-		System.copyFile("saveSys/icon.sys", "mc0:/UNDERTALE/icon.sys");
+		System.copyFile("saveSys/icon.icn", "mc0:/UNDERTALE/icon.icn")
+		System.copyFile("saveSys/icon.sys", "mc0:/UNDERTALE/icon.sys")
 	}
 
 	saveFile()
 	{
 		if (!System.doesFileExist("mc0:/UNDERTALE"))
 		{
-			this.createDirectory();
+			this.createDirectory()
 		}
 
-		file = std.open("mc0:/UNDERTALE/savegame.txt", "w");
+		file = std.open("mc0:/UNDERTALE/savegame.txt", "w")
 
 		for (let key in this.saveVars)
 		{
-			file.printf("%s %i\n", key, this[key]);
+			file.printf("%s %i\n", key, this[key])
 		}
 
-		file.flush();
+		file.flush()
 
-		file.close();
+		file.close()
 	}
 
 	loadFile()
 	{
 		if (!System.doesFileExist("mc0:/UNDERTALE/savegame.txt"))
 		{
-			this.saveFile();
+			this.saveFile()
 		}
 
-		file = std.open("mc0:/UNDERTALE/savegame.txt", "r");
+		file = std.open("mc0:/UNDERTALE/savegame.txt", "r")
 
-		lines = file.readAsString().split("\n");
+		lines = file.readAsString().split("\n")
 
 		for (let i = 0; i < lines.length - 1; i++)
 		{
-			tmp = lines[i].split(" ");
+			tmp = lines[i].split(" ")
 
 			this.setVar(tmp[0], Number(tmp[1]))
 		}
 
-		file.close();
+		file.close()
 	}
 }
 
-export let saveMan = new saveManager;
+export let saveMan = new saveManager

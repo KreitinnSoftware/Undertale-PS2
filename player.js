@@ -1,6 +1,6 @@
-import { camera } from "camera.js";
+import { camera } from "camera.js"
 
-import { collision, diagonal_collision, next_room_collisor, prev_room_collisor } from "collision_masks.js";
+import { collision, diagonal_collision, next_room_collisor, prev_room_collisor } from "collision_masks.js"
 
 import { room, ruins_rooms, nextRoom, prevRoom } from "room.js"
 
@@ -10,17 +10,17 @@ import * as text_utils from "modules/text_utils.js"
 
 import * as fonts from "modules/fonts.js"
 
-import { GAME_EVENT_TYPE_TALK } from "modules/global_constants.js"
+import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "modules/global_constants.js"
 
 import { event_type, event } from "event_handler.js"
 
-let step_delay = Timer.new();
+let step_delay = Timer.new()
 
-let step_delay_value;
+let step_delay_value
 
-let diagonal_wall;
+let diagonal_wall
 
-function posRound(num)
+export function posRound(num)
 {
 	return Math.round(num / 3) * 3
 }
@@ -31,32 +31,32 @@ export function setAbs(x, y)
 	{
 		if ((posRound(x) * -1 + 300) >= ruins_rooms[room].camera_x_min)
 		{
-			camera.x = posRound(x * -1 + 300);
+			camera.x = posRound(x * -1 + 300)
 			player.x = 300
 		} else {
-			camera.x = ruins_rooms[room].camera_x_min;
+			camera.x = ruins_rooms[room].camera_x_min
 			player.x = posRound(300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 3))
 		}
 	} else {
-		camera.x = 0;
+		camera.x = 0
 
-		player.x = posRound(x);
+		player.x = posRound(x)
 	}
 
-	if (posRound(y) <= 200)
+	if (posRound(y) <= 201)
 	{
-		//if (y - 200 >= ruins_rooms[room].camera_y_min)
+		//if (y - 201 >= ruins_rooms[room].camera_y_min)
 		//{
-			camera.y = posRound(200 - y);
-			player.y = 200;
+			camera.y = posRound(201 - y)
+			player.y = 201
 		//} else if () {
-		//	camera.y = ruins_rooms[room].camera_y_min;
-		//	player.y = posRound(200 - y + ruins_rooms[room].camera_y_max);
+		//	camera.y = ruins_rooms[room].camera_y_min
+		//	player.y = posRound(201 - y + ruins_rooms[room].camera_y_max)
 		//}
 	} else {
-		camera.y = 0;
+		camera.y = 0
 
-		player.y = posRound(y);
+		player.y = posRound(y)
 	}
 }
 
@@ -106,24 +106,24 @@ class player_obj
 
 	draw()
 	{
-		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity);
+		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
 
 		if ((this.animation_selected == 0 || this.animation_selected == 1) && this.sprite_selected > 3)
 		{
-			this.sprite_selected = 0;
+			this.sprite_selected = 0
 		}
 
 		if ((this.animation_selected == 2 || this.animation_selected == 3) && this.sprite_selected > 1)
 		{
-			this.sprite_selected = 0;
+			this.sprite_selected = 0
 		}
 
-		this.sprites[this.animation_selected][this.sprite_selected].width = this.w;
-		this.sprites[this.animation_selected][this.sprite_selected].height = this.h;
+		this.sprites[this.animation_selected][this.sprite_selected].width = this.w
+		this.sprites[this.animation_selected][this.sprite_selected].height = this.h
 
-		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x, this.y);
+		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x, this.y)
 
-		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, color_utils.white_t);
+		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, color_utils.white_t)
 	}
 
 	test_collision(obj)
@@ -133,7 +133,7 @@ class player_obj
 			this.y - camera.y + this.h > obj.y &&
 			this.y - camera.y + 32 < obj.y + obj.h
 		) { 
-			return true;
+			return true
 		}	
 	}
 
@@ -143,14 +143,14 @@ class player_obj
 		{
 			if (this.test_collision(collision[room][i]))
 			{
-				return true;
+				return true
 			}
 		}	
 	}
 
 	move_up()
 	{
-		if (camera.y < ruins_rooms[room].camera_y_max && this.y == 200)
+		if (camera.y < ruins_rooms[room].camera_y_max && this.y == 201)
 		{
 			camera.y += this.vel
 		} else {
@@ -160,7 +160,7 @@ class player_obj
 
 	move_down()
 	{
-		if (camera.y > ruins_rooms[room].camera_y_min && this.y == 200)
+		if (camera.y > ruins_rooms[room].camera_y_min && this.y == 201)
 		{
 			camera.y -= this.vel
 		} else {
@@ -199,206 +199,206 @@ class player_obj
 				this.y - camera.y + this.h > diagonal_collision[room][i].y &&
 				this.y - camera.y + 32 < diagonal_wall.y + diagonal_wall.h
 			) { 
-				if (diagonal_wall.type == 0 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != 1 && this.moving_diagonal != 4)
+				if (diagonal_wall.type == 0 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
-					this.move_up();
+					this.move_up()
 				}
-				if (diagonal_wall.type == 0 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != 1 && this.moving_diagonal != 4)
+				if (diagonal_wall.type == 0 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
-					this.move_right();
+					this.move_right()
 				}
-				if (diagonal_wall.type == 1 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != 3 && this.moving_diagonal != 4)
+				if (diagonal_wall.type == 1 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
-					this.move_down();
+					this.move_down()
 				}
-				if (diagonal_wall.type == 1 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != 3 && this.moving_diagonal != 4)
+				if (diagonal_wall.type == 1 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
-					this.move_left();
+					this.move_left()
 				}
-				if (diagonal_wall.type == 2 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != 2 && this.moving_diagonal != 3)
+				if (diagonal_wall.type == 2 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
-					this.move_down();
+					this.move_down()
 				}
-				if (diagonal_wall.type == 2 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != 2 && this.moving_diagonal != 3)
+				if (diagonal_wall.type == 2 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
-					this.move_right();
+					this.move_right()
 				}
-				if (diagonal_wall.type == 3 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != 2 && this.moving_diagonal != 3)
+				if (diagonal_wall.type == 3 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
-					this.move_left();
+					this.move_left()
 				}
-				if (diagonal_wall.type == 3 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != 2 && this.moving_diagonal != 3)
+				if (diagonal_wall.type == 3 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
-					this.move_up();
+					this.move_up()
 				}
 			} 
 		}	
 	}
 
-	pressing_up = false;
-	pressing_down = false;
-	pressing_left = false;
-	pressing_right = false;
+	pressing_up = false
+	pressing_down = false
+	pressing_left = false
+	pressing_right = false
 
 	walk(pad)
 	{
 		if (this.test_collision(next_room_collisor[room]))
 		{
-			nextRoom();
+			nextRoom()
 		}
 
 		if (this.test_collision(prev_room_collisor[room]))
 		{
-			prevRoom();
+			prevRoom()
 		}
 
 		if (this.ingame_menu_open == 0 || event_type == GAME_EVENT_TYPE_TALK)
 		{
-			step_delay_value = Timer.getTime(step_delay);
+			step_delay_value = Timer.getTime(step_delay)
 
 			this.pressing_down = (pad.pressed(Pads.DOWN) || pad.ly > 64)
 			this.pressing_up = (pad.pressed(Pads.UP) || pad.ly < -64)
 			this.pressing_left = (pad.pressed(Pads.LEFT) || pad.lx < -64)
 			this.pressing_right = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
 
-			this.moving_diagonal = 0;
+			this.moving_diagonal = 0
 
 			if (this.pressing_down && this.pressing_right) {
-				this.moving_diagonal = 1;
+				this.moving_diagonal = DOWN_RIGHT
 			} else if (this.pressing_down && this.pressing_left) {
-				this.moving_diagonal = 2;
+				this.moving_diagonal = DOWN_LEFT
 			} else if (this.pressing_up && this.pressing_right) {
-				this.moving_diagonal = 3;
+				this.moving_diagonal = UP_RIGHT
 			} else if (this.pressing_up && this.pressing_left) {
-				this.moving_diagonal = 4;
+				this.moving_diagonal = UP_LEFT
 			}
 
 			if (this.pressing_down)
 			{
 				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 0;
+					this.animation_selected = 0
 				}
 				
-				this.move_down();
+				this.move_down()
 
 				if (this.collision())
 				{
-					this.move_up();
+					this.move_up()
 
 					if (this.moving_diagonal == 1)
 					{
-						this.animation_selected = 3;
+						this.animation_selected = 3
 					} else if (this.moving_diagonal == 2) {
-						this.animation_selected = 2;
+						this.animation_selected = 2
 					} else {
-						this.sprite_selected = 0;
+						this.sprite_selected = 0
 					}
 				} else {
 					if (step_delay_value > 180)
 					{
 						if (! (this.moving_diagonal == 1 || this.moving_diagonal == 2))
 						{
-							this.sprite_selected ++;
+							this.sprite_selected ++
 						}
-						Timer.reset(step_delay);
+						Timer.reset(step_delay)
 					}
 				}
 
-				this.diagonal_collision(pad);
+				this.diagonal_collision(pad)
 			}
 
 			if (this.pressing_up)
 			{
-				if (this.moving_diagonal == 0) 
+				if (this.moving_diagonal == 0)
 				{
-					this.animation_selected = 1;
+					this.animation_selected = 1
 				}
 
-				this.move_up();
+				this.move_up()
 
 				if (this.collision())
 				{
-					this.move_down();
+					this.move_down()
 
 					if (this.moving_diagonal == 3)
 					{
-						this.animation_selected = 3;
+						this.animation_selected = 3
 					} else if (this.moving_diagonal == 4) {
-						this.animation_selected = 2;
+						this.animation_selected = 2
 					} else {
-						this.sprite_selected = 0;
+						this.sprite_selected = 0
 					}
 				} else {
 					if (step_delay_value > 180)
 					{
 						if (! (this.moving_diagonal == 3 || this.moving_diagonal == 4))
 						{
-							this.sprite_selected ++;
+							this.sprite_selected ++
 						}
-						Timer.reset(step_delay);
+						Timer.reset(step_delay)
 					}
 				}
 
-				this.diagonal_collision(pad);
+				this.diagonal_collision(pad)
 			}
 
 			if (this.pressing_right)
 			{
 				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 3;
+					this.animation_selected = 3
 				}
 
-				this.move_right();
+				this.move_right()
 
 				if (this.collision())
 				{
-					this.move_left();
+					this.move_left()
 
-					this.sprite_selected = 0;
+					this.sprite_selected = 0
 				} else {
 					if (step_delay_value > 180)
 					{
-						this.sprite_selected ++;
-						Timer.reset(step_delay);
+						this.sprite_selected ++
+						Timer.reset(step_delay)
 					}
 				}
 
-				this.diagonal_collision(pad);
+				this.diagonal_collision(pad)
 			} 
 
 			if (this.pressing_left)
 			{
 				if (this.moving_diagonal == 0) 
 				{
-					this.animation_selected = 2;
+					this.animation_selected = 2
 				}
 
-				this.move_left();
+				this.move_left()
 
 				if (this.collision())
 				{
-					this.move_right();
+					this.move_right()
 
-					this.sprite_selected = 0;
+					this.sprite_selected = 0
 				} else {
 					if (step_delay_value > 180)
 					{
-						this.sprite_selected ++;
-						Timer.reset(step_delay);
+						this.sprite_selected ++
+						Timer.reset(step_delay)
 					}
 				}
 
-				this.diagonal_collision(pad);
+				this.diagonal_collision(pad)
 			}
 
 			if (! this.pressing_up && ! this.pressing_down && ! this.pressing_left && ! this.pressing_right)
 			{
-	    		this.sprite_selected = 0;
+	    		this.sprite_selected = 0
 			}
 		} else {
-			this.sprite_selected = 0;
+			this.sprite_selected = 0
 		}
 	}
 
@@ -423,4 +423,4 @@ class player_obj
 	}
 }
 
-export let player = new player_obj;
+export let player = new player_obj

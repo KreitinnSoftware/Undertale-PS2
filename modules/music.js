@@ -10,8 +10,8 @@ export const mus_ruins = 2
 
 let music_list = []
 
-export let playing = false;
-export let paused = false;
+export let playing = false
+export let paused = false
 
 export function load(id)
 {
@@ -40,7 +40,7 @@ export function play(id, loop)
 		console.log("Music: Don't Repeat Track")
 	}
 
-	playing = id;
+	playing = id
 
 	console.log("Music: Start Playing: " + playing)
 

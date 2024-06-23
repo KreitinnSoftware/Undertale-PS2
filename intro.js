@@ -1,4 +1,4 @@
-import * as color_utils from "modules/color_utils.js";
+import * as color_utils from "modules/color_utils.js"
 
 import * as text_utils from "modules/text_utils.js"
 
@@ -12,7 +12,7 @@ import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, EN_US, PT_BR } from 
 
 import { getText } from "lang/lang.js"
 
-let ram = 0;
+let ram = 0
 
 class intro_bg_obj
 {
@@ -42,18 +42,18 @@ class intro_bg_obj
 
 	draw()
 	{
-		this.img_available[this.img_selected].color = Color.new(this.opacity, this.opacity, this.opacity);
-		this.img_available[this.img_selected].width = this.w;
+		this.img_available[this.img_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
+		this.img_available[this.img_selected].width = this.w
 
 		if (this.img_selected == 10)
 		{
-			this.img_available[this.img_selected].height = 637.2;
-			this.img_available[this.img_selected].draw(this.x, this.last_img_y);
+			this.img_available[this.img_selected].height = 637.2
+			this.img_available[this.img_selected].draw(this.x, this.last_img_y)
 
 		} else
 		{
-			this.img_available[this.img_selected].height = this.h;
-			this.img_available[this.img_selected].draw(this.x, this.y);
+			this.img_available[this.img_selected].height = this.h
+			this.img_available[this.img_selected].draw(this.x, this.y)
 		}
 
 		Draw.rect(0, 0, 640, 60, color_utils.black)
@@ -61,70 +61,70 @@ class intro_bg_obj
 	}
 }
 
-let intro_bg = new intro_bg_obj();
+let intro_bg = new intro_bg_obj()
 
 function nextFrameOn(time)
 {
 	if (timer_value > time)
 	{
-		fadeout = 1;
+		fadeout = 1
 
 		if (color_utils.fadeOut(intro_bg, fadeout))
 		{
-			intro_bg.img_selected ++;
-			fadein = 1;
-			fadeout = 0;
-			text_utils.resetText();
+			intro_bg.img_selected ++
+			fadein = 1
+			fadeout = 0
+			text_utils.resetText()
 		}
 	}
 }
 
-let timer_value = 0;
+let timer_value = 0
 
-let skip = 0;
+let skip = 0
 
-let fadeout = 0;
+let fadeout = 0
 
-let fadein = 0;
+let fadein = 0
 
 export function intro_scene(pad, timer)
 {
-	pad.update();
+	pad.update()
 
-	timer_value = Timer.getTime(timer);
+	timer_value = Timer.getTime(timer)
 
-	ram = System.getMemoryStats();
+	ram = System.getMemoryStats()
 
-	Screen.clear();
+	Screen.clear()
 
 	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0)
 	{
-		fadeout = 1;
-		skip = 1;
-		text_utils.resetText();
+		fadeout = 1
+		skip = 1
+		text_utils.resetText()
 
-		Timer.reset(timer);
-		timer_value = Timer.getTime(timer);
+		Timer.reset(timer)
+		timer_value = Timer.getTime(timer)
 	}
 
-	intro_bg.draw();
+	intro_bg.draw()
 
 	if (skip == 1)
 	{
-		color_utils.fadeOut(intro_bg, fadeout);
+		color_utils.fadeOut(intro_bg, fadeout)
 
-		Sound.setVolume(intro_bg.opacity / 128 * 100);
+		Sound.setVolume(intro_bg.opacity / 128 * 100)
 
 		if (color_utils.fadeOut(intro_bg, fadeout) == 1)
 		{
-			music.pause(music.playing);
+			music.pause(music.playing)
 		}
 
 		if (timer_value > 1500)
 		{
-			text_utils.resetText();
+			text_utils.resetText()
 
-			return GAME_PRE_MENU;
+			return GAME_PRE_MENU
 		}
 	}
 
@@ -160,47 +160,47 @@ export function intro_scene(pad, timer)
 		{
 			if (intro_bg.last_img_y <= 36)
 			{
-				intro_bg.last_img_y += 0.6;
+				intro_bg.last_img_y += 0.6
 			}
 		} 
 
 		if (timer_value > 74750)
 		{
-			fadeout = 1;
+			fadeout = 1
 
-			music.pause(music.playing);
+			music.pause(music.playing)
 
 			if (color_utils.fadeOut(intro_bg, fadeout))
 			{
-				fadeout = 0;
+				fadeout = 0
 
-				text_utils.resetText();
+				text_utils.resetText()
 
-				return GAME_PRE_MENU;
+				return GAME_PRE_MENU
 			}
 		}
 	}
 
 	if (color_utils.fadeIn(intro_bg, fadein))
 	{
-		fadein = 0;
+		fadein = 0
 	}
 
-	fonts.dtm_mono.print(0, 0, timer_value);
+	fonts.dtm_mono.print(0, 0, timer_value)
 
-	Screen.flip();
+	Screen.flip()
 }
 
 export function intro_gc()
 {
-	intro_scene = null;
-	nextFrameOn = null;
-	intro_bg = null;
-	timer_value = null;
-	skip = null;
-	fadein = null;
-	fadeout = null;
-	ram = null;
+	intro_scene = null
+	nextFrameOn = null
+	intro_bg = null
+	timer_value = null
+	skip = null
+	fadein = null
+	fadeout = null
+	ram = null
 
-	std.gc();
+	std.gc()
 }

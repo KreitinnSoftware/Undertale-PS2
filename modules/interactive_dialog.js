@@ -2,19 +2,19 @@ import * as text_utils from "modules/text_utils.js"
 
 import * as fonts from "modules/fonts.js"
 
-import * as color_utils from "modules/color_utils.js";
+import * as color_utils from "modules/color_utils.js"
 
-let sel = 0;
+let sel = 0
 
-let opt;
+let opt
 
-let color;
+let color
 
-let pressing_down;
+let pressing_down
 
-let pressing_up;
+let pressing_up
 
-let confirm_button;
+let confirm_button
 
 export function createInteractiveDialog(pad, x, y, options)
 {
@@ -26,26 +26,26 @@ export function createInteractiveDialog(pad, x, y, options)
 
 	if (pressing_up && sel > 0)
 	{
-		sel--;
+		sel--
 	}
 
 	if (pressing_down && sel < opt.length - 1)
 	{
-		sel++;
+		sel++
 	}
 
 	for (let i = 0; i < opt.length; i++)
 	{
 		if (i == sel)
 		{
-			text_utils.drawText(x, y + 35 * i, fonts.dtm_mono, opt[i], 35, color_utils.yellow);
+			text_utils.drawText(x, y + 35 * i, fonts.dtm_mono, opt[i], 35, color_utils.yellow)
 		} else {
-			text_utils.drawText(x, y + 35 * i, fonts.dtm_mono, opt[i], 35, color_utils.white);
+			text_utils.drawText(x, y + 35 * i, fonts.dtm_mono, opt[i], 35, color_utils.white)
 		}
 	}
 
 	if (confirm_button)
 	{
-		return sel;
+		return sel
 	}
 }
