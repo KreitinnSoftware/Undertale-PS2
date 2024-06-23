@@ -22,7 +22,7 @@ let diagonal_wall;
 
 function posRound(num)
 {
-	return Math.round(num / 2.5) * 2.5
+	return Math.round(num / 3) * 3
 }
 
 export function setAbs(x, y)
@@ -35,7 +35,7 @@ export function setAbs(x, y)
 			player.x = 300
 		} else {
 			camera.x = ruins_rooms[room].camera_x_min;
-			player.x = posRound(300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 2.5))
+			player.x = posRound(300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 3))
 		}
 	} else {
 		camera.x = 0;
@@ -62,10 +62,13 @@ export function setAbs(x, y)
 
 class player_obj
 {
-	x = 290
+	x = 300
 	y = 210
 	w = 40
 	h = 54
+
+	vel = 3
+
 	hitbox_h = 20
 	opacity = 128
 
@@ -149,9 +152,9 @@ class player_obj
 	{
 		if (camera.y < ruins_rooms[room].camera_y_max && this.y == 200)
 		{
-			camera.y += 2.5
+			camera.y += this.vel
 		} else {
-			this.y -= 2.5
+			this.y -= this.vel
 		}
 	}
 
@@ -159,9 +162,9 @@ class player_obj
 	{
 		if (camera.y > ruins_rooms[room].camera_y_min && this.y == 200)
 		{
-			camera.y -= 2.5
+			camera.y -= this.vel
 		} else {
-			this.y += 2.5
+			this.y += this.vel
 		}
 	}
 
@@ -169,9 +172,9 @@ class player_obj
 	{
 		if (camera.x > ruins_rooms[room].camera_x_min && this.x == 300)
 		{
-			camera.x -= 2.5
+			camera.x -= this.vel
 		} else {
-			this.x += 2.5
+			this.x += this.vel
 		}
 	}
 
@@ -179,9 +182,9 @@ class player_obj
 	{
 		if (camera.x < ruins_rooms[room].camera_x_max && this.x == 300)
 		{
-			camera.x += 2.5
+			camera.x += this.vel
 		} else {
-			this.x -= 2.5
+			this.x -= this.vel
 		}
 	}
 
