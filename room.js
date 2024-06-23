@@ -10,7 +10,7 @@ import * as characters from "characters/characters.js"
 
 import * as objects from "objects/objects.js"
 
-import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
+import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE, UP, DOWN, LEFT, RIGHT } from "modules/global_constants.js"
 
 import * as music from "modules/music.js"
 
@@ -41,14 +41,14 @@ export function prevRoom()
 	{
 		room --
 
-		if (next_room_collisor[room].exit_side == "up")
+		if (next_room_collisor[room].exit_side == UP)
 		{
 			setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y + next_room_collisor[room].h - 30)
-		} else if (next_room_collisor[room].exit_side == "down") {
+		} else if (next_room_collisor[room].exit_side == DOWN) {
 			setAbs(next_room_collisor[room].x + next_room_collisor[room].w / 2 - player.w / 2, next_room_collisor[room].y - player.h)
-		} else if (next_room_collisor[room].exit_side == "right") {
+		} else if (next_room_collisor[room].exit_side == RIGHT) {
 			setAbs(next_room_collisor[room].x - player.w, next_room_collisor[room].y)
-		} else if (next_room_collisor[room].exit_side == "left") {
+		} else if (next_room_collisor[room].exit_side == LEFT) {
 			setAbs(next_room_collisor[room].x + next_room_collisor[room].w + 2.5, next_room_collisor[room].y)
 		}
 	}

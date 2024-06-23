@@ -1,3 +1,5 @@
+import { UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT } from "modules/global_constants.js"
+
 export const collision = [[ // Sala 0
 				{x: 0, y: 53, w: 40, h: 379},
 				{x: 0, y: 432, w: 440, h: 40},
@@ -113,14 +115,14 @@ export const collision = [[ // Sala 0
 				]]
 
 export const next_room_collisor = [
-						{x: 1195, y: 242, w: 80, h: 40, exit_side: "up"},
-						{x: 280, y: -100, w: 80, h: 40, exit_side: "up"},
-						{x: 280, y: -287, w: 80, h: 40, exit_side: "up"},
-						{x: 235, y: 128, w: 80, h: 20, exit_side: "up"},
-						{x: 1420, y: 256, w: 40, h: 80, exit_side: "right"},
-						{x: 310, y: 108, w: 84, h: 40, exit_side: "up"},
-						{x: 2300, y: 180, w: 40, h: 80, exit_side: "right"},
-						{x: 2680, y: 185, w: 40, h: 75, exit_side: "right"}
+						{x: 1195, y: 242, w: 80, h: 40, exit_side: UP},
+						{x: 280, y: -100, w: 80, h: 40, exit_side: UP},
+						{x: 280, y: -287, w: 80, h: 40, exit_side: UP},
+						{x: 235, y: 128, w: 80, h: 20, exit_side: UP},
+						{x: 1420, y: 256, w: 40, h: 80, exit_side: RIGHT},
+						{x: 310, y: 108, w: 84, h: 40, exit_side: UP},
+						{x: 2300, y: 180, w: 40, h: 80, exit_side: RIGHT},
+						{x: 2680, y: 185, w: 40, h: 75, exit_side: RIGHT}
 						]
 
 export const prev_room_collisor = [
@@ -134,50 +136,50 @@ export const prev_room_collisor = [
 						{x: 20, y: 185, w: 40, h: 75}
 						]
 
-// Type 0 == \ <
-// Type 1 == > \
-// Type 2 == / <
-// Type 3 == > /
+// DOWN_LEFT == \ <
+// UP_RIGHT == > \
+// UP_LEFT == / <
+// DOWN_RIGHT == > /
 
 export const diagonal_collision = [[
-							{x: 40, y: 319, w: 40, h: 38, type: 0},
-							{x: 80, y: 357, w: 40, h: 38, type: 0},
-							{x: 120, y: 395, w: 40, h: 37, type: 0},
-							{x: 440, y: 395, w: 40, h: 40, type: 3},
-							{x: 480, y: 357, w: 40, h: 40, type: 3},
-							{x: 480, y: 92, w: 40, h: 40, type: 1},
-							{x: 80, y: 92, w: 40, h: 40, type: 2}
+							{x: 40, y: 319, w: 40, h: 38, type: DOWN_LEFT},
+							{x: 80, y: 357, w: 40, h: 38, type: DOWN_LEFT},
+							{x: 120, y: 395, w: 40, h: 37, type: DOWN_LEFT},
+							{x: 440, y: 395, w: 40, h: 40, type: DOWN_RIGHT},
+							{x: 480, y: 357, w: 40, h: 40, type: DOWN_RIGHT},
+							{x: 480, y: 92, w: 40, h: 40, type: UP_RIGHT},
+							{x: 80, y: 92, w: 40, h: 40, type: UP_LEFT}
 							],[
 							// Sala 1
 							],[
 							// Sala 2 // Inicio das Ruinas
 							// Perto do Pilar 1
-							{x: 120, y: 295, w: 40, h: 40, type: 0},
-							{x: 240, y: 335, w: 40, h: 40, type: 0},
+							{x: 120, y: 295, w: 40, h: 40, type: DOWN_LEFT},
+							{x: 240, y: 335, w: 40, h: 40, type: DOWN_LEFT},
 							// Perto do Pilar 2
-							{x: 480, y: 295, w: 40, h: 40, type: 3},
-							{x: 360, y: 335, w: 40, h: 40, type: 3},
+							{x: 480, y: 295, w: 40, h: 40, type: DOWN_RIGHT},
+							{x: 360, y: 335, w: 40, h: 40, type: DOWN_RIGHT},
 							// Escada 1 Baixo
-							{x: 80, y: -130, w: 40, h: 40, type: 0},
-							{x: 120, y: -92, w: 40, h: 40, type: 0},
+							{x: 80, y: -130, w: 40, h: 40, type: DOWN_LEFT},
+							{x: 120, y: -92, w: 40, h: 40, type: DOWN_LEFT},
 							// Escada 2 Baixo
-							{x: 520, y: -130, w: 40, h: 40, type: 3},
-							{x: 480, y: -92, w: 40, h: 40, type: 3},
+							{x: 520, y: -130, w: 40, h: 40, type: DOWN_RIGHT},
+							{x: 480, y: -92, w: 40, h: 40, type: DOWN_RIGHT},
 							// Escada 2 Cima
-							{x: 440, y: -167, w: 40, h: 40, type: 2},
-							{x: 400, y: -127, w: 40, h: 40, type: 2},
+							{x: 440, y: -167, w: 40, h: 40, type: UP_LEFT},
+							{x: 400, y: -127, w: 40, h: 40, type: UP_LEFT},
 							// Escada 1 Cima
-							{x: 160, y: -167, w: 40, h: 40, type: 1},
-							{x: 200, y: -127, w: 40, h: 40, type: 1},
+							{x: 160, y: -167, w: 40, h: 40, type: UP_RIGHT},
+							{x: 200, y: -127, w: 40, h: 40, type: UP_RIGHT},
 							// Cima Extrema Esquerda
-							{x: 80, y: -247, w: 40, h: 40, type: 2},
+							{x: 80, y: -247, w: 40, h: 40, type: UP_LEFT},
 							// Cima Extrema Direita
-							{x: 520, y: -247, w: 40, h: 40, type: 1},
+							{x: 520, y: -247, w: 40, h: 40, type: UP_RIGHT},
 							],[
-							{x: 60, y: 337, w: 40, h: 36, type: 0},
-							{x: 144, y: 372, w: 42, h: 40, type: 0},
-							{x: 495, y: 370, w: 40, h: 40, type: 3},
-							{x: 535, y: 340, w: 40, h: 30, type: 3},
+							{x: 60, y: 337, w: 40, h: 36, type: DOWN_LEFT},
+							{x: 144, y: 372, w: 42, h: 40, type: DOWN_LEFT},
+							{x: 495, y: 370, w: 40, h: 40, type: DOWN_RIGHT},
+							{x: 535, y: 340, w: 40, h: 30, type: DOWN_RIGHT},
 							],[
 							],[
 							],[

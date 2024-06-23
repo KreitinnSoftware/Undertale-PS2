@@ -14,6 +14,8 @@ import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "
 
 import { event_type, event } from "event_handler.js"
 
+import { white_t } from "modules/color_utils.js"
+
 let step_delay = Timer.new()
 
 let step_delay_value
@@ -29,33 +31,25 @@ export function setAbs(x, y)
 {
 	if (posRound(x) >= 300)
 	{
-		if ((posRound(x) * -1 + 300) >= ruins_rooms[room].camera_x_min)
+		if ((-posRound(x) + 300) >= ruins_rooms[room].camera_x_min)
 		{
-			camera.x = posRound(x * -1 + 300)
+			camera.x = posRound(-x + 300)
 			player.x = 300
 		} else {
 			camera.x = ruins_rooms[room].camera_x_min
-			player.x = posRound(300 + (((x * -1 + 300) - ruins_rooms[room].camera_x_min) * -1 - 3))
+			player.x = posRound(x + ruins_rooms[room].camera_x_min)
 		}
 	} else {
 		camera.x = 0
-
 		player.x = posRound(x)
 	}
 
 	if (posRound(y) <= 201)
 	{
-		//if (y - 201 >= ruins_rooms[room].camera_y_min)
-		//{
-			camera.y = posRound(201 - y)
-			player.y = 201
-		//} else if () {
-		//	camera.y = ruins_rooms[room].camera_y_min
-		//	player.y = posRound(201 - y + ruins_rooms[room].camera_y_max)
-		//}
+		camera.y = posRound(201 - y)
+		player.y = 201
 	} else {
 		camera.y = 0
-
 		player.y = posRound(y)
 	}
 }
@@ -123,13 +117,13 @@ class player_obj
 
 		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x, this.y)
 
-		//Draw.rect(this.x - 2, this.y + 32, this.w, this.h - 32, color_utils.white_t)
+		// Draw.rect(this.x, this.y + 32, this.w, this.h - 32, white_t)
 	}
 
 	test_collision(obj)
 	{
-		if (this.x - camera.x -2 < obj.x + obj.w &&
-			this.x - camera.x -2 + this.w > obj.x &&
+		if (this.x - camera.x < obj.x + obj.w &&
+			this.x - camera.x + this.w > obj.x &&
 			this.y - camera.y + this.h > obj.y &&
 			this.y - camera.y + 32 < obj.y + obj.h
 		) { 
@@ -199,35 +193,35 @@ class player_obj
 				this.y - camera.y + this.h > diagonal_collision[room][i].y &&
 				this.y - camera.y + 32 < diagonal_wall.y + diagonal_wall.h
 			) { 
-				if (diagonal_wall.type == 0 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == DOWN_LEFT && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_up()
 				}
-				if (diagonal_wall.type == 0 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == DOWN_LEFT && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_right()
 				}
-				if (diagonal_wall.type == 1 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == UP_RIGHT && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_down()
 				}
-				if (diagonal_wall.type == 1 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
+				if (diagonal_wall.type == UP_RIGHT && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT)
 				{
 					this.move_left()
 				}
-				if (diagonal_wall.type == 2 && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == UP_LEFT && (pad.pressed(Pads.LEFT) || pad.lx < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_down()
 				}
-				if (diagonal_wall.type == 2 && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == UP_LEFT && (pad.pressed(Pads.UP) || pad.ly < -64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_right()
 				}
-				if (diagonal_wall.type == 3 && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == DOWN_RIGHT && (pad.pressed(Pads.DOWN) || pad.ly > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_left()
 				}
-				if (diagonal_wall.type == 3 && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
+				if (diagonal_wall.type == DOWN_RIGHT && (pad.pressed(Pads.RIGHT) || pad.lx > 64) && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT)
 				{
 					this.move_up()
 				}
