@@ -19,19 +19,19 @@ let triangle = new Image("images/triangle.png")
 triangle.width *= 2
 triangle.height *= 2
 
-let timer_value = 0
+let timerValue = 0
 
-export function pre_menu_scene(pad, timer)
+export function preMenuScene(pad, timer)
 {
 	pad.update()
 
-	timer_value = Timer.getTime(timer)
+	timerValue = Timer.getTime(timer)
 
 	Screen.clear()
 
 	splash.draw(0, 0)
 
-	if (timer_value > 1400) {
+	if (timerValue > 1400) {
 		fonts.dtm_mono.print(250, 350, getText(0, "menuText"))
 	}
 
@@ -45,7 +45,7 @@ export function pre_menu_scene(pad, timer)
 fonts.dtm_mono_smaller.color = Color.new(75, 75, 75)
 fonts.dtm_mono_smaller.scale = 0.5f
 
-export function menu_scene(pad)
+export function menuScene(pad)
 {
 	pad.update()
 
@@ -56,15 +56,12 @@ export function menu_scene(pad)
 	}
 
 	text_utils.drawText(160, 35, fonts.dtm_mono, getText(1, "menuText"), 35)
-
 	cross.draw(160, 80)
 
 	text_utils.drawText(195, 80, fonts.dtm_mono, getText(2, "menuText"), 35)
-
 	square.draw(160, 115)
 
 	text_utils.drawText(195, 115, fonts.dtm_mono, getText(3, "menuText"), 35)
-
 	triangle.draw(160, 150)
 
 	text_utils.drawText(195, 150, fonts.dtm_mono, getText(4, "menuText"), 35)
@@ -76,13 +73,13 @@ export function menu_scene(pad)
 
 export function menu_gc()
 {
-	pre_menu_scene = null
-	menu_scene = null
+	preMenuScene = null
+	menuScene = null
 	splash = null
 	cross = null
 	square = null
 	triangle = null
-	timer_value = null
+	timerValue = null
 
 	std.gc()
 }

@@ -30,10 +30,8 @@ export function play(id, loop)
 	}
 
 	if (loop) {
-		Sound.repeat(true)
 		console.log("Music: Repeat Track")
 	} else {
-		Sound.repeat(false)
 		console.log("Music: Don't Repeat Track")
 	}
 
@@ -41,6 +39,7 @@ export function play(id, loop)
 
 	console.log("Music: Start Playing: " + playing)
 
+	Sound.repeat(loop)
 	Sound.play(music_list[playing])
 }
 

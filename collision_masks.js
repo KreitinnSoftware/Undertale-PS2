@@ -1,6 +1,6 @@
 import { UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT } from "modules/global_constants.js"
 
-export const collision = [[ // Sala 0
+export const collisions = [[ // Sala 0
 	{x: 0, y: 53, w: 40, h: 379},
 	{x: 0, y: 432, w: 440, h: 40},
 	{x: 40, y: 53, w: 480, h: 40},
@@ -114,7 +114,7 @@ export const collision = [[ // Sala 0
 	{x: 2660, y: 260, w: 40, h: 78},
 ]]
 
-export const next_room_collisor = [
+export const nextRoomCollisor = [
 	{x: 1195, y: 242, w: 80, h: 40, exit_side: UP},
 	{x: 280, y: -100, w: 80, h: 40, exit_side: UP},
 	{x: 280, y: -287, w: 80, h: 40, exit_side: UP},
@@ -125,7 +125,7 @@ export const next_room_collisor = [
 	{x: 2680, y: 185, w: 40, h: 75, exit_side: RIGHT}
 ]
 
-export const prev_room_collisor = [
+export const prevRoomCollisor = [
 	{x: 0, y: 0, w: 0, h: 0},
 	{x: 240, y: 430, w: 150, h: 15},
 	{x: 280, y: 430, w: 80, h: 40},
@@ -141,7 +141,7 @@ export const prev_room_collisor = [
 // UP_LEFT == / <
 // DOWN_RIGHT == > /
 
-export const diagonal_collision = [[
+export const diagonalCollision = [[
 	{x: 40, y: 319, w: 40, h: 38, type: DOWN_LEFT},
 	{x: 80, y: 357, w: 40, h: 38, type: DOWN_LEFT},
 	{x: 120, y: 395, w: 40, h: 37, type: DOWN_LEFT},
@@ -186,7 +186,7 @@ export const diagonal_collision = [[
 	],[
 ]]
 
-export const event_collisions =
+export const eventCollisions =
 {
 	GAME_EVENT_FLOWEY_FIRST_DIALOGUE: {x: 200, y: 300, w: 240, h: 20, room: 1}
 }

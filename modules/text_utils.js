@@ -1,21 +1,19 @@
 import * as color_utils from "modules/color_utils.js"
 
-let rand = 0
 let pos = 0
-let text_processed_dialog = ""
-let text_processed = ""
-let speech_timer_value = 0
-let speech_timer = Timer.new()
+let dialogProcessedText = ""
+let processedText = ""
+let speechTimer = Timer.new()
 
 export function resetText()
 {
 	pos = 0
-	text_processed_dialog = ""
+	dialogProcessedText = ""
 }
 
-export function drawText(posx, posy, font, text, spacing, color)
+export function drawText(posX, posY, font, text, spacing, color)
 {
-	text_processed = text.split("\n")
+	processedText = text.split("\n")
 
 	if (color == null) {
 		font.color = color_utils.white
@@ -23,30 +21,28 @@ export function drawText(posx, posy, font, text, spacing, color)
 		font.color = color
 	}
 
-	for (let i = 0; i < text_processed.length; i++) {
-		font.print(posx, posy + spacing * i, text_processed[i])
+	for (let i = 0; i < processedText.length; i++) {
+		font.print(posX, posY + spacing * i, processedText[i])
 	}
 }
 
-export function dynamicDrawText(posx, posy, delay, speech, font, text)
+export function dynamicDrawText(posX, posY, delay, speech, font, text)
 {
 	if (pos != text.length) {
-		speech_timer_value = Timer.getTime(speech_timer)
+		let speechTimerValue = Timer.getTime(speechTimer)
 
-		if (speech_timer_value > delay) {
-			text_processed_dialog += text[pos]
+		if (speechTimerValue > delay) {
+			dialogProcessedText += text[pos]
 
 			if (text[pos] != " ") {
-				rand = Math.floor(Math.random() * 48)
-
-				Sound.play(speech, rand)
+				Sound.play(speech, Math.floor(Math.random() * 48))
 			}
 
-			pos ++
+			pos++
 
-			Timer.reset(speech_timer)
+			Timer.reset(speechTimer)
 		}
 	}
 
-	drawText(posx, posy, font, text_processed_dialog, 35, color_utils.white)
+	drawText(posX, posY, font, dialogProcessedText, 35, color_utils.white)
 }

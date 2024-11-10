@@ -3,55 +3,52 @@
 const screen = Screen.getMode()
 
 import { dynamicDrawText, drawText, resetText } from "modules/text_utils.js"
-import { intro_scene, intro_gc } from "intro.js"
+import { introScene, intro_gc } from "intro.js"
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
 import { saveMan } from "modules/savefile.js"
 import * as music from "modules/music.js"
 
 let timer = Timer.new()
-let gamestate = GAME_INTRO
+let gameState = GAME_INTRO
 let pad = Pads.get(0)
 
 saveMan.loadFile()
 
 music.play(music.mus_story)
 
-while(gamestate == GAME_INTRO)
+while(gameState == GAME_INTRO)
 {
-	if (intro_scene(pad, timer) == GAME_PRE_MENU) {
-		gamestate = GAME_PRE_MENU
+	if (introScene(pad, timer) == GAME_PRE_MENU) {
+		gameState = GAME_PRE_MENU
 	}
 }
 
 intro_gc()
 
-import { intro_noise } from "modules/sfx.js"
-import { pre_menu_scene, menu_scene, menu_gc } from "menu.js"
+import * as sfx from "modules/sfx.js"
+import { preMenuScene, menuScene, menu_gc } from "menu.js"
 
 Timer.reset(timer)
 
 music.pause(music.mus_story)
 
 Sound.setVolume(100)
+Sound.play(sfx.intro_noise, 0)
 
-Sound.play(intro_noise, 0)
-
-while (gamestate == GAME_PRE_MENU)
+while (gameState == GAME_PRE_MENU)
 {
-	if (pre_menu_scene(pad, timer) == GAME_MENU)
-	{
-		gamestate = GAME_MENU
+	if (preMenuScene(pad, timer) == GAME_MENU) {
+		gameState = GAME_MENU
 	}
 }
 
 music.free(music.mus_story)
 music.play(music.mus_menu0, true)
 
-while (gamestate == GAME_MENU)
+while (gameState == GAME_MENU)
 {
-	if (menu_scene(pad) == GAME_INGAME)
-	{
-		gamestate = GAME_INGAME
+	if (menuScene(pad) == GAME_INGAME) {
+		gameState = GAME_INGAME
 	}
 }
 
@@ -61,9 +58,9 @@ music.load(music.mus_ruins)
 
 menu_gc()
 
-import { ingame_scene } from "ingame.js"
+import { ingameScene } from "ingame.js"
 
-while (gamestate == GAME_INGAME)
+while (gameState == GAME_INGAME)
 {
-	ingame_scene(pad, timer)
+	ingameScene(pad, timer)
 }

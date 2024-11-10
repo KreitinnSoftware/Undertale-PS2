@@ -9,7 +9,7 @@ import * as color_utils from "modules/color_utils.js"
 let timer_value = 0
 let ram = 0
 
-export function ingame_scene(pad, timer)
+export function ingameScene(pad, timer)
 {
 	pad.update()
 

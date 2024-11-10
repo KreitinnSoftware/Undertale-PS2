@@ -8,7 +8,7 @@ import * as music from "modules/music.js"
 
 let ram = 0
 
-class intro_bg_obj
+class IntroBackground
 {
 	w = 400
 	h = 198
@@ -18,7 +18,7 @@ class intro_bg_obj
 	last_img_y = -380
 	opacity = 128
 
-	img_available = [
+	imgAvailable = [
 		new Image("images/intro/1.png", RAM),
 		new Image("images/intro/2.png", RAM),
 		new Image("images/intro/3.png", RAM),
@@ -32,20 +32,19 @@ class intro_bg_obj
 		new Image("images/intro/10.png", RAM)
 	]
 
-	img_selected = 0
+	imgSelected = 0
 
 	draw()
 	{
-		this.img_available[this.img_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
-		this.img_available[this.img_selected].width = this.w
+		this.imgAvailable[this.imgSelected].color = Color.new(this.opacity, this.opacity, this.opacity)
+		this.imgAvailable[this.imgSelected].width = this.w
 
-		if (this.img_selected == 10) {
-			this.img_available[this.img_selected].height = 637.2
-			this.img_available[this.img_selected].draw(this.x, this.last_img_y)
-
+		if (this.imgSelected == 10) {
+			this.imgAvailable[this.imgSelected].height = 637.2
+			this.imgAvailable[this.imgSelected].draw(this.x, this.last_img_y)
 		} else {
-			this.img_available[this.img_selected].height = this.h
-			this.img_available[this.img_selected].draw(this.x, this.y)
+			this.imgAvailable[this.imgSelected].height = this.h
+			this.imgAvailable[this.imgSelected].draw(this.x, this.y)
 		}
 
 		Draw.rect(0, 0, 640, 60, color_utils.black)
@@ -53,108 +52,105 @@ class intro_bg_obj
 	}
 }
 
-let intro_bg = new intro_bg_obj()
+let introBackground = new IntroBackground()
 
 function nextFrameOn(time)
 {
-	if (timer_value > time) {
-		fadeout = 1
+	if (timerValue > time) {
+		fadeOut = 1
 
-		if (color_utils.fadeOut(intro_bg, fadeout))
-		{
-			intro_bg.img_selected ++
-			fadein = 1
-			fadeout = 0
+		if (color_utils.fadeOut(introBackground, fadeOut)) {
+			introBackground.imgSelected ++
+			fadeIn = 1
+			fadeOut = 0
 			text_utils.resetText()
 		}
 	}
 }
 
-let timer_value = 0
+let timerValue = 0
 let skip = 0
-let fadeout = 0
-let fadein = 0
+let fadeOut = 0
+let fadeIn = 0
 
-export function intro_scene(pad, timer)
+export function introScene(pad, timer)
 {
 	pad.update()
 
-	timer_value = Timer.getTime(timer)
+	timerValue = Timer.getTime(timer)
 
 	ram = System.getMemoryStats()
 
 	Screen.clear()
 
 	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0) {
-		fadeout = 1
+		fadeOut = 1
 		skip = 1
 		text_utils.resetText()
 
 		Timer.reset(timer)
-		timer_value = Timer.getTime(timer)
+		timerValue = Timer.getTime(timer)
 	}
 
-	intro_bg.draw()
+	introBackground.draw()
 
 	if (skip == 1) {
-		color_utils.fadeOut(intro_bg, fadeout)
+		color_utils.fadeOut(introBackground, fadeOut)
 
-		Sound.setVolume(intro_bg.opacity / 128 * 100)
+		Sound.setVolume(introBackground.opacity / 128 * 100)
 
-		if (color_utils.fadeOut(intro_bg, fadeout) == 1) {
+		if (color_utils.fadeOut(introBackground, fadeOut) == 1) {
 			music.pause(music.playing)
 		}
 
-		if (timer_value > 1500) {
+		if (timerValue > 1500) {
 			text_utils.resetText()
 
 			return GAME_PRE_MENU
 		}
 	}
 
-	if (intro_bg.img_selected == 0 && skip == 0) {
+	if (introBackground.imgSelected == 0 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(0, "introText"))
 		nextFrameOn(6500)
-	} else if (intro_bg.img_selected == 1 && skip == 0) {
+	} else if (introBackground.imgSelected == 1 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(1, "introText"))
 		nextFrameOn(12000)
-	} else if (intro_bg.img_selected == 2 && skip == 0) {
+	} else if (introBackground.imgSelected == 2 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(2, "introText"))
 		nextFrameOn(18000)
-	} else if (intro_bg.img_selected == 3 && skip == 0) {
+	} else if (introBackground.imgSelected == 3 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(3, "introText"))
 		nextFrameOn(25000)
-	} else if (intro_bg.img_selected == 4 && skip == 0) {
+	} else if (introBackground.imgSelected == 4 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(4, "introText"))
 		nextFrameOn(29000)
-	} else if (intro_bg.img_selected == 5 && skip == 0) {
+	} else if (introBackground.imgSelected == 5 && skip == 0) {
 		text_utils.dynamicDrawText(225, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(5, "introText"))
 		nextFrameOn(35000)
-	} else if (intro_bg.img_selected == 6 && skip == 0) {
+	} else if (introBackground.imgSelected == 6 && skip == 0) {
 		text_utils.dynamicDrawText(120, 300, 40, sfx.snd_txt2, fonts.dtm_mono, getText(6, "introText"))
 		nextFrameOn(42000)
-	} else if (intro_bg.img_selected == 7 && skip == 0) {
+	} else if (introBackground.imgSelected == 7 && skip == 0) {
 		nextFrameOn(46000)
-	} else if (intro_bg.img_selected == 8 && skip == 0) {
+	} else if (introBackground.imgSelected == 8 && skip == 0) {
 		nextFrameOn(50000)
-	} else if (intro_bg.img_selected == 9 && skip == 0) {
+	} else if (introBackground.imgSelected == 9 && skip == 0) {
 		nextFrameOn(54000)
-	} else if (intro_bg.img_selected == 10 && skip == 0) {
-		if (timer_value > 60000)
-		{
-			if (intro_bg.last_img_y <= 36)
-			{
-				intro_bg.last_img_y += 0.6
+	} else if (introBackground.imgSelected == 10 && skip == 0) {
+		if (timerValue > 60000) {
+			if (introBackground.last_img_y <= 36) {
+				introBackground.last_img_y += 0.6
 			}
 		} 
 
-		if (timer_value > 74750) {
-			fadeout = 1
+		if (timerValue > 74750) {
+			fadeOut = 1
 
 			music.pause(music.playing)
 
-			if (color_utils.fadeOut(intro_bg, fadeout)) {
-				fadeout = 0
+			if (color_utils.fadeOut(introBackground, fadeOut)) {
+				fadeOut = 0
 
 				text_utils.resetText()
 
@@ -163,24 +159,24 @@ export function intro_scene(pad, timer)
 		}
 	}
 
-	if (color_utils.fadeIn(intro_bg, fadein)) {
-		fadein = 0
+	if (color_utils.fadeIn(introBackground, fadeIn)) {
+		fadeIn = 0
 	}
 
-	fonts.dtm_mono.print(0, 0, timer_value)
+	fonts.dtm_mono.print(0, 0, timerValue)
 
 	Screen.flip()
 }
 
 export function intro_gc()
 {
-	intro_scene = null
+	introScene = null
 	nextFrameOn = null
-	intro_bg = null
-	timer_value = null
+	introBackground = null
+	timerValue = null
 	skip = null
-	fadein = null
-	fadeout = null
+	fadeIn = null
+	fadeOut = null
 	ram = null
 
 	std.gc()

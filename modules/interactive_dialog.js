@@ -6,17 +6,17 @@ let sel = 0
 
 export function createInteractiveDialog(pad, x, y, options)
 {
-	let pressing_down = (pad.justPressed(Pads.DOWN) || pad.ly > 64)
-	let pressing_up = (pad.justPressed(Pads.UP) || pad.ly < -64)
-	let confirm_button = (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START))
+	let pressingDown = (pad.justPressed(Pads.DOWN) || pad.ly > 64)
+	let pressingUp = (pad.justPressed(Pads.UP) || pad.ly < -64)
+	let confirmButton = (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START))
 
 	let opt = options.split("\n")
 
-	if (pressing_up && sel > 0) {
+	if (pressingUp && sel > 0) {
 		sel--
 	}
 
-	if (pressing_down && sel < opt.length - 1) {
+	if (pressingDown && sel < opt.length - 1) {
 		sel++
 	}
 
@@ -28,7 +28,7 @@ export function createInteractiveDialog(pad, x, y, options)
 		}
 	}
 
-	if (confirm_button) {
+	if (confirmButton) {
 		return sel
 	}
 }

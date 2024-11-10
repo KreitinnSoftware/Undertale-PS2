@@ -1,6 +1,6 @@
 import { camera } from "camera.js"
-import { collision, diagonal_collision, next_room_collisor, prev_room_collisor } from "collision_masks.js"
-import { room, ruins_rooms, nextRoom, prevRoom } from "room.js"
+import { collisions, diagonalCollision, nextRoomCollisor, prevRoomCollisor } from "collision_masks.js"
+import { room, rooms, nextRoom, prevRoom } from "room.js"
 import { createBox } from "modules/box.js"
 import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "modules/global_constants.js"
 import { event_type, event } from "event_handler.js"
@@ -8,7 +8,7 @@ import { white_t } from "modules/color_utils.js"
 import * as text_utils from "modules/text_utils.js"
 import * as fonts from "modules/fonts.js"
 
-let step_delay = Timer.new()
+let stepDelay = Timer.new()
 
 export function posRound(num)
 {
@@ -18,12 +18,12 @@ export function posRound(num)
 export function setAbs(x, y)
 {
 	if (posRound(x) >= 300) {
-		if ((-posRound(x) + 300) >= ruins_rooms[room].cam_x_min) {
+		if ((-posRound(x) + 300) >= rooms[room].cam_x_min) {
 			camera.x = posRound(-x + 300)
 			player.x = 300
 		} else {
-			camera.x = ruins_rooms[room].cam_x_min
-			player.x = posRound(x + ruins_rooms[room].cam_x_min)
+			camera.x = rooms[room].cam_x_min
+			player.x = posRound(x + rooms[room].cam_x_min)
 		}
 	} else {
 		camera.x = 0
@@ -74,37 +74,37 @@ class Player
 		new Image("images/frisk/spr_f_maincharar_1.png", RAM),
 	]]
 
-	sprite_selected = 0
-	animation_selected = 0
-	moving_diagonal = 0
-	ingame_menu_open = 0
+	selectedSprite = 0
+	selectedAnimation = 0
+	movingDiagonal = 0
+	ingameMenuOpen = 0
 	love = 1
 	hp = 20
-	max_hp = 20
+	maxHp = 20
 
 	draw()
 	{
-		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
+		// this.sprites[selectedAnimation][selectedSprite].color = Color.new(this.opacity, this.opacity, this.opacity)
 
-		if ((this.animation_selected == 0 || this.animation_selected == 1) && this.sprite_selected > 3)
+		if ((this.selectedAnimation == 0 || this.selectedAnimation == 1) && this.selectedSprite > 3)
 		{
-			this.sprite_selected = 0
+			this.selectedSprite = 0
 		}
 
-		if ((this.animation_selected == 2 || this.animation_selected == 3) && this.sprite_selected > 1)
+		if ((this.selectedAnimation == 2 || this.selectedAnimation == 3) && this.selectedSprite > 1)
 		{
-			this.sprite_selected = 0
+			this.selectedSprite = 0
 		}
 
-		this.sprites[this.animation_selected][this.sprite_selected].width = this.w
-		this.sprites[this.animation_selected][this.sprite_selected].height = this.h
+		this.sprites[this.selectedAnimation][this.selectedSprite].width = this.w
+		this.sprites[this.selectedAnimation][this.selectedSprite].height = this.h
 
-		this.sprites[this.animation_selected][this.sprite_selected].draw(this.x, this.y)
+		this.sprites[this.selectedAnimation][this.selectedSprite].draw(this.x, this.y)
 
 		// Draw.rect(this.x, this.y + 32, this.w, this.h - 32, white_t)
 	}
 
-	test_collision(obj)
+	testCollision(obj)
 	{
 		if (this.x - camera.x < obj.x + obj.w &&
 			this.x - camera.x + this.w > obj.x &&
@@ -117,240 +117,237 @@ class Player
 
 	collision()
 	{
-		for (let i = 0; i < collision[room].length; i++) {
-			if (this.test_collision(collision[room][i])) {
+		for (let i = 0; i < collisions[room].length; i++) {
+			if (this.testCollision(collisions[room][i])) {
 				return true
 			}
 		}	
 	}
 
-	move_up()
+	moveUp()
 	{
-		if (camera.y < ruins_rooms[room].cam_y_max && this.y == 201) {
+		if (camera.y < rooms[room].cam_y_max && this.y == 201) {
 			camera.y += this.vel
 		} else {
 			this.y -= this.vel
 		}
 	}
 
-	move_down()
+	moveDown()
 	{
-		if (camera.y > ruins_rooms[room].cam_y_min && this.y == 201) {
+		if (camera.y > rooms[room].cam_y_min && this.y == 201) {
 			camera.y -= this.vel
 		} else {
 			this.y += this.vel
 		}
 	}
 
-	move_right()
+	moveRight()
 	{
-		if (camera.x > ruins_rooms[room].cam_x_min && this.x == 300) {
+		if (camera.x > rooms[room].cam_x_min && this.x == 300) {
 			camera.x -= this.vel
 		} else {
 			this.x += this.vel
 		}
 	}
 
-	move_left()
+	moveLeft()
 	{
-		if (camera.x < ruins_rooms[room].cam_x_max && this.x == 300) {
+		if (camera.x < rooms[room].cam_x_max && this.x == 300) {
 			camera.x += this.vel
 		} else {
 			this.x -= this.vel
 		}
 	}
 
-	diagonal_collision(pad)
+	diagonalCollision(pad)
 	{
-		for (let i = 0; i < diagonal_collision[room].length; i++) {
-			let diagonal_wall = diagonal_collision[room][i]
+		for (let i = 0; i < diagonalCollision[room].length; i++) {
+			let diagonalWall = diagonalCollision[room][i]
 
-			if (this.x - camera.x < diagonal_wall.x + diagonal_wall.w &&
-				this.x - camera.x + this.w > diagonal_wall.x &&
-				this.y - camera.y + this.h > diagonal_collision[room][i].y &&
-				this.y - camera.y + 32 < diagonal_wall.y + diagonal_wall.h
+			if (this.x - camera.x < diagonalWall.x + diagonalWall.w &&
+				this.x - camera.x + this.w > diagonalWall.x &&
+				this.y - camera.y + this.h > diagonalCollision[room][i].y &&
+				this.y - camera.y + 32 < diagonalWall.y + diagonalWall.h
 			) { 
-				if (diagonal_wall.type == DOWN_LEFT && this.pressing_left && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT) {
-					this.move_up()
+				if (diagonalWall.type == DOWN_LEFT && this.pressingLeft && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
+					this.moveUp()
 				}
-				if (diagonal_wall.type == DOWN_LEFT && this.pressing_down && this.moving_diagonal != DOWN_RIGHT && this.moving_diagonal != UP_LEFT) {
-					this.move_right()
+				if (diagonalWall.type == DOWN_LEFT && this.pressingDown && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
+					this.moveRight()
 				}
-				if (diagonal_wall.type == UP_RIGHT && this.pressing_right && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT) {
-					this.move_down()
+				if (diagonalWall.type == UP_RIGHT && this.pressingRight && this.movingDiagonal != UP_RIGHT && this.movingDiagonal != UP_LEFT) {
+					this.moveDown()
 				}
-				if (diagonal_wall.type == UP_RIGHT && this.pressing_up && this.moving_diagonal != UP_RIGHT && this.moving_diagonal != UP_LEFT) {
-					this.move_left()
+				if (diagonalWall.type == UP_RIGHT && this.pressingUp && this.movingDiagonal != UP_RIGHT && this.movingDiagonal != UP_LEFT) {
+					this.moveLeft()
 				}
-				if (diagonal_wall.type == UP_LEFT && this.pressing_left && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT) {
-					this.move_down()
+				if (diagonalWall.type == UP_LEFT && this.pressingLeft && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+					this.moveDown()
 				}
-				if (diagonal_wall.type == UP_LEFT && this.pressing_up && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT) {
-					this.move_right()
+				if (diagonalWall.type == UP_LEFT && this.pressingUp && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+					this.moveRight()
 				}
-				if (diagonal_wall.type == DOWN_RIGHT && this.pressing_down && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT) {
-					this.move_left()
+				if (diagonalWall.type == DOWN_RIGHT && this.pressingDown && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+					this.moveLeft()
 				}
-				if (diagonal_wall.type == DOWN_RIGHT && this.pressing_right && this.moving_diagonal != DOWN_LEFT && this.moving_diagonal != UP_RIGHT) {
-					this.move_up()
+				if (diagonalWall.type == DOWN_RIGHT && this.pressingRight && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+					this.moveUp()
 				}
 			} 
 		}	
 	}
 
-	pressing_up = false
-	pressing_down = false
-	pressing_left = false
-	pressing_right = false
+	pressingUp = false
+	pressingDown = false
+	pressingLeft = false
+	pressingRight = false
 
 	walk(pad)
 	{
-		if (this.test_collision(next_room_collisor[room])) {
+		if (this.testCollision(nextRoomCollisor[room])) {
 			nextRoom()
 		}
 
-		if (this.test_collision(prev_room_collisor[room])) {
+		if (this.testCollision(prevRoomCollisor[room])) {
 			prevRoom()
 		}
 
-		if (this.ingame_menu_open == 0 || event_type == GAME_EVENT_TYPE_TALK) {
-			let step_delay_value = Timer.getTime(step_delay)
+		if (this.ingameMenuOpen == 0 || event_type == GAME_EVENT_TYPE_TALK) {
+			let stepDelayValue = Timer.getTime(stepDelay)
 
-			this.pressing_down = (pad.pressed(Pads.DOWN) || pad.ly > 64)
-			this.pressing_up = (pad.pressed(Pads.UP) || pad.ly < -64)
-			this.pressing_left = (pad.pressed(Pads.LEFT) || pad.lx < -64)
-			this.pressing_right = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
+			this.pressingDown = (pad.pressed(Pads.DOWN) || pad.ly > 64)
+			this.pressingUp = (pad.pressed(Pads.UP) || pad.ly < -64)
+			this.pressingLeft = (pad.pressed(Pads.LEFT) || pad.lx < -64)
+			this.pressingRight = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
 
-			this.moving_diagonal = 0
+			this.movingDiagonal = 0
 
-			if (this.pressing_down && this.pressing_right) {
-				this.moving_diagonal = DOWN_RIGHT
-			} else if (this.pressing_down && this.pressing_left) {
-				this.moving_diagonal = DOWN_LEFT
-			} else if (this.pressing_up && this.pressing_right) {
-				this.moving_diagonal = UP_RIGHT
-			} else if (this.pressing_up && this.pressing_left) {
-				this.moving_diagonal = UP_LEFT
+			if (this.pressingDown && this.pressingRight) {
+				this.movingDiagonal = DOWN_RIGHT
+			} else if (this.pressingDown && this.pressingLeft) {
+				this.movingDiagonal = DOWN_LEFT
+			} else if (this.pressingUp && this.pressingRight) {
+				this.movingDiagonal = UP_RIGHT
+			} else if (this.pressingUp && this.pressingLeft) {
+				this.movingDiagonal = UP_LEFT
 			}
 
-			if (this.pressing_up) {
-				if (this.moving_diagonal == 0) {
-					this.animation_selected = PLAYER_UP
+			if (this.pressingUp) {
+				if (this.movingDiagonal == 0) {
+					this.selectedAnimation = PLAYER_UP
 				}
 
-				this.move_up()
+				this.moveUp()
 
 				if (this.collision()) {
-					this.move_down()
+					this.moveDown()
 
-					if (this.moving_diagonal == UP_RIGHT) {
-						this.animation_selected = PLAYER_RIGHT
-					} else if (this.moving_diagonal == UP_LEFT) {
-						this.animation_selected = PLAYER_LEFT
+					if (this.movingDiagonal == UP_RIGHT) {
+						this.selectedAnimation = PLAYER_RIGHT
+					} else if (this.movingDiagonal == UP_LEFT) {
+						this.selectedAnimation = PLAYER_LEFT
 					} else {
-						this.sprite_selected = 0
+						this.selectedSprite = 0
 					}
 				} else {
-					if (step_delay_value > 180) {
-						if (! (this.moving_diagonal == UP_RIGHT || this.moving_diagonal == UP_LEFT))
-						{
-							this.sprite_selected ++
+					if (stepDelayValue > 180) {
+						if (!(this.movingDiagonal == UP_RIGHT || this.movingDiagonal == UP_LEFT)) {
+							this.selectedSprite ++
 						}
-						Timer.reset(step_delay)
+						Timer.reset(stepDelay)
 					}
 				}
 
-				this.diagonal_collision(pad)
-			} else if (this.pressing_down) {
-				if (this.moving_diagonal == 0) {
-					this.animation_selected = PLAYER_DOWN
+				this.diagonalCollision(pad)
+			} else if (this.pressingDown) {
+				if (this.movingDiagonal == 0) {
+					this.selectedAnimation = PLAYER_DOWN
 				}
 
-				this.move_down()
+				this.moveDown()
 
 				if (this.collision()) {
-					this.move_up()
+					this.moveUp()
 
-					if (this.moving_diagonal == DOWN_RIGHT)
-					{
-						this.animation_selected = PLAYER_RIGHT
-					} else if (this.moving_diagonal == DOWN_LEFT) {
-						this.animation_selected = PLAYER_LEFT
+					if (this.movingDiagonal == DOWN_RIGHT) {
+						this.selectedAnimation = PLAYER_RIGHT
+					} else if (this.movingDiagonal == DOWN_LEFT) {
+						this.selectedAnimation = PLAYER_LEFT
 					} else {
-						this.sprite_selected = 0
+						this.selectedSprite = 0
 					}
 				} else {
-					if (step_delay_value > 180) {
-						if (! (this.moving_diagonal == DOWN_RIGHT || this.moving_diagonal == DOWN_LEFT)) {
-							this.sprite_selected ++
+					if (stepDelayValue > 180) {
+						if (!(this.movingDiagonal == DOWN_RIGHT || this.movingDiagonal == DOWN_LEFT)) {
+							this.selectedSprite ++
 						}
-						Timer.reset(step_delay)
+						Timer.reset(stepDelay)
 					}
 				}
 
-				this.diagonal_collision(pad)
+				this.diagonalCollision(pad)
 			}
 
-			if (this.pressing_left) {
-				if (this.moving_diagonal == 0) {
-					this.animation_selected = PLAYER_LEFT
+			if (this.pressingLeft) {
+				if (this.movingDiagonal == 0) {
+					this.selectedAnimation = PLAYER_LEFT
 				}
 
-				this.move_left()
-
-				if (this.collision())
-				{
-					this.move_right()
-
-					this.sprite_selected = 0
-				} else {
-					if (step_delay_value > 180)
-					{
-						this.sprite_selected ++
-						Timer.reset(step_delay)
-					}
-				}
-
-				this.diagonal_collision(pad)
-			} else if (this.pressing_right) {
-				if (this.moving_diagonal == 0)  {
-					this.animation_selected = PLAYER_RIGHT
-				}
-
-				this.move_right()
+				this.moveLeft()
 
 				if (this.collision()) {
-					this.move_left()
+					this.moveRight()
 
-					this.sprite_selected = 0
+					this.selectedSprite = 0
 				} else {
-					if (step_delay_value > 180) {
-						this.sprite_selected ++
-						Timer.reset(step_delay)
+					if (stepDelayValue > 180)
+					{
+						this.selectedSprite ++
+						Timer.reset(stepDelay)
 					}
 				}
 
-				this.diagonal_collision(pad)
+				this.diagonalCollision(pad)
+			} else if (this.pressingRight) {
+				if (this.movingDiagonal == 0)  {
+					this.selectedAnimation = PLAYER_RIGHT
+				}
+
+				this.moveRight()
+
+				if (this.collision()) {
+					this.moveLeft()
+
+					this.selectedSprite = 0
+				} else {
+					if (stepDelayValue > 180) {
+						this.selectedSprite ++
+						Timer.reset(stepDelay)
+					}
+				}
+
+				this.diagonalCollision(pad)
 			}
 
-			if (! this.pressing_up && ! this.pressing_down && ! this.pressing_left && ! this.pressing_right) {
-	    		this.sprite_selected = 0
+			if (!this.pressingUp && !this.pressingDown && !this.pressingLeft && !this.pressingRight) {
+	    		this.selectedSprite = 0
 			}
 		} else {
-			this.sprite_selected = 0
+			this.selectedSprite = 0
 		}
 	}
 
 	ingame_menu(pad)
 	{
 		if (pad.justPressed(Pads.CIRCLE)) {
-			if (this.ingame_menu_open == 0) {
-				this.ingame_menu_open = 1
+			if (this.ingameMenuOpen == 0) {
+				this.ingameMenuOpen = 1
 			} else {
-				this.ingame_menu_open = 0
+				this.ingameMenuOpen = 0
 			}
 		}
-		if (this.ingame_menu_open == 1) {
+		if (this.ingameMenuOpen == 1) {
 			createBox(20, 50, 120, 100, 5)
 			text_utils.drawText(30, 50, fonts.exp, "Frisk", 0)
 			text_utils.drawText(30, 80, fonts.exp, "Lv    " + this.love + "\nHP     " + this.hp + "/" + this.max_hp + "\nG       0", 20)
