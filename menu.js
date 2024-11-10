@@ -32,7 +32,7 @@ export function preMenuScene(pad, timer)
 	splash.draw(0, 0)
 
 	if (timerValue > 1400) {
-		fonts.dtm_mono.print(250, 350, getText(0, "menuText"))
+		fonts.dtm_mono.print(200, 350, getText(0, "menuText"))
 	}
 
 	if (pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) {
