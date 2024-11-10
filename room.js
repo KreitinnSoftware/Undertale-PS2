@@ -122,7 +122,7 @@ export let rooms = [
 	new Room(40, -440, 0, 0, 0, 480, 300, 375, new Array(new RoomImage(560, 890, "images/rooms/ruins/2.png"))),
 	new Room(40, 0, 0, 0, 0, 0, 300, 355, new Array(new RoomImage(560, 448, "images/rooms/ruins/3.png"))),
 	new Room(60, 20, -840, 0, 0, 0, 245, 360, new Array(new RoomImage(1418, 428, "images/rooms/ruins/4.png"))),
-	new Room(40, 0, 0, 0, 0, 0, 80, 260, new Array(new RoomImage(572, 425, "images/rooms/ruins/5.png"))),
+	new Room(38, 2, 0, 0, 0, 0, 80, 260, new Array(new RoomImage(572, 425, "images/rooms/ruins/5.png"))),
 	new Room(60, 20, -1715, 0, 0, 0, 300, 345, new Array(new RoomImage(1134, 425, "images/rooms/ruins/6a.png"), new RoomImage(1168, 425, "images/rooms/ruins/6b.png"))),
 	new Room(0, 20, -2100, 20, 0, 0, 65, 190, new Array(new RoomImage(1360, 331, "images/rooms/ruins/7a.png"), new RoomImage(1382, 331, "images/rooms/ruins/7b.png"))),
 ]

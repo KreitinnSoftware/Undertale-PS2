@@ -118,6 +118,7 @@ class Player
 	{
 		for (let i = 0; i < collisions[room].length; i++) {
 			if (this.testCollision(collisions[room][i])) {
+				console.log(room + ":" + i)
 				return true
 			}
 		}	
@@ -209,7 +210,7 @@ class Player
 			(this.ingameMenuOpen == 0)
 		)
 
-		if (this.testCollision(nextRoomCollisor[room])) {
+		if (this.testCollision(nextRoomCollisor[room]) && room < rooms.length - 1) {
 			color_utils.roomTransitionOverlay.fadeIn = 1
 			
 			if (color_utils.roomTransitionOverlay.opacity == 128) {
@@ -217,7 +218,7 @@ class Player
 			}
 		}
 
-		if (this.testCollision(prevRoomCollisor[room])) {
+		if (this.testCollision(prevRoomCollisor[room]) && room > 0) {
 			color_utils.roomTransitionOverlay.fadeIn = 1
 			
 			if (color_utils.roomTransitionOverlay.opacity == 128) {

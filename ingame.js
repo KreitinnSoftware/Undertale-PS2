@@ -26,9 +26,9 @@ export function ingameScene(pad, timer)
 	player.draw()
 	player.ingame_menu(pad)
 
-	color_utils.roomTransitionOverlay.draw()
 	color_utils.fadeOut(color_utils.roomTransitionOverlay)
 	color_utils.fadeIn(color_utils.roomTransitionOverlay)
+	color_utils.roomTransitionOverlay.draw()
 
 	checkEventCollisions()
 
