@@ -4,7 +4,7 @@ import { room, rooms, nextRoom, prevRoom } from "room.js"
 import { createBox } from "modules/box.js"
 import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "modules/global_constants.js"
 import { event_type, event } from "event_handler.js"
-import { white_t } from "modules/color_utils.js"
+import * as color_utils from "modules/color_utils.js"
 import * as text_utils from "modules/text_utils.js"
 import * as fonts from "modules/fonts.js"
 
@@ -78,6 +78,7 @@ class Player
 	selectedAnimation = 0
 	movingDiagonal = 0
 	ingameMenuOpen = 0
+	canMove = true
 	love = 1
 	hp = 20
 	maxHp = 20
@@ -86,13 +87,11 @@ class Player
 	{
 		// this.sprites[selectedAnimation][selectedSprite].color = Color.new(this.opacity, this.opacity, this.opacity)
 
-		if ((this.selectedAnimation == 0 || this.selectedAnimation == 1) && this.selectedSprite > 3)
-		{
+		if ((this.selectedAnimation == 0 || this.selectedAnimation == 1) && this.selectedSprite > 3) {
 			this.selectedSprite = 0
 		}
 
-		if ((this.selectedAnimation == 2 || this.selectedAnimation == 3) && this.selectedSprite > 1)
-		{
+		if ((this.selectedAnimation == 2 || this.selectedAnimation == 3) && this.selectedSprite > 1) {
 			this.selectedSprite = 0
 		}
 
@@ -101,7 +100,7 @@ class Player
 
 		this.sprites[this.selectedAnimation][this.selectedSprite].draw(this.x, this.y)
 
-		// Draw.rect(this.x, this.y + 32, this.w, this.h - 32, white_t)
+		// Draw.rect(this.x, this.y + 32, this.w, this.h - 32, color_utils.white_t)
 	}
 
 	testCollision(obj)
@@ -205,15 +204,28 @@ class Player
 
 	walk(pad)
 	{
+		this.canMove = (
+			(color_utils.roomTransitionOverlay.opacity == 0 || color_utils.roomTransitionOverlay.opacity == 128) &&
+			(this.ingameMenuOpen == 0)
+		)
+
 		if (this.testCollision(nextRoomCollisor[room])) {
-			nextRoom()
+			color_utils.roomTransitionOverlay.fadeIn = 1
+			
+			if (color_utils.roomTransitionOverlay.opacity == 128) {
+				nextRoom()
+			}
 		}
 
 		if (this.testCollision(prevRoomCollisor[room])) {
-			prevRoom()
+			color_utils.roomTransitionOverlay.fadeIn = 1
+			
+			if (color_utils.roomTransitionOverlay.opacity == 128) {
+				prevRoom()
+			}
 		}
 
-		if (this.ingameMenuOpen == 0 || event_type == GAME_EVENT_TYPE_TALK) {
+		if (this.canMove) {
 			let stepDelayValue = Timer.getTime(stepDelay)
 
 			this.pressingDown = (pad.pressed(Pads.DOWN) || pad.ly > 64)

@@ -22,6 +22,8 @@ export function nextRoom()
 
 		player.x = posRound(rooms[room].entranceX)
 		player.y = posRound(rooms[room].entranceY)
+
+		color_utils.roomTransitionOverlay.fadeOut = 1				
 	}
 }
 
@@ -35,10 +37,12 @@ export function prevRoom()
 		} else if (nextRoomCollisor[room].exit_side == DOWN) {
 			setAbs(nextRoomCollisor[room].x + nextRoomCollisor[room].w / 2 - player.w / 2, nextRoomCollisor[room].y - player.h)
 		} else if (nextRoomCollisor[room].exit_side == RIGHT) {
-			setAbs(nextRoomCollisor[room].x - player.w, nextRoomCollisor[room].y)
+			setAbs(nextRoomCollisor[room].x - player.w - 3, nextRoomCollisor[room].y)
 		} else if (nextRoomCollisor[room].exit_side == LEFT) {
-			setAbs(nextRoomCollisor[room].x + nextRoomCollisor[room].w + 2.5, nextRoomCollisor[room].y)
+			setAbs(nextRoomCollisor[room].x + nextRoomCollisor[room].w + 3, nextRoomCollisor[room].y)
 		}
+
+		color_utils.roomTransitionOverlay.fadeOut = 1	
 	}
 }
 

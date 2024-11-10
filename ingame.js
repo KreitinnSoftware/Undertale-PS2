@@ -6,14 +6,14 @@ import { checkEventCollisions } from "event_handler.js"
 import * as fonts from "modules/fonts.js"
 import * as color_utils from "modules/color_utils.js"
 
-let timer_value = 0
+let timerValue = 0
 let ram = 0
 
 export function ingameScene(pad, timer)
 {
 	pad.update()
 
-	timer_value = Timer.getTime(timer)
+	timerValue = Timer.getTime(timer)
 
 	ram = System.getMemoryStats()
 
@@ -22,11 +22,15 @@ export function ingameScene(pad, timer)
 	drawRoom()
 	drawWalls()
 
-    player.walk(pad)
-    player.draw()
-    player.ingame_menu(pad)
+	player.walk(pad)
+	player.draw()
+	player.ingame_menu(pad)
 
-    checkEventCollisions()
+	color_utils.roomTransitionOverlay.draw()
+	color_utils.fadeOut(color_utils.roomTransitionOverlay)
+	color_utils.fadeIn(color_utils.roomTransitionOverlay)
+
+	checkEventCollisions()
 
 	fonts.dtm_mono.print(0, 0, "Player Abs X:" + (player.x - camera.x))
 	fonts.dtm_mono.print(0, 20, "Player Abs Y:" + (player.y - camera.y))
@@ -35,7 +39,7 @@ export function ingameScene(pad, timer)
 	fonts.dtm_mono.print(0, 80, "Camera X:" + camera.x)
 	fonts.dtm_mono.print(0, 100, "Camera Y:" + camera.y)
 	fonts.dtm_mono.print(0, 120, "Room Number:" + room)
-	//fonts.dtm_mono.print(0, 140, "RAM:" + (ram.used / 1048576).toFixed(2) + "MB/32MB")
+	fonts.dtm_mono.print(0, 140, "RAM:" + (ram.used / 1048576).toFixed(2) + "MB/32MB")
 
 	Screen.flip()
 }

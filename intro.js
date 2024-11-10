@@ -36,7 +36,7 @@ class IntroBackground
 
 	draw()
 	{
-		this.imgAvailable[this.imgSelected].color = Color.new(this.opacity, this.opacity, this.opacity)
+		this.imgAvailable[this.imgSelected].color = Color.new(this.opacity, this.opacity, this.opacity, this.opacity)
 		this.imgAvailable[this.imgSelected].width = this.w
 
 		if (this.imgSelected == 10) {
@@ -57,12 +57,12 @@ let introBackground = new IntroBackground()
 function nextFrameOn(time)
 {
 	if (timerValue > time) {
-		fadeOut = 1
+		introBackground.fadeOut = 1
 
-		if (color_utils.fadeOut(introBackground, fadeOut)) {
+		if (introBackground.opacity == 0) {
 			introBackground.imgSelected ++
-			fadeIn = 1
-			fadeOut = 0
+			introBackground.fadeIn = 1
+			introBackground.fadeOut = 0
 			text_utils.resetText()
 		}
 	}
@@ -70,8 +70,6 @@ function nextFrameOn(time)
 
 let timerValue = 0
 let skip = 0
-let fadeOut = 0
-let fadeIn = 0
 
 export function introScene(pad, timer)
 {
@@ -84,7 +82,7 @@ export function introScene(pad, timer)
 	Screen.clear()
 
 	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0) {
-		fadeOut = 1
+		introBackground.fadeOut = 1
 		skip = 1
 		text_utils.resetText()
 
@@ -95,11 +93,9 @@ export function introScene(pad, timer)
 	introBackground.draw()
 
 	if (skip == 1) {
-		color_utils.fadeOut(introBackground, fadeOut)
-
 		Sound.setVolume(introBackground.opacity / 128 * 100)
 
-		if (color_utils.fadeOut(introBackground, fadeOut) == 1) {
+		if (introBackground.opacity == 0) {
 			music.pause(music.playing)
 		}
 
@@ -145,13 +141,11 @@ export function introScene(pad, timer)
 		} 
 
 		if (timerValue > 74750) {
-			fadeOut = 1
+			introBackground.fadeOut = 1
 
 			music.pause(music.playing)
 
-			if (color_utils.fadeOut(introBackground, fadeOut)) {
-				fadeOut = 0
-
+			if (introBackground.opacity == 0) {
 				text_utils.resetText()
 
 				return GAME_PRE_MENU
@@ -159,9 +153,8 @@ export function introScene(pad, timer)
 		}
 	}
 
-	if (color_utils.fadeIn(introBackground, fadeIn)) {
-		fadeIn = 0
-	}
+	color_utils.fadeIn(introBackground)
+	color_utils.fadeOut(introBackground)
 
 	fonts.dtm_mono.print(0, 0, timerValue)
 
@@ -175,8 +168,6 @@ export function intro_gc()
 	introBackground = null
 	timerValue = null
 	skip = null
-	fadeIn = null
-	fadeOut = null
 	ram = null
 
 	std.gc()
