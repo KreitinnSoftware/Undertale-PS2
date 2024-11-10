@@ -1,4 +1,4 @@
-class saveManager
+class SaveManager
 {
 	floweyMeetTimes = 0
 	floweyFirstDialogue = 0
@@ -74,4 +74,4 @@ class saveManager
 	}
 }
 
-export let saveMan = new saveManager
+export let saveMan = new SaveManager

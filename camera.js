@@ -1,4 +1,4 @@
-class camera_obj
+class Camera
 {
 	x = 0
 	y = 0
@@ -10,4 +10,4 @@ class camera_obj
 	}
 }
 
-export let camera = new camera_obj
+export let camera = new Camera

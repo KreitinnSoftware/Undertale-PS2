@@ -18,12 +18,12 @@ export function posRound(num)
 export function setAbs(x, y)
 {
 	if (posRound(x) >= 300) {
-		if ((-posRound(x) + 300) >= ruins_rooms[room].camera_x_min) {
+		if ((-posRound(x) + 300) >= ruins_rooms[room].cam_x_min) {
 			camera.x = posRound(-x + 300)
 			player.x = 300
 		} else {
-			camera.x = ruins_rooms[room].camera_x_min
-			player.x = posRound(x + ruins_rooms[room].camera_x_min)
+			camera.x = ruins_rooms[room].cam_x_min
+			player.x = posRound(x + ruins_rooms[room].cam_x_min)
 		}
 	} else {
 		camera.x = 0
@@ -44,7 +44,7 @@ const PLAYER_UP = 1
 const PLAYER_LEFT = 2
 const PLAYER_RIGHT = 3
 
-class player_obj
+class Player
 {
 	x = 300
 	y = 210
@@ -126,7 +126,7 @@ class player_obj
 
 	move_up()
 	{
-		if (camera.y < ruins_rooms[room].camera_y_max && this.y == 201) {
+		if (camera.y < ruins_rooms[room].cam_y_max && this.y == 201) {
 			camera.y += this.vel
 		} else {
 			this.y -= this.vel
@@ -135,7 +135,7 @@ class player_obj
 
 	move_down()
 	{
-		if (camera.y > ruins_rooms[room].camera_y_min && this.y == 201) {
+		if (camera.y > ruins_rooms[room].cam_y_min && this.y == 201) {
 			camera.y -= this.vel
 		} else {
 			this.y += this.vel
@@ -144,7 +144,7 @@ class player_obj
 
 	move_right()
 	{
-		if (camera.x > ruins_rooms[room].camera_x_min && this.x == 300) {
+		if (camera.x > ruins_rooms[room].cam_x_min && this.x == 300) {
 			camera.x -= this.vel
 		} else {
 			this.x += this.vel
@@ -153,7 +153,7 @@ class player_obj
 
 	move_left()
 	{
-		if (camera.x < ruins_rooms[room].camera_x_max && this.x == 300) {
+		if (camera.x < ruins_rooms[room].cam_x_max && this.x == 300) {
 			camera.x += this.vel
 		} else {
 			this.x -= this.vel
@@ -359,4 +359,4 @@ class player_obj
 	}
 }
 
-export let player = new player_obj
+export let player = new Player

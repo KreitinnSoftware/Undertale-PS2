@@ -1,6 +1,6 @@
 import { camera } from "camera.js"
 
-export class faceswitch
+export class FaceSwitch
 {
 	w = 40
 	h = 40

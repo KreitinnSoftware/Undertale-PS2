@@ -7,9 +7,9 @@ import * as characters from "characters/characters.js"
 import * as objects from "objects/objects.js"
 import * as music from "modules/music.js"
 
-let flowey_obj = new characters.flowey
-let dummy_obj = new characters.dummy
-let faceswitch_obj = new objects.faceswitch
+let flowey_obj = new characters.Flowey
+let dummy_obj = new characters.Dummy
+let faceswitch_obj = new objects.FaceSwitch
 
 export let room = 0
 
@@ -42,7 +42,7 @@ export function prevRoom()
 	}
 }
 
-function roomDrawStuff() {
+function drawRoomStuff() {
 	if (room == 1) {
 		flowey_obj.draw(295, 200)
 
@@ -70,30 +70,58 @@ function roomDrawStuff() {
 	}
 }
 
-function roomDraw(x, y, w, h, image_a, w2, image_b, chunks)
+export class RoomImage
 {
-	image_a.width = w
-	image_a.height = h
-	image_a.draw(x + camera.x, y + camera.y)
+	constructor(w, h, image)
+	{
+		this.image = new Image(image)
+		this.image.width = w
+		this.image.height = h
+	}
+}
 
-	if (chunks == 2) {
-		image_b.width = w2
-		image_b.height = h
-		image_b.draw(x + w + camera.x, y + camera.y)
+export class Room
+{
+	constructor(x, y, cam_x_min, cam_x_max, cam_y_min, cam_y_max, entrance_x, entrance_y, room_image_array)
+	{
+		this.x = x
+		this.y = y
+		this.cam_x_min = cam_x_min
+		this.cam_x_max = cam_x_max
+		this.cam_y_min = cam_y_min
+		this.cam_y_max = cam_y_max
+		this.entrance_x = entrance_x
+		this.entrance_y = entrance_y
+		this.room_image_array = room_image_array
 	}
 
-	roomDrawStuff()
+	draw()
+	{
+		this.room_image_array.forEach((room_image, index) => {
+			let skipX = 0
+
+			if (index > 0) {
+				for (let i = 0; i < index; i++) {
+					skipX += this.room_image_array[i].image.width
+				}
+			}
+
+			room_image.image.draw(this.x + camera.x + skipX, this.y + camera.y)
+		})
+
+		drawRoomStuff()
+	}
 }
 
 export let ruins_rooms = [
-	{x: 0, y: -20, w: 1360, h: 490, camera_y_max: 20, camera_y_min: -20, camera_x_max: 0, camera_x_min: -700, entrance_x: 290, entrance_y: 210, image_a: new Image("images/rooms/ruins/0.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks)}},
-	{x: 0, y: -375, w: 640, h: 675, camera_y_max: 260, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/1.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
-	{x: 40, y: -440, w: 560, h: 890, camera_y_max: 480, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 375, image_a: new Image("images/rooms/ruins/2.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
-	{x: 40, y: 0, w: 560, h: 448, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 300, entrance_y: 355, image_a: new Image("images/rooms/ruins/3.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
-	{x: 60, y: 20, w: 1418, h: 428, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -840, entrance_x: 245, entrance_y: 360, image_a: new Image("images/rooms/ruins/4.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
-	{x: 40, y: 0, w: 572, h: 425, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: 0, entrance_x: 80, entrance_y: 260, image_a: new Image("images/rooms/ruins/5.png"), chunks: 1, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, null, null, this.chunks) }},
-	{x: 60, y: 20, w: 1134, h: 425, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -1715, entrance_x: 300, entrance_y: 345, image_a: new Image("images/rooms/ruins/6a.png"), w2: 1168, image_b: new Image("images/rooms/ruins/6b.png"), chunks: 2, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, this.w2, this.image_b, this.chunks) }},
-	{x: 0, y: 20, w: 1360, h: 331, camera_y_max: 0, camera_y_min: 0, camera_x_max: 0, camera_x_min: -2100, entrance_x: 65, entrance_y: 190, image_a: new Image("images/rooms/ruins/7a.png"), w2: 1382, image_b: new Image("images/rooms/ruins/7b.png"), chunks: 2, draw() { roomDraw(this.x, this.y, this.w, this.h, this.image_a, this.w2, this.image_b, this.chunks) }},
+	new Room(0, -20, -700, 0, -20, 0, 290, 210, new Array(new RoomImage(1360, 490, "images/rooms/ruins/0.png"))),
+	new Room(0, -375, 0, 0, 0, 260, 300, 375, new Array(new RoomImage(640, 675, "images/rooms/ruins/1.png"))),
+	new Room(40, -440, 0, 0, 0, 480, 300, 375, new Array(new RoomImage(560, 890, "images/rooms/ruins/2.png"))),
+	new Room(40, 0, 0, 0, 0, 0, 300, 355, new Array(new RoomImage(560, 448, "images/rooms/ruins/3.png"))),
+	new Room(60, 20, -840, 0, 0, 0, 245, 360, new Array(new RoomImage(1418, 428, "images/rooms/ruins/4.png"))),
+	new Room(40, 0, 0, 0, 0, 0, 80, 260, new Array(new RoomImage(572, 425, "images/rooms/ruins/5.png"))),
+	new Room(60, 20, -1715, 0, 0, 0, 300, 345, new Array(new RoomImage(1134, 425, "images/rooms/ruins/6a.png"), new RoomImage(1168, 425, "images/rooms/ruins/6b.png"))),
+	new Room(0, 20, -2100, 20, 0, 0, 65, 190, new Array(new RoomImage(1360, 331, "images/rooms/ruins/7a.png"), new RoomImage(1382, 331, "images/rooms/ruins/7b.png"))),
 ]
 
 export function drawRoom()

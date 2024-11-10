@@ -1,6 +1,6 @@
 import { camera } from "camera.js"
 
-export class flowey
+export class Flowey
 {
 	w = 50
 	h = 50
@@ -29,7 +29,7 @@ export class flowey
 	}
 }
 
-export class dummy
+export class Dummy
 {
 	x = 0
 	y = 0
