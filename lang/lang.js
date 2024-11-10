@@ -3,20 +3,16 @@ import { EN_US, PT_BR } from "modules/global_constants.js"
 import * as br from "lang/portuguese.js"
 import * as en from "lang/english.js"
 
-let enFunctions = {
-	"introText": en.introText,
-	"menuText": en.menuText
+let langMap = {
+	[EN_US]: en,
+	[PT_BR]: br
 }
 
-let brFunctions = {
-	"introText": br.introText,
-	"menuText": br.menuText
+let textMap = {
+	"introText": langMap[gameSettings.language].introText,
+	"menuText": langMap[gameSettings.language].menuText
 }
 
 export function getText(num, pattern) {
-	if (gameSettings.language == EN_US) {
-		return enFunctions[pattern][num]
-	} else if (gameSettings.language == PT_BR) {
-		return brFunctions[pattern][num]
-	}
+	return textMap[pattern][num]
 }
