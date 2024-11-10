@@ -247,6 +247,13 @@ class Player
 			this.pressingLeft = (pad.pressed(Pads.LEFT) || pad.lx < -64)
 			this.pressingRight = (pad.pressed(Pads.RIGHT) || pad.lx > 64)
 
+			if (this.pressingLeft && this.pressingRight) {
+				this.pressingRight = false
+			}
+			if (this.pressingDown && this.pressingUp) {
+				this.pressingDown = false
+			}
+
 			this.movingDiagonal = 0
 
 			if (this.pressingDown && this.pressingRight) {
