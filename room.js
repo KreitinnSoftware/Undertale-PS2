@@ -2,6 +2,7 @@ import { camera } from "camera.js"
 import { player, setAbs, posRound } from "player.js"
 import { nextRoomCollisor, prevRoomCollisor, collisions, diagonalCollision, eventCollisions } from "collision_masks.js"
 import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE, UP, DOWN, LEFT, RIGHT } from "modules/global_constants.js"
+import { gameSettings } from "modules/global_settings.js"
 import * as color_utils from "modules/color_utils.js"
 import * as characters from "characters/characters.js"
 import * as objects from "objects/objects.js"
@@ -50,8 +51,9 @@ function drawRoomStuff() {
 	if (room == 1) {
 		floweyObj.draw(295, 200)
 
-		// Draw Flowey First Dialogue Hitbox
-		Draw.rect(eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.x + camera.x, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.y + camera.y, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.w, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.h, color_utils.red_t)
+		if (gameSettings.debugInfo) {
+			Draw.rect(eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.x + camera.x, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.y + camera.y, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.w, eventCollisions.GAME_EVENT_FLOWEY_FIRST_DIALOGUE.h, color_utils.red_t)
+		}
 	} else if (room == 3) {
 		faceSwitchObj.draw(410, 90)
 	} else if (room == 5) {

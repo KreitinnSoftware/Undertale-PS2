@@ -3,6 +3,7 @@ import { collisions, diagonalCollision, nextRoomCollisor, prevRoomCollisor } fro
 import { room, rooms, nextRoom, prevRoom } from "room.js"
 import { createBox } from "modules/box.js"
 import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "modules/global_constants.js"
+import { gameSettings } from "modules/global_settings.js"
 import { event_type, event } from "event_handler.js"
 import * as color_utils from "modules/color_utils.js"
 import * as text_utils from "modules/text_utils.js"
@@ -85,8 +86,6 @@ class Player
 
 	draw()
 	{
-		// this.sprites[selectedAnimation][selectedSprite].color = Color.new(this.opacity, this.opacity, this.opacity)
-
 		if ((this.selectedAnimation == 0 || this.selectedAnimation == 1) && this.selectedSprite > 3) {
 			this.selectedSprite = 0
 		}
@@ -100,7 +99,9 @@ class Player
 
 		this.sprites[this.selectedAnimation][this.selectedSprite].draw(this.x, this.y)
 
-		// Draw.rect(this.x, this.y + 32, this.w, this.h - 32, color_utils.white_t)
+		if (gameSettings.debugInfo) {
+			Draw.rect(this.x, this.y + 32, this.w, this.h - 32, color_utils.white_t)
+		}
 	}
 
 	testCollision(obj)
