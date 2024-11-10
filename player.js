@@ -170,29 +170,42 @@ class Player
 				this.y - camera.y + this.h > diagonalCollision[room][i].y &&
 				this.y - camera.y + 32 < diagonalWall.y + diagonalWall.h
 			) { 
-				if (diagonalWall.type == DOWN_LEFT && this.pressingLeft && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
-					this.moveUp()
-				}
-				if (diagonalWall.type == DOWN_LEFT && this.pressingDown && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
-					this.moveRight()
-				}
-				if (diagonalWall.type == UP_RIGHT && this.pressingRight && this.movingDiagonal != UP_RIGHT && this.movingDiagonal != UP_LEFT) {
-					this.moveDown()
-				}
-				if (diagonalWall.type == UP_RIGHT && this.pressingUp && this.movingDiagonal != UP_RIGHT && this.movingDiagonal != UP_LEFT) {
-					this.moveLeft()
-				}
-				if (diagonalWall.type == UP_LEFT && this.pressingLeft && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
-					this.moveDown()
-				}
-				if (diagonalWall.type == UP_LEFT && this.pressingUp && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
-					this.moveRight()
-				}
-				if (diagonalWall.type == DOWN_RIGHT && this.pressingDown && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
-					this.moveLeft()
-				}
-				if (diagonalWall.type == DOWN_RIGHT && this.pressingRight && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
-					this.moveUp()
+				switch (diagonalWall.type) {
+					case UP_LEFT: {
+						if (this.pressingLeft && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+							this.moveDown()
+						} else if (this.pressingUp && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+							this.moveRight()
+						}
+						break
+					}
+
+					case UP_RIGHT: {
+						if (this.pressingRight && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_LEFT) {
+							this.moveDown()
+						} else if (this.pressingUp && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_LEFT) {
+							this.moveLeft()
+						}
+						break
+					}
+
+					case DOWN_LEFT: {
+						if (this.pressingLeft && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
+							this.moveUp()
+						} else if (this.pressingDown && this.movingDiagonal != DOWN_RIGHT && this.movingDiagonal != UP_LEFT) {
+							this.moveRight()
+						}
+						break
+					}
+
+					case DOWN_RIGHT: {
+						if (this.pressingDown && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+							this.moveLeft()
+						} else if (this.pressingRight && this.movingDiagonal != DOWN_LEFT && this.movingDiagonal != UP_RIGHT) {
+							this.moveUp()
+						}
+						break
+					}
 				}
 			} 
 		}	
