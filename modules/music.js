@@ -1,8 +1,8 @@
 let music_path = [
-			"music/mus_story.wav",
-			"music/mus_menu0.wav",
-			"music/mus_ruins.wav"
-			]
+	"music/mus_story.wav",
+	"music/mus_menu0.wav",
+	"music/mus_ruins.wav"
+]
 
 export const mus_story = 0
 export const mus_menu0 = 1
@@ -21,18 +21,15 @@ export function load(id)
 
 export function play(id, loop)
 {
-	if (playing)
-	{
+	if (playing) {
 		pause(id)
 	}
 
-	if (! music_list[id])
-	{
+	if (!music_list[id]) {
 		load(id)
 	}
 
-	if (loop)
-	{
+	if (loop) {
 		Sound.repeat(true)
 		console.log("Music: Repeat Track")
 	} else {
@@ -49,23 +46,20 @@ export function play(id, loop)
 
 export function pause(id)
 {
-	if (playing == id)
-	{
+	if (playing == id) {
 		Sound.pause(music_list[playing])
 		paused = id
 		playing = false
 		console.log("Music: Pause Track: " + playing)
 	}
-	if (paused == id)
-	{
+	if (paused == id) {
 		playing = false
 	}
 }
 
 export function free(id)
 {
-	if (playing == id)
-	{
+	if (playing == id) {
 		Sound.pause(music_list[playing])
 		Sound.free(music_list[playing])
 

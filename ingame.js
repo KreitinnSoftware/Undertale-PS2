@@ -1,19 +1,12 @@
 import { room, nextRoom, prevRoom, drawRoom, drawWalls } from "room.js"
-
 import { player } from "player.js"
-
 import { camera } from "camera.js"
-
+import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
+import { checkEventCollisions } from "event_handler.js"
 import * as fonts from "modules/fonts.js"
-
 import * as color_utils from "modules/color_utils.js"
 
-import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
-
-import { checkEventCollisions } from "event_handler.js"
-
 let timer_value = 0
-
 let ram = 0
 
 export function ingame_scene(pad, timer)
@@ -27,13 +20,10 @@ export function ingame_scene(pad, timer)
 	Screen.clear()
 
 	drawRoom()
-
 	drawWalls()
 
     player.walk(pad)
-
     player.draw()
-
     player.ingame_menu(pad)
 
     checkEventCollisions()

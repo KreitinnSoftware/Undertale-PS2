@@ -1,9 +1,3 @@
-let file
-
-let tmp
-
-let lines
-
 class saveManager
 {
 	floweyMeetTimes = 0
@@ -30,15 +24,13 @@ class saveManager
 	saveFile()
 	{
 		if (this.testMemoryCard() == 0) {
-			if (!System.doesFileExist("mc0:/UNDERTALE"))
-			{
+			if (!System.doesFileExist("mc0:/UNDERTALE")) {
 				this.createDirectory()
 			}
 
-			file = std.open("mc0:/UNDERTALE/savegame.txt", "w")
+			let file = std.open("mc0:/UNDERTALE/savegame.txt", "w")
 
-			for (let key in this.saveVars)
-			{
+			for (let key in this.saveVars) {
 				file.printf("%s %i\n", key, this[key])
 			}
 
@@ -50,18 +42,15 @@ class saveManager
 	loadFile()
 	{
 		if (this.testMemoryCard() == 0) {
-			if (!System.doesFileExist("mc0:/UNDERTALE/savegame.txt"))
-			{
+			if (!System.doesFileExist("mc0:/UNDERTALE/savegame.txt")) {
 				this.saveFile()
 			}
 
-			file = std.open("mc0:/UNDERTALE/savegame.txt", "r")
+			let file = std.open("mc0:/UNDERTALE/savegame.txt", "r")
+			let lines = file.readAsString().split("\n")
 
-			lines = file.readAsString().split("\n")
-
-			for (let i = 0; i < lines.length - 1; i++)
-			{
-				tmp = lines[i].split(" ")
+			for (let i = 0; i < lines.length - 1; i++) {
+				let tmp = lines[i].split(" ")
 
 				this.setVar(tmp[0], Number(tmp[1]))
 			}

@@ -1,7 +1,7 @@
-import * as br from "lang/portuguese.js"
-import * as en from "lang/english.js"
 import { gameSettings } from "modules/global_settings.js"
 import { EN_US, PT_BR } from "modules/global_constants.js"
+import * as br from "lang/portuguese.js"
+import * as en from "lang/english.js"
 
 let en_functions = {
 	"introText": en.introText,

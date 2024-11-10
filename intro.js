@@ -1,16 +1,10 @@
-import * as color_utils from "modules/color_utils.js"
-
-import * as text_utils from "modules/text_utils.js"
-
-import * as fonts from "modules/fonts.js"
-
-import * as sfx from "modules/sfx.js"
-
-import * as music from "modules/music.js"
-
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, EN_US, PT_BR } from "modules/global_constants.js"
-
 import { getText } from "lang/lang.js"
+import * as color_utils from "modules/color_utils.js"
+import * as text_utils from "modules/text_utils.js"
+import * as fonts from "modules/fonts.js"
+import * as sfx from "modules/sfx.js"
+import * as music from "modules/music.js"
 
 let ram = 0
 
@@ -25,18 +19,18 @@ class intro_bg_obj
 	opacity = 128
 
 	img_available = [
-					new Image("images/intro/1.png", RAM),
-					new Image("images/intro/2.png", RAM),
-					new Image("images/intro/3.png", RAM),
-					new Image("images/intro/4.png", RAM),
-					new Image("images/intro/black.png", RAM),
-					new Image("images/intro/5.png", RAM),
-					new Image("images/intro/6.png", RAM),
-					new Image("images/intro/7.png", RAM),
-					new Image("images/intro/8.png", RAM),
-					new Image("images/intro/9.png", RAM),
-					new Image("images/intro/10.png", RAM)
-					]
+		new Image("images/intro/1.png", RAM),
+		new Image("images/intro/2.png", RAM),
+		new Image("images/intro/3.png", RAM),
+		new Image("images/intro/4.png", RAM),
+		new Image("images/intro/black.png", RAM),
+		new Image("images/intro/5.png", RAM),
+		new Image("images/intro/6.png", RAM),
+		new Image("images/intro/7.png", RAM),
+		new Image("images/intro/8.png", RAM),
+		new Image("images/intro/9.png", RAM),
+		new Image("images/intro/10.png", RAM)
+	]
 
 	img_selected = 0
 
@@ -45,13 +39,11 @@ class intro_bg_obj
 		this.img_available[this.img_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
 		this.img_available[this.img_selected].width = this.w
 
-		if (this.img_selected == 10)
-		{
+		if (this.img_selected == 10) {
 			this.img_available[this.img_selected].height = 637.2
 			this.img_available[this.img_selected].draw(this.x, this.last_img_y)
 
-		} else
-		{
+		} else {
 			this.img_available[this.img_selected].height = this.h
 			this.img_available[this.img_selected].draw(this.x, this.y)
 		}
@@ -65,8 +57,7 @@ let intro_bg = new intro_bg_obj()
 
 function nextFrameOn(time)
 {
-	if (timer_value > time)
-	{
+	if (timer_value > time) {
 		fadeout = 1
 
 		if (color_utils.fadeOut(intro_bg, fadeout))
@@ -80,11 +71,8 @@ function nextFrameOn(time)
 }
 
 let timer_value = 0
-
 let skip = 0
-
 let fadeout = 0
-
 let fadein = 0
 
 export function intro_scene(pad, timer)
@@ -97,8 +85,7 @@ export function intro_scene(pad, timer)
 
 	Screen.clear()
 
-	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0)
-	{
+	if ((pad.justPressed(Pads.CROSS) || pad.justPressed(Pads.START)) && skip == 0) {
 		fadeout = 1
 		skip = 1
 		text_utils.resetText()
@@ -109,19 +96,16 @@ export function intro_scene(pad, timer)
 
 	intro_bg.draw()
 
-	if (skip == 1)
-	{
+	if (skip == 1) {
 		color_utils.fadeOut(intro_bg, fadeout)
 
 		Sound.setVolume(intro_bg.opacity / 128 * 100)
 
-		if (color_utils.fadeOut(intro_bg, fadeout) == 1)
-		{
+		if (color_utils.fadeOut(intro_bg, fadeout) == 1) {
 			music.pause(music.playing)
 		}
 
-		if (timer_value > 1500)
-		{
+		if (timer_value > 1500) {
 			text_utils.resetText()
 
 			return GAME_PRE_MENU
@@ -164,14 +148,12 @@ export function intro_scene(pad, timer)
 			}
 		} 
 
-		if (timer_value > 74750)
-		{
+		if (timer_value > 74750) {
 			fadeout = 1
 
 			music.pause(music.playing)
 
-			if (color_utils.fadeOut(intro_bg, fadeout))
-			{
+			if (color_utils.fadeOut(intro_bg, fadeout)) {
 				fadeout = 0
 
 				text_utils.resetText()
@@ -181,8 +163,7 @@ export function intro_scene(pad, timer)
 		}
 	}
 
-	if (color_utils.fadeIn(intro_bg, fadein))
-	{
+	if (color_utils.fadeIn(intro_bg, fadein)) {
 		fadein = 0
 	}
 

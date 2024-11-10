@@ -6,12 +6,11 @@ export class flowey
 	h = 50
 
 	sprites = [[
-			new Image("characters/flowey/spr_flowey_0.png", RAM),
-			new Image("characters/flowey/spr_flowey_1.png", RAM),
-			]]
+		new Image("characters/flowey/spr_flowey_0.png", RAM),
+		new Image("characters/flowey/spr_flowey_1.png", RAM),
+	]]
 
 	sprite_selected = 0
-
 	animation_selected = 0
 
 	draw(x, y)
@@ -38,8 +37,8 @@ export class dummy
 	h = 60
 
 	sprites = [[
-			new Image("characters/dummy/spr_dummy_0.png", RAM),
-			]]
+		new Image("characters/dummy/spr_dummy_0.png", RAM),
+	]]
 
 	sprite_selected = 0
 
@@ -49,8 +48,7 @@ export class dummy
 	{
 		// this.sprites[animation_selected][sprite_selected].color = Color.new(this.opacity, this.opacity, this.opacity)
 
-		if (this.animation_selected == 0 && this.sprite_selected > 0)
-		{
+		if (this.animation_selected == 0 && this.sprite_selected > 0) {
 			this.sprite_selected = 0
 		}
 
