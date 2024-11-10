@@ -29,42 +29,59 @@ class saveManager
 
 	saveFile()
 	{
-		if (!System.doesFileExist("mc0:/UNDERTALE"))
-		{
-			this.createDirectory()
+		if (this.testMemoryCard() == 0) {
+			if (!System.doesFileExist("mc0:/UNDERTALE"))
+			{
+				this.createDirectory()
+			}
+
+			file = std.open("mc0:/UNDERTALE/savegame.txt", "w")
+
+			for (let key in this.saveVars)
+			{
+				file.printf("%s %i\n", key, this[key])
+			}
+
+			file.flush()
+			file.close()
 		}
-
-		file = std.open("mc0:/UNDERTALE/savegame.txt", "w")
-
-		for (let key in this.saveVars)
-		{
-			file.printf("%s %i\n", key, this[key])
-		}
-
-		file.flush()
-
-		file.close()
 	}
 
 	loadFile()
 	{
-		if (!System.doesFileExist("mc0:/UNDERTALE/savegame.txt"))
-		{
-			this.saveFile()
+		if (this.testMemoryCard() == 0) {
+			if (!System.doesFileExist("mc0:/UNDERTALE/savegame.txt"))
+			{
+				this.saveFile()
+			}
+
+			file = std.open("mc0:/UNDERTALE/savegame.txt", "r")
+
+			lines = file.readAsString().split("\n")
+
+			for (let i = 0; i < lines.length - 1; i++)
+			{
+				tmp = lines[i].split(" ")
+
+				this.setVar(tmp[0], Number(tmp[1]))
+			}
+
+			file.close()
+		}
+	}
+
+	testMemoryCard()
+	{
+		let memoryCard = std.open("mc0:/", "r")
+
+		if (memoryCard == null) {
+			console.log("Memory Card is not recognized or not formated.")
+			return null
 		}
 
-		file = std.open("mc0:/UNDERTALE/savegame.txt", "r")
+		memoryCard.close()
 
-		lines = file.readAsString().split("\n")
-
-		for (let i = 0; i < lines.length - 1; i++)
-		{
-			tmp = lines[i].split(" ")
-
-			this.setVar(tmp[0], Number(tmp[1]))
-		}
-
-		file.close()
+		return 0
 	}
 }
 
