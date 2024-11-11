@@ -117,6 +117,9 @@ class Player
 
 	collision()
 	{
+		if (collisions[room] == undefined) {
+			return
+		}
 		for (let i = 0; i < collisions[room].length; i++) {
 			if (this.testCollision(collisions[room][i])) {
 				console.log(room + ":" + i)
@@ -163,6 +166,9 @@ class Player
 
 	diagonalCollision(pad)
 	{
+		if (diagonalCollision[room] == undefined) {
+			return
+		}
 		for (let i = 0; i < diagonalCollision[room].length; i++) {
 			let diagonalWall = diagonalCollision[room][i]
 

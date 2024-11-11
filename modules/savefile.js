@@ -5,7 +5,7 @@ class SaveManager
 	floweyMeetTimes = 0
 	floweyFirstDialogue = 0
 	language = PT_BR
-	debugInfo = false
+	debugInfo = true
 
 	saveVars = {
 		"language": this.language,

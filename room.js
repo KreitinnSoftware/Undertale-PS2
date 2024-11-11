@@ -119,7 +119,7 @@ export class Room
 }
 
 export const rooms = [
-	new Room(0, -20, -700, 0, -20, 0, 290, 210, new Array(new RoomImage(1360, 490, "images/rooms/ruins/0.png"))),
+	new Room(0, -20, -700, 0, -20, 0, 300, 210, new Array(new RoomImage(1360, 490, "images/rooms/ruins/0.png"))),
 	new Room(0, -375, 0, 0, 0, 260, 300, 375, new Array(new RoomImage(640, 675, "images/rooms/ruins/1.png"))),
 	new Room(40, -440, 0, 0, 0, 480, 300, 375, new Array(new RoomImage(560, 890, "images/rooms/ruins/2.png"))),
 	new Room(40, 0, 0, 0, 0, 0, 300, 355, new Array(new RoomImage(560, 448, "images/rooms/ruins/3.png"))),
@@ -127,6 +127,7 @@ export const rooms = [
 	new Room(38, 2, 0, 0, 0, 0, 80, 260, new Array(new RoomImage(572, 425, "images/rooms/ruins/5.png"))),
 	new Room(60, 20, -1715, 0, 0, 0, 300, 345, new Array(new RoomImage(1134, 425, "images/rooms/ruins/6a.png"), new RoomImage(1168, 425, "images/rooms/ruins/6b.png"))),
 	new Room(0, 20, -2100, 20, 0, 0, 65, 190, new Array(new RoomImage(1360, 331, "images/rooms/ruins/7a.png"), new RoomImage(1382, 331, "images/rooms/ruins/7b.png"))),
+	new Room(0, 0, 0, 0, -700, 0, 42, 192, new Array(new RoomImage(638, 818, "images/rooms/ruins/8.png"))),
 ]
 
 export function drawRoom()
@@ -136,14 +137,22 @@ export function drawRoom()
 
 export function drawWalls()
 {
-	for (let i = 0; i < collisions[room].length; i++) {
-		Draw.rect(collisions[room][i].x + camera.x, collisions[room][i].y + camera.y, collisions[room][i].w, collisions[room][i].h, color_utils.white_t)
+	if (collisions[room] != undefined) {
+		for (let i = 0; i < collisions[room].length; i++) {
+			Draw.rect(collisions[room][i].x + camera.x, collisions[room][i].y + camera.y, collisions[room][i].w, collisions[room][i].h, color_utils.white_t)
+		}
 	}
 	
-	for (let i = 0; i < diagonalCollision[room].length; i++) {
-		Draw.rect(diagonalCollision[room][i].x + camera.x, diagonalCollision[room][i].y + camera.y, diagonalCollision[room][i].w, diagonalCollision[room][i].h, color_utils.red_t)
+	if (diagonalCollision[room] != undefined) {
+		for (let i = 0; i < diagonalCollision[room].length; i++) {
+			Draw.rect(diagonalCollision[room][i].x + camera.x, diagonalCollision[room][i].y + camera.y, diagonalCollision[room][i].w, diagonalCollision[room][i].h, color_utils.red_t)
+		}
 	}
 
-	Draw.rect(nextRoomCollisor[room].x + camera.x, nextRoomCollisor[room].y + camera.y, nextRoomCollisor[room].w, nextRoomCollisor[room].h, color_utils.red_t)
-    Draw.rect(prevRoomCollisor[room].x + camera.x, prevRoomCollisor[room].y + camera.y, prevRoomCollisor[room].w, prevRoomCollisor[room].h, color_utils.red_t)
+	if (nextRoomCollisor[room] != undefined) {
+		Draw.rect(nextRoomCollisor[room].x + camera.x, nextRoomCollisor[room].y + camera.y, nextRoomCollisor[room].w, nextRoomCollisor[room].h, color_utils.red_t)
+	}
+	if (prevRoomCollisor[room] != undefined) {
+		Draw.rect(prevRoomCollisor[room].x + camera.x, prevRoomCollisor[room].y + camera.y, prevRoomCollisor[room].w, prevRoomCollisor[room].h, color_utils.red_t)
+	}
 }
