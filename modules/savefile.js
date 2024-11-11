@@ -79,4 +79,4 @@ class SaveManager
 	}
 }
 
-export let globalVariables = new SaveManager
+export const globalVariables = new SaveManager

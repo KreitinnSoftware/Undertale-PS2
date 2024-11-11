@@ -118,7 +118,7 @@ export class Room
 	}
 }
 
-export let rooms = [
+export const rooms = [
 	new Room(0, -20, -700, 0, -20, 0, 290, 210, new Array(new RoomImage(1360, 490, "images/rooms/ruins/0.png"))),
 	new Room(0, -375, 0, 0, 0, 260, 300, 375, new Array(new RoomImage(640, 675, "images/rooms/ruins/1.png"))),
 	new Room(40, -440, 0, 0, 0, 480, 300, 375, new Array(new RoomImage(560, 890, "images/rooms/ruins/2.png"))),
