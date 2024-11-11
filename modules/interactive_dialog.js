@@ -29,6 +29,10 @@ export function createInteractiveDialog(pad, x, y, options)
 	}
 
 	if (confirmButton) {
-		return sel
+		let ret = sel
+
+		sel = 0
+		
+		return ret
 	}
 }

@@ -5,14 +5,14 @@ const screen = Screen.getMode()
 import { dynamicDrawText, drawText, resetText } from "modules/text_utils.js"
 import { introScene, intro_gc } from "intro.js"
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME } from "modules/global_constants.js"
-import { saveMan } from "modules/savefile.js"
+import { globalVariables } from "modules/savefile.js"
 import * as music from "modules/music.js"
 
 let timer = Timer.new()
 let gameState = GAME_INTRO
 let pad = Pads.get(0)
 
-saveMan.loadFile()
+globalVariables.loadFile()
 
 music.play(music.mus_story)
 

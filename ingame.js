@@ -3,7 +3,7 @@ import { player } from "player.js"
 import { camera } from "camera.js"
 import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
 import { checkEventCollisions } from "event_handler.js"
-import { gameSettings } from "modules/global_settings.js"
+import { globalVariables } from "modules/savefile.js"
 import * as fonts from "modules/fonts.js"
 import * as color_utils from "modules/color_utils.js"
 
@@ -22,7 +22,7 @@ export function ingameScene(pad, timer)
 
 	drawRoom()
 
-	if (gameSettings.debugInfo) {
+	if (globalVariables.debugInfo) {
 		drawWalls()
 	}
 
@@ -37,10 +37,10 @@ export function ingameScene(pad, timer)
 	color_utils.roomTransitionOverlay.draw()
 
 	if (pad.justPressed(Pads.SELECT)) {
-		gameSettings.debugInfo = !gameSettings.debugInfo
+		globalVariables.debugInfo = !globalVariables.debugInfo
 	}
 
-	if (gameSettings.debugInfo) {
+	if (globalVariables.debugInfo) {
 		fonts.dtm_mono.print(0, 0, "Player Abs X:" + (player.x - camera.x))
 		fonts.dtm_mono.print(0, 20, "Player Abs Y:" + (player.y - camera.y))
 		fonts.dtm_mono.print(0, 40, "Player Real X:" + player.x)

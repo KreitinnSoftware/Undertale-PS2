@@ -16,5 +16,7 @@ export const menuText = [
 	" Menu(In-game)",
 	"When HP is 0, you lose.",
 	"Begin Game",
-	"Settings"
+	"Settings",
+	"Back",
+	"Language: English"
 ]

@@ -16,5 +16,7 @@ export const menuText = [
 	" Menu(Em-jogo)",
 	"Quando HP chegar a 0, \nvocê perde.",
 	"Iniciar Jogo",
-	"Configurações"
+	"Configurações",
+	"Voltar",
+	"Linguagem: Português"
 ]

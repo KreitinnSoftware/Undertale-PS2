@@ -1,9 +1,14 @@
+import { EN_US, PT_BR } from "modules/global_constants.js"
+
 class SaveManager
 {
 	floweyMeetTimes = 0
 	floweyFirstDialogue = 0
+	language = PT_BR
+	debugInfo = false
 
 	saveVars = {
+		"language": this.language,
 		"floweyMeetTimes": this.floweyMeetTimes,
 		"floweyFirstDialogue": this.floweyFirstDialogue
 	}
@@ -74,4 +79,4 @@ class SaveManager
 	}
 }
 
-export let saveMan = new SaveManager
+export let globalVariables = new SaveManager
