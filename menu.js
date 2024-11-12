@@ -1,6 +1,6 @@
 import { GAME_INTRO, GAME_PRE_MENU, GAME_MENU, GAME_INGAME, PT_BR, EN_US } from "modules/global_constants.js"
 import { getText } from "lang/lang.js"
-import { createInteractiveDialog } from "modules/interactive_dialog.js"
+import { createVerticalInteractiveDialog } from "modules/interactive_dialog.js"
 import { globalVariables } from "modules/savefile.js"
 import * as fonts from "modules/fonts.js"
 import * as text_utils from "modules/text_utils.js"
@@ -55,7 +55,7 @@ export function menuScene(pad)
 	Screen.clear()
 
 	if (inConfigScreen) {
-		let interactiveDialog = createInteractiveDialog(pad, 10, 10, getText(9, "menuText") + "\n" + getText(8, "menuText"))
+		let interactiveDialog = createVerticalInteractiveDialog(pad, 10, 10, getText(9, "menuText") + "\n" + getText(8, "menuText"))
 
 		if (interactiveDialog == 0) {
 			if (globalVariables.language == EN_US) {
@@ -68,7 +68,7 @@ export function menuScene(pad)
 			inConfigScreen = false
 		}
 	} else {
-		let interactiveDialog = createInteractiveDialog(pad, 160, 290, getText(6, "menuText") + "\n" + getText(7, "menuText"))
+		let interactiveDialog = createVerticalInteractiveDialog(pad, 160, 290, getText(6, "menuText") + "\n" + getText(7, "menuText"))
 
 		if (interactiveDialog == 0) {
 			return GAME_INGAME

@@ -1,8 +1,8 @@
 import { camera } from "camera.js"
-import { collisions, diagonalCollision, nextRoomCollisor, prevRoomCollisor } from "collision_masks.js"
-import { room, rooms, nextRoom, prevRoom } from "room.js"
+import { collisions, diagonalCollision, changeRoomCollisors } from "collision_masks.js"
+import { room, rooms, goToRoom } from "room.js"
 import { createBox } from "modules/box.js"
-import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT } from "modules/global_constants.js"
+import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT, ROOM_EXIT, ROOM_ENTRANCE } from "modules/global_constants.js"
 import { globalVariables } from "modules/savefile.js"
 import { event_type, event } from "event_handler.js"
 import * as color_utils from "modules/color_utils.js"
@@ -18,25 +18,33 @@ export function posRound(num)
 
 export function setAbs(x, y)
 {
-	if (posRound(x) >= 300) {
-		if ((-posRound(x) + 300) >= rooms[room].cam_x_min) {
-			camera.x = posRound(-x + 300)
+	const xRounded = posRound(x)
+	const yRounded = posRound(y)
+
+	if (xRounded >= 300) {
+		if (-xRounded + 300 >= rooms[room].cam_x_min) {
+			camera.x = -xRounded + 300
 			player.x = 300
 		} else {
-			camera.x = rooms[room].cam_x_min
-			player.x = posRound(x + rooms[room].cam_x_min)
+			camera.x = posRound(rooms[room].cam_x_min)
+			player.x = xRounded + posRound(rooms[room].cam_x_min)
 		}
 	} else {
-		camera.x = 0
-		player.x = posRound(x)
+		camera.x = posRound(rooms[room].cam_x_max)
+		player.x = xRounded
 	}
 
-	if (posRound(y) <= 201) {
-		camera.y = posRound(201 - y)
-		player.y = 201
+	if (yRounded >= 201) {
+		if (-yRounded + 201 >= rooms[room].cam_y_min) {
+			camera.y = -yRounded + 201
+			player.y = 201
+		} else {
+			camera.y = posRound(rooms[room].cam_y_min)
+			player.y = yRounded + posRound(rooms[room].cam_y_min)
+		}
 	} else {
-		camera.y = 0
-		player.y = posRound(y)
+		camera.y = posRound(rooms[room].cam_y_max)
+		player.y = yRounded
 	}
 }
 
@@ -225,24 +233,22 @@ class Player
 
 	walk(pad)
 	{
+		this.x = posRound(this.x)
+		this.y = posRound(this.y)
+
 		this.canMove = (
 			(color_utils.roomTransitionOverlay.opacity == 0 || color_utils.roomTransitionOverlay.opacity == 128) &&
 			(this.ingameMenuOpen == 0)
 		)
 
-		if (this.testCollision(nextRoomCollisor[room]) && room < rooms.length - 1) {
-			color_utils.roomTransitionOverlay.fadeIn = 1
-			
-			if (color_utils.roomTransitionOverlay.opacity == 128) {
-				nextRoom()
-			}
-		}
+		for (let i = 0; i < changeRoomCollisors[room].length; i++) {
+			if (this.testCollision(changeRoomCollisors[room][i])) {
+				color_utils.roomTransitionOverlay.fadeIn = 1
+				color_utils.roomTransitionOverlay.fadeOut = 0
 
-		if (this.testCollision(prevRoomCollisor[room]) && room > 0) {
-			color_utils.roomTransitionOverlay.fadeIn = 1
-			
-			if (color_utils.roomTransitionOverlay.opacity == 128) {
-				prevRoom()
+				if (color_utils.roomTransitionOverlay.opacity == 128) {
+					goToRoom(changeRoomCollisors[room][i].destRoom, changeRoomCollisors[room][i].destPlace, changeRoomCollisors[room][i].exitObjId)
+				}
 			}
 		}
 
@@ -390,7 +396,7 @@ class Player
 		if (this.ingameMenuOpen == 1) {
 			createBox(20, 50, 120, 100, 5)
 			text_utils.drawText(30, 50, fonts.exp, "Frisk", 0)
-			text_utils.drawText(30, 80, fonts.exp, "Lv    " + this.love + "\nHP     " + this.hp + "/" + this.max_hp + "\nG       0", 20)
+			text_utils.drawText(30, 80, fonts.exp, "Lv    " + this.love + "\nHP     " + this.hp + "/" + this.maxHp + "\nG       0", 20)
 			createBox(20, 160, 120, 130, 5)
 		}
 	}

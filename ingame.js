@@ -1,4 +1,4 @@
-import { room, nextRoom, prevRoom, drawRoom, drawWalls } from "room.js"
+import { room, drawRoom, drawWalls } from "room.js"
 import { player } from "player.js"
 import { camera } from "camera.js"
 import { GAME_EVENT_FLOWEY_FIRST_DIALOGUE } from "modules/global_constants.js"
