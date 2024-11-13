@@ -28,7 +28,7 @@ export function ingameScene(pad, timer)
 
 	player.walk(pad)
 	player.draw()
-	player.ingame_menu(pad)
+	player.ingameMenu(pad)
 
 	checkEventCollisions()
 

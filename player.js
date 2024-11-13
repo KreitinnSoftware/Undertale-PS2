@@ -5,11 +5,10 @@ import { createBox } from "modules/box.js"
 import { GAME_EVENT_TYPE_TALK, DOWN_RIGHT, DOWN_LEFT, UP_RIGHT, UP_LEFT, ROOM_EXIT, ROOM_ENTRANCE } from "modules/global_constants.js"
 import { globalVariables } from "modules/savefile.js"
 import { event_type, event } from "event_handler.js"
+import { createVerticalInteractiveDialog } from "modules/interactive_dialog.js"
 import * as color_utils from "modules/color_utils.js"
 import * as text_utils from "modules/text_utils.js"
 import * as fonts from "modules/fonts.js"
-
-let stepDelay = Timer.new()
 
 export function posRound(num)
 {
@@ -91,6 +90,11 @@ class Player
 	love = 1
 	hp = 20
 	maxHp = 20
+
+	constructor()
+	{
+		this.stepDelay = Timer.new()
+	}
 
 	draw()
 	{
@@ -253,7 +257,7 @@ class Player
 		}
 
 		if (this.canMove) {
-			let stepDelayValue = Timer.getTime(stepDelay)
+			const stepDelayValue = Timer.getTime(this.stepDelay)
 
 			this.pressingDown = (pad.pressed(Pads.DOWN) || pad.ly > 64)
 			this.pressingUp = (pad.pressed(Pads.UP) || pad.ly < -64)
@@ -301,7 +305,7 @@ class Player
 						if (!(this.movingDiagonal == UP_RIGHT || this.movingDiagonal == UP_LEFT)) {
 							this.selectedSprite ++
 						}
-						Timer.reset(stepDelay)
+						Timer.reset(this.stepDelay)
 					}
 				}
 
@@ -328,7 +332,7 @@ class Player
 						if (!(this.movingDiagonal == DOWN_RIGHT || this.movingDiagonal == DOWN_LEFT)) {
 							this.selectedSprite ++
 						}
-						Timer.reset(stepDelay)
+						Timer.reset(this.stepDelay)
 					}
 				}
 
@@ -350,7 +354,7 @@ class Player
 					if (stepDelayValue > 180)
 					{
 						this.selectedSprite ++
-						Timer.reset(stepDelay)
+						Timer.reset(this.stepDelay)
 					}
 				}
 
@@ -369,7 +373,7 @@ class Player
 				} else {
 					if (stepDelayValue > 180) {
 						this.selectedSprite ++
-						Timer.reset(stepDelay)
+						Timer.reset(this.stepDelay)
 					}
 				}
 
@@ -384,7 +388,7 @@ class Player
 		}
 	}
 
-	ingame_menu(pad)
+	ingameMenu(pad)
 	{
 		if (pad.justPressed(Pads.CIRCLE)) {
 			if (this.ingameMenuOpen == 0) {
@@ -398,6 +402,8 @@ class Player
 			text_utils.drawText(30, 50, fonts.exp, "Frisk", 0)
 			text_utils.drawText(30, 80, fonts.exp, "Lv    " + this.love + "\nHP     " + this.hp + "/" + this.maxHp + "\nG       0", 20)
 			createBox(20, 160, 120, 130, 5)
+
+			createVerticalInteractiveDialog(pad, 45, 176, "ITEM\nSTAT\nCEL")
 		}
 	}
 }
